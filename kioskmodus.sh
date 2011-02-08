@@ -26,7 +26,7 @@
 Instpfad="/root/kioskmodus"
 Config=""$Instpfad"/kioskmodus.conf"
 Aufloesung=`cat "$Instpfad"/X/aufloesung`
-
+Ausgang="none"
 Beepen(){
 
 # Nette Beeptöne von sich geben
@@ -44,12 +44,25 @@ SysViniteinrichtung(){
 if [ $1 == "on" ]; then
 
 ## Verlinkung des Skriptes nach /etc/rc0.d
-# Das Skript wird hierdurch beim Herunterfahren ausgeführt
+# Das Skript wird hierdurch beim Hochfahren ausgeführt
 
 #	if ([ ! -f /etc/rcS.d/S60kioskmodus ] && [ ! -f /etc/rcS.d/S60* ]); then
 	if [ ! -f /etc/rcS.d/S10kioskmodus ]; then
 		ln -s "$Instpfad"/kioskmodus.sh /etc/rcS.d/S10kioskmodus
 	fi
+
+	if [ ! -f /etc/gdm/PostLogin/Default ]; then
+		echo "#!/bin/sh" > /etc/gdm/PostLogin/Default
+		echo ""$Instpfad"/kioskmodus.sh -v" >> /etc/gdm/PostLogin/Default
+		chmod a+x /etc/gdm/PostLogin/Default
+	elif [ -f /etc/gdm/PostLogin/Default ]; then
+		echo "test"
+		if [ ! "$(cat  /etc/gdm/PostLogin/Default | egrep "*"$Instpfad"/kioskmodus.sh*" | awk '{print $1}' )" == ""$Instpfad"/kioskmodus.sh" ]; then
+		echo "test2"
+		echo ""$Instpfad"/kioskmodus.sh -v" >> /etc/gdm/PostLogin/Default
+		fi
+	fi
+
 elif [ $1 == "off" ]; then
 
 ## Löschen der Verlinkung
@@ -151,9 +164,9 @@ if [ $1 == "on" ]; then
 
 # cleanup-script soll nur weiterlaufen, wenn
 # keinpasswort durch aufs geschützt wird.
-immutable=`mount -l -t aufs |grep 'none on /home/schule type aufs (rw,br:/home/.schule_rw/:/home/schule/)'`
+#immutable=`mount -l -t aufs |grep 'none on /home/schule type aufs (rw,br:/home/.schule_rw/:/home/schule/)'`
 
-	if [ ! $immutable == "" ]; then
+#	if [ ! $immutable == "" ]; then
 
 	  # Lösch-Funktion, welcher zusätzliche find-Argumente übergeben werden können
 
@@ -166,7 +179,7 @@ immutable=`mount -l -t aufs |grep 'none on /home/schule type aufs (rw,br:/home/.
 	  # ist sichergestellt, dass wirklich nur der Inhalt von .schule_rw gelöscht wird.
 	  cd /home/.schule_rw && find . -maxdepth 1 -mindepth 1 $no_aufs $zusatz -print0|xargs -0 rm -rf
 	echo "nein"	
-	fi
+#	fi
 echo "ja"
 fi
 
@@ -306,6 +319,47 @@ if [ $1 == "on" ]; then
 	if [ ! -f /etc/ssh/ssh_host_rsa_key.pub ]; then
 		cp "$Instpfad"/ssh/ssh_host_rsa_key.pub /etc/ssh/ssh_host_rsa_key.pub
 	fi
+
+fi
+
+}
+
+VideoAusgangHerausfinden(){
+
+Ausgang="$(xrandr | egrep "*\<connected*" | awk '{print $1}' )"
+
+#echo "$Ausgang" > /root/test
+echo "$Ausgang" > "$Instpfad"/X/videoausgang
+
+}
+
+
+RandRstatischeAufloesung(){
+
+## Aufloesung mit Xrandr übernehmen
+
+# Die Videoausgangbezeichnung herausfinden
+Ausgang=`cat "$Instpfad"/X/videoausgang`
+
+# Die xrandrdatei erzeugen mit den entsprechenden angaben
+if [ ! "$Ausgang" == "none" ]; then
+
+	if [ "$Aufloesung" == "1024x768" ]; then
+
+		echo "xrandr --newmode "1024x768_60.00"   63.50  1024 1072 1176 1328  768 771 775 798 -hsync +vsync" > /etc/X11/Xsession.d/45custom_xrandr-settings
+		echo "xrandr --addmode "$Ausgang" "1024x768_60.00"" >> /etc/X11/Xsession.d/45custom_xrandr-settings
+		echo "xrandr --output "$Ausgang" --mode 1024x768_60.00" >> /etc/X11/Xsession.d/45custom_xrandr-settings
+
+	elif [ "$Aufloesung" == "1280x1024" ]; then
+
+		echo "xrandr --newmode "1280x1024_60.00"  109.00  1280 1368 1496 1712  1024 1027 1034 1063 -hsync +vsync" > /etc/X11/Xsession.d/45custom_xrandr-settings
+		echo "xrandr --addmode "$Ausgang" "1280x1024_60.00"" >> /etc/X11/Xsession.d/45custom_xrandr-settings
+		echo "xrandr --output "$Ausgang" --mode 1280x1024_60.00" >> /etc/X11/Xsession.d/45custom_xrandr-settings
+
+	fi
+
+	# Rechte setzen
+	chmod a+x /etc/X11/Xsession.d/45custom_xrandr-settings
 
 fi
 
@@ -451,6 +505,7 @@ if [ $1 == "on" ]; then
 		elif [ "$Aufloesung" == "1280x1024" ]; then
 			xorgeinfügenSXGA
 		fi
+		RandRstatischeAufloesung
 
 elif [ $1 == "off" ]; then
 	if [ -f /etc/X11/xorg.conf ]; then
@@ -761,7 +816,7 @@ case $1 in
 	Hilfe
 	;;
 	"test")
-	exit
+	RandRstatischeAufloesung
 	;;
 	"gpxe")
 	GRUBgPXE on
@@ -777,6 +832,9 @@ case $1 in
 	;;
 	"-j")
 	Journaldateisystemverwenden
+	;;
+	"-v")
+	VideoAusgangHerausfinden
 	;;
 	*)
 	echo "$1 ist ein falsches Parameter"
