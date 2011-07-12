@@ -24,9 +24,10 @@
 
 ## Die Pfad-Variabeln
 Instpfad="/root/kioskmodus"
-Config=""$Instpfad"/kioskmodus.conf"
+Config="/etc/kioskmodus/kioskmodus.conf"
 Aufloesung=`cat "$Instpfad"/X/aufloesung`
 Ausgang="none"
+
 Beepen(){
 
 # Nette Beeptöne von sich geben
@@ -297,32 +298,32 @@ fi
 }
 
 
-SSHKeysKopieren(){
+#SSHKeysKopieren(){
 
 
-if [ $1 == "on" ]; then
+#if [ $1 == "on" ]; then
 
 ## Kopieren der SSH-Keys für den SSH-Server
 
-	if [ ! -f /etc/ssh/ssh_host_dsa_key ]; then
-		cp "$Instpfad"/ssh/ssh_host_dsa_key /etc/ssh/ssh_host_dsa_key
-	fi
+#	if [ ! -f /etc/ssh/ssh_host_dsa_key ]; then
+#		cp "$Instpfad"/ssh/ssh_host_dsa_key /etc/ssh/ssh_host_dsa_key
+#	fi
 
-	if [ ! -f /etc/ssh/ssh_host_dsa_key.pub ]; then
-		cp "$Instpfad"/ssh/ssh_host_dsa_key.pub /etc/ssh/ssh_host_dsa_key.pub
-	fi
+#	if [ ! -f /etc/ssh/ssh_host_dsa_key.pub ]; then
+#		cp "$Instpfad"/ssh/ssh_host_dsa_key.pub /etc/ssh/ssh_host_dsa_key.pub
+#	fi
 
-	if [ ! -f /etc/ssh/ssh_host_rsa_key ]; then
-		cp "$Instpfad"/ssh/ssh_host_rsa_key /etc/ssh/ssh_host_rsa_key
-	fi
+#	if [ ! -f /etc/ssh/ssh_host_rsa_key ]; then
+#		cp "$Instpfad"/ssh/ssh_host_rsa_key /etc/ssh/ssh_host_rsa_key
+#	fi
+#
+#	if [ ! -f /etc/ssh/ssh_host_rsa_key.pub ]; then
+#		cp "$Instpfad"/ssh/ssh_host_rsa_key.pub /etc/ssh/ssh_host_rsa_key.pub
+#	fi
 
-	if [ ! -f /etc/ssh/ssh_host_rsa_key.pub ]; then
-		cp "$Instpfad"/ssh/ssh_host_rsa_key.pub /etc/ssh/ssh_host_rsa_key.pub
-	fi
+#fi
 
-fi
-
-}
+#}
 
 VideoAusgangHerausfinden(){
 
@@ -638,58 +639,9 @@ if [ ! $Defaultmountoption == "journal_data" ]; then
 
 fi
 
-}
-
-
-Updaten(){
-
-## Systemupdates einspielen
-## Entweder online oder offline
-
-
-# Verwenden on Online/Offline Paketquellen
-if [ $1 == "online" ]; then
-
-	echo "sources.list wird für Onlineupdate geändert"
-	cp /etc/apt/sources.list.online /etc/apt/sources.list
-
-else
-
-	echo "sources.list wird für offline update geändert"
-	cp /etc/apt/sources.list.mirror /etc/apt/sources.list
-
-fi
-
-echo "Update wird durchgeführt"
-sleep 1
-
-# Neuladen der Paketquellen und upgrade der Pakete
-apt-get update && apt-get dist-upgrade
-
-# Rücksetzen der sources.list
-if [ $1 == "online" ]; then
-
-	echo "sources.list wird auf Standardofflinepaketquellen geändert"
-	cp /etc/apt/sources.list.mirror /etc/apt/sources.list
-
-fi
-
-echo "Update beendet"
+unset Defaultmountoption
 
 }
-
-
-Onlinepaketquellen(){
-
-# Ändern der sources.list, sodass die Onlinepaketquellen verwendet werden
-echo "Ändern der sources.list, sodass die Onlinepaketquellen verwendet werden"
-
-cp /etc/apt/sources.list.online /etc/apt/sources.list
-
-echo "Operation complete"
-
-}
-
 
 
 Erstellen(){
@@ -755,13 +707,13 @@ if [ -f "$Instpfad"/Archive/1024x768/schule2* ]; then
 	echo "Möchten Sie wirklich alle gesicherten Archive löschen ?"
 	echo "(yes or no)"
 	read Loeschen
-	if [ "$Loeschen" = "yes" ]; then
+	if [ "$Loeschen" == "yes" ]; then
 
 		rm "$Instpfad"/Archive/1024x768/schule2*
 		rm "$Instpfad"/Archive/1280x1024/schule2*
 		echo "Alle alten Archive gelöscht"
 
-	elif  [ "$Loeschen" = "no" ]; then
+	elif  [ "$Loeschen" == "no" ]; then
 
 		echo "Die gesicherten Archive wurden nicht gelöscht :)>-"
 
@@ -774,6 +726,263 @@ if [ -f "$Instpfad"/Archive/1024x768/schule2* ]; then
 else
 
 	echo "Keine alten Archive vorhanden"
+
+fi
+
+}
+
+
+WakeOnLANAktivieren(){
+
+## Hier wird das Ferngesteruerte Anschalten der Recher ermöglicht.
+
+# Eintrag in /etc/rc.local für die Ausführung des Befehls beim start des Rechners.
+
+# Gucken ob die Zeile schon existiert.
+Netzwerkschnittstelle="eth0"
+String1="$(sed -n '/ethtool -s eth0 wol g/p' /etc/rc.local )"
+
+# Falls nicht; hänge diese Zeile ans Dokument an.
+
+if [ ! "$String1" == "ethtool -s eth0 wol g"  ]; then
+	sed -e '12a\ethtool -s eth0 wol g' /etc/rc.local > /tmp/kioskmodusWOL
+	mv /tmp/kioskmodusWOL /etc/rc.local
+fi
+
+unset String1
+
+# halt skript anpassen, damit die Netzwerkschnittstelle nicht abgeschaltet wird
+
+if [ ! -f /tmp/kioskmodusWOL ]; then
+	cp /etc/init.d/halt /tmp/kioskmodusWOL
+fi
+
+sed -e 's/NETDOWN=yes/NETDOWN=no/' /tmp/kioskmodusWOL > /etc/init.d/halt
+
+if [ -f /tmp/kioskmodusWOL ]; then
+	rm /tmp/kioskmodusWOL
+fi
+
+}
+
+
+DateisystemFehlerAutomatischKorrigieren(){
+
+## Dateisystemfehler sollen automatisch beim Start korrigiert werden
+
+if [ ! -f /tmp/kioskmodusrcS ]; then
+	cp /etc/default/rcS /tmp/kioskmodusrcS
+fi
+
+sed -e 's/FSCKFIX=no/FSCKFIX=yes/' /tmp/kioskmodusrcS > /etc/default/rcS
+
+# Nun sollte Ubuntu bei jedem Start eventuell vorhandene Dateisystemfehler automatisch korrigieren.
+
+if [ -f /tmp/kioskmodusrcS ]; then
+	rm /tmp/kioskmodusrcS
+fi
+
+}
+
+
+MediathekmenueeintragErstellen(){
+
+## Erstellen einer Mediathek.desktop in /usr/share/applications damit eine Menueverknüpfung erscheint
+VerknuepfungsDatei="/usr/share/applications/Mediathek.desktop"
+
+if [ ! -f "$VerknuepfungsDatei" ]; then
+
+	echo "[Desktop Entry]" > "$VerknuepfungsDatei"
+	echo "Version=2.5.0" >> "$VerknuepfungsDatei"
+	echo "Name=Mediathek" >> "$VerknuepfungsDatei"
+	echo "Comment=Read, capture your ARD, ZDF, ... TV streams" >> "$VerknuepfungsDatei"
+	echo "Name[de]=Mediathek" >> "$VerknuepfungsDatei"
+	echo "Comment[de]=Wiedergabe und Aufnahme der Sendungen der öffentlich-rechtlichen Fernsehanstalten" >> "$VerknuepfungsDatei"
+	echo "Exec=java -jar /opt/Mediathek_2.5.0/Mediathek.jar" >> "$VerknuepfungsDatei"
+	echo "Icon=oxygen.png" >> "$VerknuepfungsDatei"
+	echo "Terminal=false" >> "$VerknuepfungsDatei"
+	echo "Type=Application" >> "$VerknuepfungsDatei"
+	echo "Categories=AudioVideo;Player;" >> "$VerknuepfungsDatei"
+	echo "StartupNotify=true" >> "$VerknuepfungsDatei"
+fi
+
+unset VerknuepfungsDatei
+
+}
+
+
+PaketQuellenAnpassen(){
+
+## Hier werden die Paketquellen leserlich hergerichtet, 
+## sodass sie schnell zu überschauen sind und außeredm werden sie
+## auf den Netzwerkspiegel umgestellt.
+
+SourcesList="/etc/apt/sources.list"
+
+# Den Distributionscodenamen herausfinden
+
+awk '/DISTRIB_CODENAME/ { print $1 }' /etc/lsb-release > /tmp/kioskmodusPaketQuellenAnpassen
+
+DistributionsCodeName="$(sed s/DISTRIB_CODENAME=//g /tmp/kioskmodusPaketQuellenAnpassen )"
+
+# Spiegel ja oder nein ?
+
+if [ $1 == "online" ]; then
+	Mirror="http://"
+	echo "#### INTERNET ####" > "$SourcesList"
+elif [ $1 == "offline" ]; then
+	Mirror="ftp://paketkoenig.local/mirror/"
+	echo "#### PAKETKOENIG ####" > "$SourcesList"
+else
+	DistributionsCodeName=false
+fi
+
+# Neue sources.list erzeugen
+
+if [ ! $DistributionsCodeName == false ]; then
+
+	
+	echo "" >> "$SourcesList"
+	echo "## Ubuntu" >> "$SourcesList"
+	echo "" >> "$SourcesList"
+	echo "deb "$Mirror"de.archive.ubuntu.com/ubuntu/ "$DistributionsCodeName" main restricted universe multiverse" >> "$SourcesList"
+	echo "" >> "$SourcesList"
+	echo "deb "$Mirror"de.archive.ubuntu.com/ubuntu/ "$DistributionsCodeName"-updates main restricted universe multiverse" >> "$SourcesList"
+	echo "" >> "$SourcesList"
+	echo "deb "$Mirror"security.ubuntu.com/ubuntu "$DistributionsCodeName"-security main restricted universe multiverse" >> "$SourcesList"
+	echo "" >> "$SourcesList"
+	echo "deb "$Mirror"extras.ubuntu.com/ubuntu "$DistributionsCodeName" main" >> "$SourcesList"
+	echo "" >> "$SourcesList"
+	echo "## Remastersys" >> "$SourcesList"
+	echo "" >> "$SourcesList"
+	echo "deb "$Mirror"www.geekconnection.org/remastersys/repository karmic/" >> "$SourcesList"
+	echo "" >> "$SourcesList"
+	echo "## Medibuntu" >> "$SourcesList"
+	echo "" >> "$SourcesList"
+	echo "deb "$Mirror"packages.medibuntu.org/ "$DistributionsCodeName" free non-free" >> "$SourcesList"
+	echo "" >> "$SourcesList"
+
+fi
+
+# temporäre Variablen und Dateien löschen.
+
+unset Mirror
+unset DistributionsCodeName
+unset SourcesList
+
+if [ -f /tmp/kioskmodusPaketQuellenAnpassen ]; then
+	rm /tmp/kioskmodusPaketQuellenAnpassen
+fi
+
+}
+
+
+NTPZeitserverSynchronisationEinstellen(){
+
+## Hier wird in der Datei "/etc/crontab" der Eintrag für die Synchronisation erstellt.
+
+# Gucken ob die Zeile schon existiert.
+
+String1="$(sed -n '/12 \* \* \* \* root ntpdate 10.0.0.15 \&> \/dev\/null/p' /etc/crontab )"
+String2="$(sed -n '/12 \* \* \* \* root ntpdate zeitserver.local \&> \/dev\/null/p' /etc/crontab )"
+
+# Falls nicht; hänge diese Zeile ans Dokument an.
+
+if [ ! "$String1" == "12 * * * * root ntpdate 10.0.0.15 &> /dev/null"  ]; then
+	sed -e '15a\12 * * * * root ntpdate 10.0.0.15 \&> /dev/null' /etc/crontab > /tmp/kioskmodusNTP  #/etc/crontab
+	cp /tmp/kioskmodusNTP /etc/crontab
+fi
+
+if [ ! "$String2" == "12 * * * * root ntpdate zeitserver.local &> /dev/null" ]; then
+	sed -e '16a\12 * * * * root ntpdate zeitserver.local &> /dev/null' /etc/crontab > /tmp/kioskmodusNTP #/etc/crontab
+	cp /tmp/kioskmodusNTP /etc/crontab
+fi
+
+# Entfernen aller Zwischenspeicher
+
+if [ -f /tmp/kioskmodusNTP ]; then
+rm /tmp/kioskmodusNTP
+fi
+
+unset String1
+unset String2
+
+}
+
+
+UpgradeBenachrichtigungDeaktivieren(){
+
+## Hier wird die lästige Nachricht unterdrückt, die dadrauf hinweist, das eine neue Ubuntuversion erschienen ist.
+
+# in der Datei /etc/update-manager/release-upgrades wird die Anweisung "normal" gegen "never" ausgetauscht.
+# Dadurch wird nie nach einer neuen Ubuntuversion gesucht.
+
+# sed kann nicht aus einer Datei lesen, wenn es darin schreiben soll, deshalb der Umweg über die Backup Datei.
+
+if [ ! -f /etc/update-manager/release-upgrades.backup ]; then
+	cp /etc/update-manager/release-upgrades /etc/update-manager/release-upgrades.backup
+fi
+
+sed -e 's/Prompt=normal/Prompt=never/' /etc/update-manager/release-upgrades.backup > /etc/update-manager/release-upgrades
+
+}
+
+
+KonfigurationsdateiErstellen(){
+## Hier wird die Datei "kioskmodus.conf" erstellt, falls sie noch nicht vorhanden ist.
+
+if [ ! -d /etc/kioskmodus ]; then
+mkdir /etc/kioskmodus
+fi
+
+if [ ! -f "$Config" ]; then
+
+cat <<-\$EOFE >"$Config"
+##########################################
+## Die Config von dem Kioskmodusscript. ##
+##########################################
+
+## Upstart einrichten (datei noch nicht mit Leben gefüllt)
+#Upstarteinrichtung off
+
+## SysVinit Skriptstart beim booten einrichten
+SysViniteinrichtung on
+
+## xorg.conf kopieren
+XorgSetzen on
+
+## Zur Bearbeitung des Homeverzeichnisses von schule,
+# die Option auf Off setzen
+MountAufs on
+
+
+## Wiederherstellen des Homeverzeichnisses von schule
+Wiederherstellen off
+schule_rw_cleanup on
+
+## GDM Autologin vom User "schule" einrichten
+GDMAutoLogin on
+
+## SSH-Keys kopieren
+#SSHKeysKopieren on   ## Zum entfernen deaktiviert
+
+## Nummernblockaktivierung einrichten
+Nummernblockaktivierung on
+
+##Auflösungseinstellungen im Terminal verfügbar machen
+#AufloesungsskriptKopieren off
+Aufloesungsskripteinfügen on
+
+## gPXE Menueeintrag in GRUB setzen
+GRUBgPXE on
+
+## GRUB mit Passwort versehen ( noch nicht vollständig implementiert )
+GRUBabsichern off
+
+## Journalingmodus für das Dateisystem einstellen
+Journaldateisystemverwenden 
+
+$EOFE
 
 fi
 
@@ -815,23 +1024,17 @@ case $1 in
 	"hilfe"|"--help"|"-h")
 	Hilfe
 	;;
-	"test")
+	"RandR")
 	RandRstatischeAufloesung
 	;;
 	"gpxe")
 	GRUBgPXE on
 	;;
-	"updaten"|"-u")
-	Updaten
-	;;
-	"onlineupdate"|"-ou")
-	Updaten online
-	;;
-	"onlinepaketquellen"|"-op")
-	Onlinepaketquellen
-	;;
 	"-j")
 	Journaldateisystemverwenden
+	;;
+	"-t"|"test")
+	WakeOnLANAktivieren
 	;;
 	"-v")
 	VideoAusgangHerausfinden
