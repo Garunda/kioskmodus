@@ -739,13 +739,14 @@ WakeOnLANAktivieren(){
 # Eintrag in /etc/rc.local für die Ausführung des Befehls beim start des Rechners.
 
 # Gucken ob die Zeile schon existiert.
+
 Netzwerkschnittstelle="eth0"
-String1="$(sed -n '/ethtool -s eth0 wol g/p' /etc/rc.local )"
+String1="$(sed -n '/ethtool -s '${Netzwerkschnittstelle}' wol g/p' /etc/rc.local )"
 
 # Falls nicht; hänge diese Zeile ans Dokument an.
 
-if [ ! "$String1" == "ethtool -s eth0 wol g"  ]; then
-	sed -e '12a\ethtool -s eth0 wol g' /etc/rc.local > /tmp/kioskmodusWOL
+if [ ! "$String1" == "ethtool -s ${Netzwerkschnittstelle} wol g"  ]; then
+	sed -e '12a\ethtool -s '${Netzwerkschnittstelle}' wol g' /etc/rc.local > /tmp/kioskmodusWOL
 	mv /tmp/kioskmodusWOL /etc/rc.local
 fi
 
@@ -929,6 +930,7 @@ sed -e 's/Prompt=normal/Prompt=never/' /etc/update-manager/release-upgrades.back
 
 
 KonfigurationsdateiErstellen(){
+
 ## Hier wird die Datei "kioskmodus.conf" erstellt, falls sie noch nicht vorhanden ist.
 
 if [ ! -d /etc/kioskmodus ]; then
@@ -955,19 +957,12 @@ XorgSetzen on
 # die Option auf Off setzen
 MountAufs on
 
-
 ## Wiederherstellen des Homeverzeichnisses von schule
 Wiederherstellen off
 schule_rw_cleanup on
 
 ## GDM Autologin vom User "schule" einrichten
 GDMAutoLogin on
-
-## SSH-Keys kopieren
-#SSHKeysKopieren on   ## Zum entfernen deaktiviert
-
-## Nummernblockaktivierung einrichten
-Nummernblockaktivierung on
 
 ##Auflösungseinstellungen im Terminal verfügbar machen
 #AufloesungsskriptKopieren off
@@ -976,11 +971,35 @@ Aufloesungsskripteinfügen on
 ## gPXE Menueeintrag in GRUB setzen
 GRUBgPXE on
 
+## Journalingmodus für das Dateisystem einstellen
+Journaldateisystemverwenden 
+
+## Deaktivierung des Infofensters für ein Upgrade
+UpgradeBenachrichtigungDeaktivieren
+
+## Uhrzeit automatisch syncronisieren
+NTPZeitserverSynchronisationEinstellen
+
+## PaketQuellen entweder die Offiziellen oder der Spiegel
+PaketQuellenAnpassen online
+
+## Menueeintrag für das Programm Mediathek
+MediathekmenueeintragErstellen
+
+## Dateisystemfehler beim booten beheben
+DateisystemFehlerAutomatischKorrigieren
+
+# Wake on LAN aktivieren
+WakeOnLANAktivieren
+
 ## GRUB mit Passwort versehen ( noch nicht vollständig implementiert )
 GRUBabsichern off
 
-## Journalingmodus für das Dateisystem einstellen
-Journaldateisystemverwenden 
+## SSH-Keys kopieren
+#SSHKeysKopieren on   ## Zum entfernen deaktiviert
+
+## Nummernblockaktivierung einrichten
+#Nummernblockaktivierung on
 
 $EOFE
 
@@ -1013,6 +1032,7 @@ echo -e "\033[49;1;31m "$Config" ist die Konfigurationsdatei \033[0m"
 
 case $1 in
 	"start"|"")
+	KonfigurationsdateiErstellen
 	source "$Config"
 	;;
 	"erstellen"|"-e")
