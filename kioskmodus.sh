@@ -236,6 +236,32 @@ fi
 }
 
 
+gPXEgrubmenuedateieinfügen(){
+
+## Hier wird die menuedateieigefügt
+
+cat <<-\$EOFE >/tmp/testetst #/etc/grub.d/35_gpxe
+#! /bin/sh -e
+
+echo "Füge Eintrag für GPXE Boot ein"  >&2
+
+cat << EOF
+
+menuentry "gPXE Netzwerkboot" {
+        recordfail
+	savedefault
+	insmod ext3
+	set root='(hd0,1)'
+	linux16 /root/kioskmodus/GRUB/gpxe-1.0.1-gpxe.lkrn
+	echo  Lade aktuellen Kernel von ${GRUB_DEVICE}... 
+}
+
+EOF
+$EOFE
+
+}
+
+
 GRUBgPXE(){
 
 ## Einrichten eines GRUB eintrages für gPXE Boot
@@ -244,7 +270,7 @@ if [ $1 == "on" ]; then
 
 	if [ ! -f /etc/grub.d/35_gpxe ]; then
 		# Kopieren der gPXEgrubmenuedatei in das Grubmenueerstellungsverzeichnis
-		cp "$Instpfad"/GRUB/35_gpxe /etc/grub.d/35_gpxe
+		gPXEgrubmenuedateieinfügen
 		# neue Einträge übernehmen
 		update-grub
 	fi
@@ -1054,7 +1080,7 @@ case $1 in
 	Journaldateisystemverwenden
 	;;
 	"-t"|"test")
-	WakeOnLANAktivieren
+	gPXEgrubmenuedateieinfügen
 	;;
 	"-v")
 	VideoAusgangHerausfinden
