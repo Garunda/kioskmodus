@@ -79,6 +79,24 @@ fi
 }
 
 
+UpstartDateieinfuegen(){
+
+## Hier wird die Datei "/etc/init/start_kioskmodus.conf" erzeugt
+
+cat <<-\$EOFE >/etc/init/start_kioskmodus.conf
+#Meine ersten Schritte mit Upstart
+description	"simples Upstart-Beispiel"
+# wann starten bzw. stoppen?
+start on runlevel [2345]
+stop on runlevel [!2345]
+env enabled=1
+PATH_BIN=/bin/bash
+exec /root/kioskmodus.sh
+$EOFE
+
+}
+
+
 Upstarteinrichtung(){
 
 ## Scriptstart beim Systemstart per Upstart einrichten
@@ -87,7 +105,7 @@ Upstarteinrichtung(){
 if [ $1 == "on" ]; then
 
 	if [ ! -f /etc/init/start_kioskmodus.conf ]; then
-#		cp "$Instpfad"/Upstart/start_kioskmodus.conf /etc/init/start_kioskmodus.conf
+#		UpstartDateieinfuegen
 		echo ""
 	fi
 
@@ -236,11 +254,11 @@ fi
 }
 
 
-gPXEgrubmenuedateieinfügen(){
+gPXEgrubmenuedateieinfuegen(){
 
 ## Hier wird die menuedateieigefügt
 
-cat <<-\$EOFE >/tmp/testetst #/etc/grub.d/35_gpxe
+cat <<-\$EOFE >/etc/grub.d/35_gpxe
 #! /bin/sh -e
 
 echo "Füge Eintrag für GPXE Boot ein"  >&2
@@ -270,7 +288,7 @@ if [ $1 == "on" ]; then
 
 	if [ ! -f /etc/grub.d/35_gpxe ]; then
 		# Kopieren der gPXEgrubmenuedatei in das Grubmenueerstellungsverzeichnis
-		gPXEgrubmenuedateieinfügen
+		gPXEgrubmenuedateieinfuegen
 		# neue Einträge übernehmen
 		update-grub
 	fi
@@ -1075,9 +1093,6 @@ case $1 in
 	;;
 	"gpxe")
 	GRUBgPXE on
-	;;
-	"-j")
-	Journaldateisystemverwenden
 	;;
 	"-t"|"test")
 	gPXEgrubmenuedateieinfügen
