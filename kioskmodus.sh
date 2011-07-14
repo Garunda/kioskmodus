@@ -374,8 +374,9 @@ VideoAusgangHerausfinden(){
 Ausgang="$(xrandr | egrep "*\<connected*" | awk '{print $1}' )"
 
 #echo "$Ausgang" > /root/test
-echo "$Ausgang" > "$Instpfad"/X/videoausgang
+echo "$Ausgang" > /etc/kioskmodus/videoausgang
 
+unset Ausgang
 }
 
 
@@ -384,7 +385,7 @@ RandRstatischeAufloesung(){
 ## Aufloesung mit Xrandr übernehmen
 
 # Die Videoausgangbezeichnung herausfinden
-Ausgang=`cat "$Instpfad"/X/videoausgang`
+Ausgang=`cat /etc/kioskmodus/videoausgang`
 
 # Die xrandrdatei erzeugen mit den entsprechenden angaben
 if [ ! "$Ausgang" == "none" ]; then
@@ -408,6 +409,7 @@ if [ ! "$Ausgang" == "none" ]; then
 
 fi
 
+unset Ausgang
 }
 
 
@@ -519,7 +521,7 @@ XorgSetzen(){
 
 if [ -f /root/.aufloesung ]; then
 	Aufloesung=`cat /root/.aufloesung`
-	echo "$Aufloesung" > "$Instpfad"/X/aufloesung
+	echo "$Aufloesung" > /etc/kioskmodus/aufloesung
 	rm /root/.aufloesung
 	if [ -f /home/verwaltung/.aufloesung ]; then
 		rm /home/verwaltung/.aufloesung
@@ -529,14 +531,14 @@ if [ -f /root/.aufloesung ]; then
 	fi
 elif [ -f /home/verwaltung/.aufloesung ]; then
 	Aufloesung=`cat /home/verwaltung/.aufloesung`
-	echo "$Aufloesung" > "$Instpfad"/X/aufloesung
+	echo "$Aufloesung" > /etc/kioskmodus/aufloesung
 	rm /home/verwaltung/.aufloesung
 	if [ -f /home/schule/.aufloesung ]; then
 		rm /home/schule/.aufloesung
 	fi
 elif [ -f /home/schule/.aufloesung ]; then
 	Aufloesung=`cat /home/schule/.aufloesung`
-	echo "$Aufloesung" > "$Instpfad"/X/aufloesung
+	echo "$Aufloesung" > /etc/kioskmodus/aufloesung
 	rm /home/schule/.aufloesung
 fi
 
@@ -596,11 +598,12 @@ fi
 }
 
 
-Aufloesungsskripteinfügen(){
+Aufloesungsskripteinfuegen(){
 
-if [ $1 == "on" ]; then
+## Einfügen der Datei in /usr/bin/
+## Hierdurch kann man komfortabel die Auflösung ändern
 
-	if [ ! -f /usr/bin/aufloesungeinstellen ]; then
+if [ ! -f /usr/bin/aufloesungeinstellen ]; then
 
 # Die Datei aufloesungeinstellen erzeugen mit dem angegegbenen Inhalt
 
@@ -634,34 +637,7 @@ $EOFE
 
 chmod a+x /usr/bin/aufloesungeinstellen
 
-elif [ $1 == "off" ]; then
-
-	if [ -f /usr/bin/aufloesungeinstellen ]; then
-		rm /usr/bin/aufloesungeinstellen
-	fi
-
-fi
-
 }
-
-
-#AufloesungsskriptKopieren(){
-
-##Kopieren des Skriptes nach /usr/bin
-
-#if [ $1 == "on" ]; then
-#	if [ ! -f /usr/bin/aufloesungeinstellen ]; then
-# 		if [ -f "$Instpfad"/X/aufloesungeinstellen ]; then
-#			cp "$Instpfad"/X/aufloesungeinstellen /usr/bin/aufloesungeinstellen
-#		fi
-#	fi
-#elif [ $1 == "off" ]; then
-#	if [ -f /usr/bin/aufloesungeinstellen ]; then
-#		rm /usr/bin/aufloesungeinstellen
-#	fi
-#fi
-#
-#}
 
 
 Journaldateisystemverwenden(){
@@ -1009,8 +985,7 @@ schule_rw_cleanup on
 GDMAutoLogin on
 
 ##Auflösungseinstellungen im Terminal verfügbar machen
-#AufloesungsskriptKopieren off
-Aufloesungsskripteinfügen on
+Aufloesungsskripteinfuegen
 
 ## gPXE Menueeintrag in GRUB setzen
 GRUBgPXE on
@@ -1026,6 +1001,7 @@ NTPZeitserverSynchronisationEinstellen
 
 ## PaketQuellen entweder die Offiziellen oder der Spiegel
 PaketQuellenAnpassen online
+#PaketQuellenAnpassen offline
 
 ## Menueeintrag für das Programm Mediathek
 MediathekmenueeintragErstellen
@@ -1060,10 +1036,6 @@ echo -e "\033[49;1;31m kioskmodus.sh                 \033[49;1;33m >> \033[49;1;
 echo -e "\033[49;1;31m kioskmodus.sh erstellen / -e  \033[49;1;33m >> \033[49;1;32m erstellt ein neues Archiv \033[0m"
 echo -e "\033[49;1;31m kioskmodus.sh löschen / -l    \033[49;1;33m >> \033[49;1;32m löscht alle alten Archive \033[0m"
 echo -e "\033[49;1;31m kioskmodus.sh hilfe / --help  \033[49;1;33m >> \033[49;1;32m öffnen die Hilfe \033[0m"
-echo -e "\033[49;1;31m kioskmodus.sh updaten / -u    \033[49;1;33m >> \033[49;1;32m führt ein Upgrade durch \033[0m"
-echo -e "\033[49;1;31m kioskmodus.sh -ou             \033[49;1;33m >> \033[49;1;32m führt ein Onlineupgrade durch \033[0m"
-echo -e "\033[49;1;31m kioskmodus.sh -op             \033[49;1;33m >> \033[49;1;32m verwenden der Onlinepaketquellen \033[0m"
-echo -e "\033[49;1;31m kioskmodus.sh -j              \033[49;1;33m >> \033[49;1;32m stellt das Dateisystem auf Journaling \033[0m"
 echo -e "\033[49;1;31m $Instpfad \033[0m"
 echo -e "\033[49;1;31m "$Config" ist die Konfigurationsdatei \033[0m"
 
@@ -1095,7 +1067,7 @@ case $1 in
 	GRUBgPXE on
 	;;
 	"-t"|"test")
-	gPXEgrubmenuedateieinfügen
+	Aufloesungsskripteinfuegen on
 	;;
 	"-v")
 	VideoAusgangHerausfinden
