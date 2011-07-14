@@ -171,8 +171,23 @@ fi
 
 MountAufsEintraginFstab(){
 
-backup /etc/fstab
-echo "none /home/keinpasswort aufs br:/home/.keinpasswort_rw:/home/keinpasswort 0 0" >> /etc/fstab
+## Eintrag für das Uiondateisystem in der fastab anlegen,
+#  aber nur wenn er noch nicht vorhanden ist.
+
+
+# Vorhanden ?
+String1="$(sed -n '/none /home/keinpasswort aufs br:/home/.keinpasswort_rw:/home/keinpasswort 0 0/p' /etc/fstab )"
+
+# Falls nicht; hänge diese Zeile ans Dokument an.
+
+if [ ! "$String1" == "none /home/keinpasswort aufs br:/home/.keinpasswort_rw:/home/keinpasswort 0 0"  ]; then
+
+	backup /etc/fstab
+	echo "none /home/keinpasswort aufs br:/home/.keinpasswort_rw:/home/keinpasswort 0 0" >> /etc/fstab
+
+fi
+
+unset String1
 
 }
 
@@ -806,6 +821,33 @@ fi
 }
 
 
+GoogleEarthMenueeintragErstellen(){
+
+## Erstellen einer Googleearth6.desktop in /usr/share/applications damit eine Menueverknüpfung erscheint
+# Das Google Earth entstammt dem Repository ( "http://www.ubuntuupdates.org/ppas/80")
+VerknuepfungsDatei="/usr/share/applications/Googleearth6.desktop"
+
+if [ ! -f "$VerknuepfungsDatei" ]; then
+
+	echo "[Desktop Entry]" > "$VerknuepfungsDatei"
+	echo "Version=6" >> "$VerknuepfungsDatei"
+	echo "Name=Google Earth 6" >> "$VerknuepfungsDatei"
+	echo "Comment=Explore, search and discover the planet" >> "$VerknuepfungsDatei"
+	echo "Name[de]=Google Earth 6" >> "$VerknuepfungsDatei"
+	echo "Comment[de]=Ansehen und Erkunden von Googles Satellitenbildern" >> "$VerknuepfungsDatei"
+	echo "Exec=google-earth" >> "$VerknuepfungsDatei"
+	echo "Icon=google-earth" >> "$VerknuepfungsDatei"
+	echo "Terminal=false" >> "$VerknuepfungsDatei"
+	echo "Type=Application" >> "$VerknuepfungsDatei"
+	echo "Categories=AudioVideo;Player;" >> "$VerknuepfungsDatei"
+	echo "StartupNotify=true" >> "$VerknuepfungsDatei"
+fi
+
+unset VerknuepfungsDatei
+
+}
+
+
 MediathekmenueeintragErstellen(){
 
 ## Erstellen einer Mediathek.desktop in /usr/share/applications damit eine Menueverknüpfung erscheint
@@ -881,6 +923,10 @@ if [ ! $DistributionsCodeName == false ]; then
 	echo "## Medibuntu" >> "$SourcesList"
 	echo "" >> "$SourcesList"
 	echo "deb "$Mirror"packages.medibuntu.org/ "$DistributionsCodeName" free non-free" >> "$SourcesList"
+	echo "" >> "$SourcesList"
+	echo "## Google Earth" >> "$SourcesList"
+	echo "" >> "$SourcesList"
+	echo "deb "$Mirror"dl.google.com/linux/earth/deb/ stable main" >> "$SourcesList"
 	echo "" >> "$SourcesList"
 
 fi
@@ -1067,7 +1113,7 @@ case $1 in
 	GRUBgPXE on
 	;;
 	"-t"|"test")
-	Aufloesungsskripteinfuegen on
+	PaketQuellenAnpassen online
 	;;
 	"-v")
 	VideoAusgangHerausfinden
