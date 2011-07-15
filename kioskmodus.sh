@@ -350,7 +350,20 @@ GDMAutoLogin(){
 
 if [ $1 == "on" ]; then
 
-	cp "$Instpfad"/gdm/custom.conf /etc/gdm/custom.conf
+# veraltet
+#	cp "$Instpfad"/gdm/custom.conf /etc/gdm/custom.conf
+
+# Datei einfügen
+cat <<-\$EOFE >/etc/gdm/custom.conf
+
+[daemon]
+DefaultSession=xubuntu
+TimedLoginEnable=false
+AutomaticLoginEnable=true
+TimedLogin=schule
+AutomaticLogin=schule
+TimedLoginDelay=1
+$EOFE
 
 fi
 
@@ -1113,7 +1126,7 @@ case $1 in
 	GRUBgPXE on
 	;;
 	"-t"|"test")
-	PaketQuellenAnpassen online
+	MountAufsEintraginFstab
 	;;
 	"-v")
 	VideoAusgangHerausfinden
