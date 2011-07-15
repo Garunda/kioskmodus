@@ -1,4 +1,4 @@
-#!/bin/bash
+c#!/bin/bash
 ############################################################################################
 #### Copyright (c) 2009 Alexander Kauerz, Haiko Helmholz				####
 #### 											####
@@ -25,7 +25,12 @@
 ## Die Pfad-Variabeln
 Instpfad="/root/kioskmodus"
 Config="/etc/kioskmodus/kioskmodus.conf"
-Aufloesung=`cat "$Instpfad"/X/aufloesung`
+
+if [ -f /etc/kioskmodus/aufloesung ]; then
+	Aufloesung=`cat /etc/kioskmodus/aufloesung`
+else
+	echo "1024x768" > /etc/kioskmodus/aufloesung
+fi
 Ausgang="none"
 
 Beepen(){
@@ -285,12 +290,15 @@ menuentry "gPXE Netzwerkboot" {
 	savedefault
 	insmod ext3
 	set root='(hd0,1)'
-	linux16 /root/kioskmodus/GRUB/gpxe-1.0.1-gpxe.lkrn
+	linux16 /etc/kioskmodus/gpxe-1.0.1-gpxe.lkrn
 	echo  Lade aktuellen Kernel von ${GRUB_DEVICE}... 
 }
 
 EOF
 $EOFE
+
+# Rechte geben
+chmod a+x /etc/grub.d/35_gpxe
 
 }
 
@@ -301,9 +309,20 @@ GRUBgPXE(){
 
 if [ $1 == "on" ]; then
 
+	# Änderungen in /etc/default/grub, damit man das Grubmenue aufrufen kann
+	String1="$(sed -n '/GRUB_HIDDEN_TIMEOUT=/p' /etc/default/grub )"
+	if [ ! "$String1" == "GRUB_HIDDEN_TIMEOUT=5" ]; then
+
+		sed -e '/GRUB_HIDDEN_TIMEOUT=/c\GRUB_HIDDEN_TIMEOUT=5' /etc/default/grub > /tmp/kioskmodusdefaultgrub
+		sed -e '/GRUB_HIDDEN_TIMEOUT_QUIET=/c\GRUB_HIDDEN_TIMEOUT_QUIET=false' /tmp/kioskmodusdefaultgrub > /etc/default/grub
+
+	fi
+	unset String1
+
 	if [ ! -f /etc/grub.d/35_gpxe ]; then
-		# Kopieren der gPXEgrubmenuedatei in das Grubmenueerstellungsverzeichnis
+		# Einfügen der gPXEgrubmenuedatei in das Grubmenueerstellungsverzeichnis
 		gPXEgrubmenuedateieinfuegen
+
 		# neue Einträge übernehmen
 		update-grub
 	fi
@@ -348,8 +367,6 @@ GDMAutoLogin(){
 
 ## Kopieren der custom.conf von GDM in den GDM Ordner
 
-if [ $1 == "on" ]; then
-
 # veraltet
 #	cp "$Instpfad"/gdm/custom.conf /etc/gdm/custom.conf
 
@@ -365,7 +382,7 @@ AutomaticLogin=schule
 TimedLoginDelay=1
 $EOFE
 
-fi
+
 
 }
 
@@ -780,6 +797,26 @@ fi
 }
 
 
+DateisystemUeberpruefungsRhythmusAendern(){
+
+## Hier wird die Anzahl der mounts zwischen denen eine Ueberpruefung stattfindet 
+#  von dem Ursprünglichen Wert ( 30 ) auf 10 gesetzt. So fallen Fehler früher auf
+
+# Der folgende Befehl stellt nun den Zeitpunkt der Überprüfung von jedem 
+# 30. Systemstart auf jeden 60. Start um. Natürlich kann auch jede beliebige
+# andere Zahl verwendet werden.
+
+MaxMountCount="$(tune2fs -l /dev/sda1 | grep -i "Maximum mount count" | awk '{print $4}') "
+
+if [ ! "10 " == "$MaxMountCount" ]; then
+	
+	tune2fs -c 10 /dev/sda1
+
+fi
+
+}
+
+
 WakeOnLANAktivieren(){
 
 ## Hier wird das Ferngesteruerte Anschalten der Recher ermöglicht.
@@ -981,7 +1018,7 @@ fi
 # Entfernen aller Zwischenspeicher
 
 if [ -f /tmp/kioskmodusNTP ]; then
-rm /tmp/kioskmodusNTP
+	rm /tmp/kioskmodusNTP
 fi
 
 unset String1
@@ -1013,7 +1050,7 @@ KonfigurationsdateiErstellen(){
 ## Hier wird die Datei "kioskmodus.conf" erstellt, falls sie noch nicht vorhanden ist.
 
 if [ ! -d /etc/kioskmodus ]; then
-mkdir /etc/kioskmodus
+	mkdir /etc/kioskmodus
 fi
 
 if [ ! -f "$Config" ]; then
@@ -1041,7 +1078,7 @@ Wiederherstellen off
 schule_rw_cleanup on
 
 ## GDM Autologin vom User "schule" einrichten
-GDMAutoLogin on
+GDMAutoLogin
 
 ##Auflösungseinstellungen im Terminal verfügbar machen
 Aufloesungsskripteinfuegen
@@ -1062,17 +1099,21 @@ NTPZeitserverSynchronisationEinstellen
 PaketQuellenAnpassen online
 #PaketQuellenAnpassen offline
 
-## Menueeintrag für das Programm Mediathek
+## Menueeintraege für die Programme Mediathek und Google Earth
 MediathekmenueeintragErstellen
+GoogleEarthMenueeintragErstellen
 
 ## Dateisystemfehler beim booten beheben
 DateisystemFehlerAutomatischKorrigieren
+
+## Mounts zwischen Dateisystemchecks verkürzen
+DateisystemUeberpruefungsRhythmusAendern
 
 # Wake on LAN aktivieren
 WakeOnLANAktivieren
 
 ## GRUB mit Passwort versehen ( noch nicht vollständig implementiert )
-GRUBabsichern off
+#GRUBabsichern off
 
 ## SSH-Keys kopieren
 #SSHKeysKopieren on   ## Zum entfernen deaktiviert
@@ -1126,7 +1167,7 @@ case $1 in
 	GRUBgPXE on
 	;;
 	"-t"|"test")
-	MountAufsEintraginFstab
+	GRUBgPXE on
 	;;
 	"-v")
 	VideoAusgangHerausfinden
