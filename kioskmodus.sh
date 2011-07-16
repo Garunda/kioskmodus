@@ -823,15 +823,18 @@ WakeOnLANAktivieren(){
 
 # Eintrag in /etc/rc.local für die Ausführung des Befehls beim start des Rechners.
 
+# Verwendete Netzwerkschnittstelle herausfinden
+
+Netzwerkschnittstelle="$(ifconfig | awk '/eth/ { print $1 }') "  # == "eth1 "
+
 # Gucken ob die Zeile schon existiert.
 
-Netzwerkschnittstelle="eth0"
-String1="$(sed -n '/ethtool -s '${Netzwerkschnittstelle}' wol g/p' /etc/rc.local )"
+String1="$(sed -n "/ethtool -s ${Netzwerkschnittstelle}wol g/p" /etc/rc.local )"
 
 # Falls nicht; hänge diese Zeile ans Dokument an.
 
-if [ ! "$String1" == "ethtool -s ${Netzwerkschnittstelle} wol g"  ]; then
-	sed -e '12a\ethtool -s '${Netzwerkschnittstelle}' wol g' /etc/rc.local > /tmp/kioskmodusWOL
+if [ ! "$String1" == "ethtool -s ${Netzwerkschnittstelle}wol g"  ]; then
+	sed -e "12a\ethtool -s ${Netzwerkschnittstelle}wol g" /etc/rc.local > /tmp/kioskmodusWOL
 	mv /tmp/kioskmodusWOL /etc/rc.local
 fi
 
@@ -1167,7 +1170,7 @@ case $1 in
 	GRUBgPXE on
 	;;
 	"-t"|"test")
-	GRUBgPXE on
+	WakeOnLANAktivieren
 	;;
 	"-v")
 	VideoAusgangHerausfinden
