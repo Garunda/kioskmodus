@@ -147,7 +147,9 @@ fi
 
 MountAufs(){
 
-# Hier wird das Homeverzeichnis Schreibgeschützt
+## Hier wird das Homeverzeichnis Schreibgeschützt
+#  vgl. http://www.heise.de/ct/11/03/links/122.shtml
+#  vgl. Ausgabe 3/2011 Computermagazin c't
 
 if [ $1 == "on" ]; then
 
@@ -176,7 +178,7 @@ fi
 
 MountAufsEintraginFstab(){
 
-## Eintrag für das Uiondateisystem in der fastab anlegen,
+## Eintrag für das Uniondateisystem in der fstab anlegen,
 #  aber nur wenn er noch nicht vorhanden ist.
 
 
@@ -198,6 +200,8 @@ unset String1
 
 
 schule_rw_cleanup(){
+
+## Bereinigen des schule_rw Verzeichnisses
 
 if [ $1 == "on" ]; then
 
@@ -276,7 +280,7 @@ fi
 
 gPXEgrubmenuedateieinfuegen(){
 
-## Hier wird die menuedateieigefügt
+## Hier wird die Menuedatei eingefügt
 
 cat <<-\$EOFE >/etc/grub.d/35_gpxe
 #! /bin/sh -e
@@ -306,6 +310,7 @@ chmod a+x /etc/grub.d/35_gpxe
 GRUBgPXE(){
 
 ## Einrichten eines GRUB eintrages für gPXE Boot
+#  vgl. http://wiki.ubuntuusers.de/GRUB_2/Konfiguration
 
 if [ $1 == "on" ]; then
 
@@ -690,6 +695,7 @@ Journaldateisystemverwenden(){
 ## Dateisystem (falls noch nicht vorhanden) auf Journaling setzen
 ## ( Nicht nur die Metadaten sondern auch die Nutzdaten werden
 ## zunächst in das Journal, und dann erst auf die Festplatte geschrieben. )
+#  http://wiki.ubuntuusers.de/Tuning#Journal-Modus-aendern
 
 # Dateisystemeigenschaften auflisten, Zeile ausfiltern und Option abtrennen.
 
@@ -797,10 +803,35 @@ fi
 }
 
 
+LibreOfficeExtensionGlobalInstallieren(){
+
+## Hier werden die Extensions für alle Benutzer installiert
+#  vgl. http://www.ooowiki.de/Extension und manpage von unopkg
+#  Es werden nur die folgenden Extensions installiert:
+#	- Sun_ODF_Template_Pack_de
+#	- Sun_ODF_Template_Pack2_de
+
+if [ -f /home/verwaltung/Downloads/Sun_ODF_Template_Pack_de.oxt ] && [ -f /home/verwaltung/Downloads/Sun_ODF_Template_Pack2_de.oxt ]; then
+
+	# -s unterdrückt die Lizenzabsegnung, --shared installiert für alle Benutzer
+	unopkg add -s --shared /home/verwaltung/Downloads/Sun_ODF_Template_Pack2_de.oxt
+	unopkg add -s --shared /home/verwaltung/Downloads/Sun_ODF_Template_Pack_de.oxt
+
+else
+
+	echo "LibreOffice Extensions noch nicht heruntergeladen"
+	echo "--<== Schleunigst nachholen !!!!! ==>--"
+
+fi
+
+}
+
+
 DateisystemUeberpruefungsRhythmusAendern(){
 
 ## Hier wird die Anzahl der mounts zwischen denen eine Ueberpruefung stattfindet 
 #  von dem Ursprünglichen Wert ( 30 ) auf 10 gesetzt. So fallen Fehler früher auf
+#  vgl. http://wiki.ubuntuusers.de/Dateisystemcheck#berpruefungs-Rhythmus-aendern
 
 # Der folgende Befehl stellt nun den Zeitpunkt der Überprüfung von jedem 
 # 30. Systemstart auf jeden 60. Start um. Natürlich kann auch jede beliebige
@@ -820,6 +851,7 @@ fi
 WakeOnLANAktivieren(){
 
 ## Hier wird das Ferngesteruerte Anschalten der Recher ermöglicht.
+#  vgl. http://wiki.ubuntuusers.de/Wake_on_LAN
 
 # Eintrag in /etc/rc.local für die Ausführung des Befehls beim start des Rechners.
 
@@ -858,6 +890,7 @@ fi
 DateisystemFehlerAutomatischKorrigieren(){
 
 ## Dateisystemfehler sollen automatisch beim Start korrigiert werden
+#  vgl. http://wiki.ubuntuusers.de/Dateisystemcheck
 
 if [ ! -f /tmp/kioskmodusrcS ]; then
 	cp /etc/default/rcS /tmp/kioskmodusrcS
@@ -979,7 +1012,7 @@ if [ ! $DistributionsCodeName == false ]; then
 	echo "" >> "$SourcesList"
 	echo "## Google Earth" >> "$SourcesList"
 	echo "" >> "$SourcesList"
-	echo "deb "$Mirror"dl.google.com/linux/earth/deb/ stable main" >> "$SourcesList"
+	echo "deb "$Mirror"dl.google.com/linux/earth/deb/ stable main" >> "$SourcesList"  # vgl. http://www.ubuntuupdates.org/ppas/80
 	echo "" >> "$SourcesList"
 
 fi
@@ -1000,6 +1033,7 @@ fi
 NTPZeitserverSynchronisationEinstellen(){
 
 ## Hier wird in der Datei "/etc/crontab" der Eintrag für die Synchronisation erstellt.
+#  vgl. http://wiki.ubuntuusers.de/Systemzeit#NTP-korrigiert-nicht-die-Rechner-Uhrzeit
 
 # Gucken ob die Zeile schon existiert.
 
@@ -1160,7 +1194,7 @@ case $1 in
 	"löschen"|"-l")
 	Löschen
 	;;
-	"hilfe"|"--help"|"-h")
+	"hilfe"|"--help"|"-h"|"--hilfe")
 	Hilfe
 	;;
 	"RandR")
@@ -1170,10 +1204,15 @@ case $1 in
 	GRUBgPXE on
 	;;
 	"-t"|"test")
-	WakeOnLANAktivieren
+	Beepen
 	;;
 	"-v")
 	VideoAusgangHerausfinden
+	;;
+	"-x")
+	KonfigurationsdateiErstellen
+	LibreOfficeExtensionGlobalInstallieren
+	Beepen
 	;;
 	*)
 	echo "$1 ist ein falsches Parameter"
