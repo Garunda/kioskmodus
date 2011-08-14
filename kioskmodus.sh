@@ -62,9 +62,9 @@ if [ $1 == "on" ]; then
 		echo ""$Instpfad"/kioskmodus.sh -v" >> /etc/gdm/PostLogin/Default
 		chmod a+x /etc/gdm/PostLogin/Default
 	elif [ -f /etc/gdm/PostLogin/Default ]; then
-		echo "test"
+#		echo "test"
 		if [ ! "$(cat  /etc/gdm/PostLogin/Default | egrep "*"$Instpfad"/kioskmodus.sh*" | awk '{print $1}' )" == ""$Instpfad"/kioskmodus.sh" ]; then
-		echo "test2"
+#		echo "test2"
 		echo ""$Instpfad"/kioskmodus.sh -v" >> /etc/gdm/PostLogin/Default
 		fi
 	fi
@@ -221,9 +221,9 @@ if [ $1 == "on" ]; then
 	  # insbesondere zu Testzwecken auf einem normalen Arbeitsrechner. Mit der folgenden Kombination
 	  # ist sichergestellt, dass wirklich nur der Inhalt von .schule_rw gelöscht wird.
 	  cd /home/.schule_rw && find . -maxdepth 1 -mindepth 1 $no_aufs $zusatz -print0|xargs -0 rm -rf
-	echo "nein"	
+#	echo "nein"	
 #	fi
-echo "ja"
+#echo "ja"
 fi
 
 }
@@ -337,7 +337,7 @@ elif [ $1 == "off" ]; then
 	if [ -f /etc/grub.d/35_gpxe ]; then
 		rm /etc/grub.d/35_gpxe
 		update-grub
-		echo ""
+#		echo ""
 	fi
 
 else
@@ -803,6 +803,155 @@ fi
 }
 
 
+LokaleSystemMailsAnMailAdresseWeiterleitenAktivieren(){
+
+# Im Aufbau
+
+## Bei Problemen mit Hard- und Software schicken viele Linux-Programme
+#  Mails an den lokalen Systemadministrator. Damit Sie diese züpgig sehen,
+#  sollte das System die Mails an ihre normale E-Mail-Adresse weiterleiten.
+#  Ohne expliziete Konfiguration werden die Mails aber nur an eine lokale
+#  Mailbox verschickt die meist nie abgefragt wird.
+#  Es muss in unserem Fall dafür gesorgt werden das alle Mails an
+#  "smtp.ostsee-gymnasium.de:587" gehen. Außerdem muss eine Authentifizierung
+#  am Smarthost stattfinden.
+#  vgl. C'T 12 23.5.2011 S.186
+#       http://wiki.ubuntuusers.de/Postfix
+#       http://wiki.ubuntuusers.de/Postfix#Authentifizierung-am-Smarthost
+#       http://wiki.ubuntuusers.de/Postfix#General-type-of-configuration
+
+
+
+# Wenn der SMTP-Server auf dem Smarthost zum Versenden der Mail
+# ein Passwort verlangt, dann muss in der Datei /etc/postfix/sasl_password
+# eben dieses hinterlegt werden
+
+if [ ! -f /etc/postfix/sasl_password ]; then
+echo "sasl pw nicht vorhanden"
+	# Server Benutzername:Passwort
+	cat <<-\$EOFE >/etc/postfix/sasl_password
+smtp.ostsee-gymnasium.de garunda@ostsee-gymnasium.de:ogtogt
+$EOFE
+
+	# Damit nicht jeder die Datei lesen kann werden die Rechte eingeschränkt.
+	chmod 600 /etc/postfix/sasl_password
+
+	# Generierung einer kompilierten Form der Datei. Diese ist schneller abfragbar
+	postmap hash:/etc/postfix/sasl_password
+
+fi
+
+# Hier wird für korrekte Absender- und Empfängeradressen gesorgt.
+if [ ! -f /etc/postfix/generic ]; then
+echo "generic nicht vorhanden"
+	# Die erste Zeile spezifiziert die korrekte Absender- und Empfängeradresse
+	# für root, die zweite für verwaltung, die dritte weist an, alle Mails mit
+	# lokalen Empfängern, für die keine E-Mail-Adresse festgelegt wurde, an die
+	# spezifizierte Adresse zu verschicken
+	cat <<-\$EOFE >/etc/postfix/generic
+root garunda@ostsee-gymnasium.de
+verwaltung garunda@ostsee-gymnasium.de
+@localhost.localdomain garunda@ostsee-gymnasium.de
+$EOFE
+
+	# Generierung einer kompilierten Form der Datei. Diese ist schneller abfragbar
+	postmap /etc/postfix/generic
+
+fi
+
+# Konfiguration in der main.cf
+
+#sed -e 's/FSCKFIX=no/FSCKFIX=yes/' /tmp/kioskmodusrcS > /etc/default/rcS
+
+# Sind die Zusatzoptionen schon vorhanden ?
+String1="$(sed -n "/smtp_generic_maps = hash:\/etc\/postfix\/generic/p" /etc/postfix/main.cf )"
+
+if [ ! "$String1" == "smtp_generic_maps = hash:/etc/postfix/generic" ]; then
+echo "conf nciht vorhadnen "
+	# Spezifikation der Datei die für korrekte Absender- und Empfängeradressen sorgt.
+	echo "smtp_generic_maps = hash:/etc/postfix/generic" >> /etc/postfix/main.cf
+
+	# Aktivierung der Verbindung über Transport Layer Securtity (TLS) und
+	# die Autherntifizierung gegenüber dem Relayhost.
+	echo "smtp_use_tls = yes" >> /etc/postfix/main.cf
+	echo "smtp_sasl_auth_enable = yes" >> /etc/postfix/main.cf
+	echo "smtp_sasl_security_options = noanonymous" >> /etc/postfix/main.cf
+
+	# Spezifikation des Pfades unter dem Postfix nach Root-CA-Zertifikaten sucht,
+	# um mit ihnen die Authentizität der gegenstelle sicherzustellen.
+	echo "smtpd_tls_CApath = /usr/share/ca-certificates/" >> /etc/postfix/main.cf
+
+	# Es wird die Datei spezifiziert in der die Benutzerangaben stehen ( siehe oben )
+	echo "smtp_sasl_password_maps = hash:/etc/postfix/sasl_password" >> /etc/postfix/main.cf
+
+fi
+
+
+
+String2="$(sed -n "/mydestination =/p" /etc/postfix/main.cf )"
+
+if [ ! "$String2" == "mydestination = " ]; then
+echo "string2 ist noch nciht korrewkt"
+	# hier passiert irgendwas mit sed
+fi
+
+String3="$(sed -n "/inet_interfaces =/p" /etc/postfix/main.cf )"
+
+if [ ! "$String3" == "inet_interfaces = loopback-only" ]; then
+echo "string3 ist noch nciht korrewkt"
+
+fi
+
+String4="$(sed -n "/relayhost =/p" /etc/postfix/main.cf )"
+
+if [ ! "$String4" == "relayhost = smtp.ostsee-gymnasium.de:587" ]; then
+echo "string4 ist noch nicht korrekt"
+
+fi
+
+unset String1
+unset String2
+unset String3
+unset String4
+
+}
+
+
+SuchenInDerShellHistoryAktivieren(){
+
+#  Funktioniert irgendwie nicht
+
+## Hier wird das Gezielte Blättern in der Bash-History aktiviert.
+#  Durch Drücken der Tasten Bild ↑ und Bild ↓ kann man die History 
+#  der Bash anschließend nach Einträgen durchsuchen, welche mit
+#  den Worten beginnen, die vor der aktuellen Cursorposition stehen.
+#  Hierzu werden 2 Zeilen in der Datei "/etc/inputrc" einkommentiert
+#  vgl. http://wiki.ubuntuusers.de/Bash#Gezieltes-Blaettern-in-der-History-aktivieren
+
+String1="$(sed -n '/history-search-backward/p' /etc/inputrc )"
+String2="$(sed -n "/history-search-forward/p" /etc/inputrc )"
+echo "$String1"
+echo "$String2"
+
+if [ "$String1" == '# "\e[5~": history-search-backward'  ]; then
+	sed -e '/# "\e\[5~": history-search-backward/c\"\e\[5~": history-search-backward' /etc/inputrc #> /tmp/kioskmodusHistoryAktivieren
+#	sed -e 's/\[5~": history-search-backward/"\e[5~": history-search-backward/' /etc/inputrc
+#	mv /tmp/kioskmodusHistoryAktivieren /etc/inputrc
+	echo "jo"
+fi
+
+if [ "$String1" == 'no# "\e[6~": history-search-forward'  ]; then
+#	sed -e 's/# "\e[6~": history-search-forward/"\e[6~": history-search-forward/' /etc/inputrc > /tmp/kioskmodusHistoryAktivieren
+#	mv /tmp/kioskmodusHistoryAktivieren /etc/inputrc
+	echo "jo2"
+fi
+
+unset String1
+unset String2
+
+}
+
+
 LibreOfficeExtensionGlobalInstallieren(){
 
 ## Hier werden die Extensions für alle Benutzer installiert
@@ -1133,8 +1282,8 @@ UpgradeBenachrichtigungDeaktivieren
 NTPZeitserverSynchronisationEinstellen
 
 ## PaketQuellen entweder die Offiziellen oder der Spiegel
-PaketQuellenAnpassen online
-#PaketQuellenAnpassen offline
+#PaketQuellenAnpassen online
+PaketQuellenAnpassen offline
 
 ## Menueeintraege für die Programme Mediathek und Google Earth
 MediathekmenueeintragErstellen
@@ -1148,6 +1297,9 @@ DateisystemUeberpruefungsRhythmusAendern
 
 # Wake on LAN aktivieren
 WakeOnLANAktivieren
+
+# Hier wird die Systemmailweiterleitung aktiviert
+#LokaleSystemMailsAnMailAdresseWeiterleitenAktivieren
 
 ## GRUB mit Passwort versehen ( noch nicht vollständig implementiert )
 #GRUBabsichern off
@@ -1204,7 +1356,7 @@ case $1 in
 	GRUBgPXE on
 	;;
 	"-t"|"test")
-	Beepen
+	LokaleSystemMailsAnMailAdresseWeiterleitenAktivieren
 	;;
 	"-v")
 	VideoAusgangHerausfinden
@@ -1212,6 +1364,7 @@ case $1 in
 	"-x")
 	KonfigurationsdateiErstellen
 	LibreOfficeExtensionGlobalInstallieren
+	LokaleSystemMailsAnMailAdresseWeiterleitenAktivieren
 	Beepen
 	;;
 	*)
