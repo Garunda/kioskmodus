@@ -827,7 +827,7 @@ LokaleSystemMailsAnMailAdresseWeiterleitenAktivieren(){
 # eben dieses hinterlegt werden
 
 if [ ! -f /etc/postfix/sasl_password ]; then
-echo "sasl pw nicht vorhanden"
+
 	# Server Benutzername:Passwort
 	cat <<-\$EOFE >/etc/postfix/sasl_password
 smtp.ostsee-gymnasium.de garunda@ostsee-gymnasium.de:ogtogt
@@ -843,7 +843,7 @@ fi
 
 # Hier wird für korrekte Absender- und Empfängeradressen gesorgt.
 if [ ! -f /etc/postfix/generic ]; then
-echo "generic nicht vorhanden"
+
 	# Die erste Zeile spezifiziert die korrekte Absender- und Empfängeradresse
 	# für root, die zweite für verwaltung, die dritte weist an, alle Mails mit
 	# lokalen Empfängern, für die keine E-Mail-Adresse festgelegt wurde, an die
@@ -861,13 +861,11 @@ fi
 
 # Konfiguration in der main.cf
 
-#sed -e 's/FSCKFIX=no/FSCKFIX=yes/' /tmp/kioskmodusrcS > /etc/default/rcS
-
 # Sind die Zusatzoptionen schon vorhanden ?
 String1="$(sed -n "/smtp_generic_maps = hash:\/etc\/postfix\/generic/p" /etc/postfix/main.cf )"
 
 if [ ! "$String1" == "smtp_generic_maps = hash:/etc/postfix/generic" ]; then
-echo "conf nciht vorhadnen "
+
 	# Spezifikation der Datei die für korrekte Absender- und Empfängeradressen sorgt.
 	echo "smtp_generic_maps = hash:/etc/postfix/generic" >> /etc/postfix/main.cf
 
@@ -887,27 +885,50 @@ echo "conf nciht vorhadnen "
 fi
 
 
+# Hier passiert ????
 
+# Die zu betrachtende Zeile isolieren
 String2="$(sed -n "/mydestination =/p" /etc/postfix/main.cf )"
 
+# Nachsehen welche Parameter gesetzt sind
 if [ ! "$String2" == "mydestination = " ]; then
-echo "string2 ist noch nciht korrewkt"
-	# hier passiert irgendwas mit sed
+
+	# Parameter anpassen
+	sed -e '/mydestination =/c\mydestination = ' main.cf > tmpmain.cf
+	mv tmpmain.cf main.cf
+
 fi
 
+
+# Hier wird ???
+
+# Die zu betrachtende Zeile isolieren
 String3="$(sed -n "/inet_interfaces =/p" /etc/postfix/main.cf )"
 
+# Nachsehen welche Parameter gesetzt sind
 if [ ! "$String3" == "inet_interfaces = loopback-only" ]; then
-echo "string3 ist noch nciht korrewkt"
+
+	# Parameter anpassen
+	sed -e '/inet_interfaces =/c\inet_interfaces = loopback-only' /etc/postfix/main.cf > /tmp/kioskmodusLokaleMail
+	mv /tmp/kioskmodusLokaleMail /etc/postfix/main.cf
 
 fi
 
+
+# Hier wird der Mailserver des Providers eintragen, über den man die Mail verschicken will, z.B. smtp.mailanbieter.de.
+
+# Die zu betrachtende Zeile isolieren
 String4="$(sed -n "/relayhost =/p" /etc/postfix/main.cf )"
 
+# Nachsehen welche Parameter gesetzt sind
 if [ ! "$String4" == "relayhost = smtp.ostsee-gymnasium.de:587" ]; then
-echo "string4 ist noch nicht korrekt"
+
+	# Parameter anpassen
+	sed -e '/relayhost =/c\relayhost = smtp.ostsee-gymnasium.de:587' /etc/postfix/main.cf > /tmp/kioskmodusLokaleMail
+	mv /tmp/kioskmodusLokaleMail /etc/postfix/main.cf
 
 fi
+
 
 unset String1
 unset String2
