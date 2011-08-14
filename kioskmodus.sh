@@ -37,7 +37,7 @@ Beepen(){
 
 # Nette Beeptöne von sich geben
 
-# Das modul laden
+# Das Kernel-Modul laden
 modprobe -v pcspkr
 
 beep -f 659 -l 460 -n -f 784 -l 340 -n -f 659 -l 230 -n -f 659 -l 110 -n -f 880 -l 230 -n -f 659 -l 230 -n -f 587 -l 230 -n -f 659 -l 460 -n -f 988 -l 340 -n -f 659 -l 230 -n -f 659 -l 110 -n -f 1047-l 230 -n -f 988 -l 230 -n -f 784 -l 230 -n -f 659 -l 230 -n -f 988 -l 230 -n -f 1318 -l 230 -n -f 659 -l 110 -n -f 587 -l 230 -n -f 587 -l 110 -n -f 494 -l 230 -n -f 740 -l 230 -n -f 659 -l 460
@@ -344,7 +344,6 @@ else
 	return
 fi
 
-
 }
 
 
@@ -387,37 +386,8 @@ AutomaticLogin=schule
 TimedLoginDelay=1
 $EOFE
 
-
-
 }
 
-
-#SSHKeysKopieren(){
-
-
-#if [ $1 == "on" ]; then
-
-## Kopieren der SSH-Keys für den SSH-Server
-
-#	if [ ! -f /etc/ssh/ssh_host_dsa_key ]; then
-#		cp "$Instpfad"/ssh/ssh_host_dsa_key /etc/ssh/ssh_host_dsa_key
-#	fi
-
-#	if [ ! -f /etc/ssh/ssh_host_dsa_key.pub ]; then
-#		cp "$Instpfad"/ssh/ssh_host_dsa_key.pub /etc/ssh/ssh_host_dsa_key.pub
-#	fi
-
-#	if [ ! -f /etc/ssh/ssh_host_rsa_key ]; then
-#		cp "$Instpfad"/ssh/ssh_host_rsa_key /etc/ssh/ssh_host_rsa_key
-#	fi
-#
-#	if [ ! -f /etc/ssh/ssh_host_rsa_key.pub ]; then
-#		cp "$Instpfad"/ssh/ssh_host_rsa_key.pub /etc/ssh/ssh_host_rsa_key.pub
-#	fi
-
-#fi
-
-#}
 
 VideoAusgangHerausfinden(){
 
@@ -427,6 +397,7 @@ Ausgang="$(xrandr | egrep "*\<connected*" | awk '{print $1}' )"
 echo "$Ausgang" > /etc/kioskmodus/videoausgang
 
 unset Ausgang
+
 }
 
 
@@ -1324,9 +1295,6 @@ WakeOnLANAktivieren
 
 ## GRUB mit Passwort versehen ( noch nicht vollständig implementiert )
 #GRUBabsichern off
-
-## SSH-Keys kopieren
-#SSHKeysKopieren on   ## Zum entfernen deaktiviert
 
 ## Nummernblockaktivierung einrichten
 #Nummernblockaktivierung on
