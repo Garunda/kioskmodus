@@ -856,7 +856,7 @@ if [ ! "$String1" == "smtp_generic_maps = hash:/etc/postfix/generic" ]; then
 fi
 
 
-# Hier passiert ????
+# Es soll kein lokales Ziel für die Mails geben
 
 # Die zu betrachtende Zeile isolieren
 String2="$(sed -n "/mydestination =/p" /etc/postfix/main.cf )"
@@ -871,7 +871,7 @@ if [ ! "$String2" == "mydestination = " ]; then
 fi
 
 
-# Hier wird ???
+# Es sollen auch keine Verbindungen von anderen Rechnern angenommen werden
 
 # Die zu betrachtende Zeile isolieren
 String3="$(sed -n "/inet_interfaces =/p" /etc/postfix/main.cf )"
@@ -1291,7 +1291,7 @@ DateisystemUeberpruefungsRhythmusAendern
 WakeOnLANAktivieren
 
 # Hier wird die Systemmailweiterleitung aktiviert
-#LokaleSystemMailsAnMailAdresseWeiterleitenAktivieren
+LokaleSystemMailsAnMailAdresseWeiterleitenAktivieren
 
 ## GRUB mit Passwort versehen ( noch nicht vollständig implementiert )
 #GRUBabsichern off
