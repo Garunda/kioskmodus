@@ -774,6 +774,40 @@ fi
 }
 
 
+SicherheitsaktualisierungenAutomatischInstallieren(){
+
+# Im Aufbau
+
+## Es wird hier Aptitude aufgerufen, damit die Sicherheitsupdates automatisch installiert werden.
+## vgl. http://wiki.ubuntuusers.de/aptitude#Automatische-Sicherheitsupdates-ohne-Interaktion
+
+# Jeden Freitag, alle 10 minuten zwischen 13 Uhr und 23 Uhr
+#Cronstring="*/10   13-23   * * 5 cp /pfad/zu/datei /pfad/zur/kopie"
+
+httpServerIP=paketkoenig.localdomain
+
+ping -c 2 "$httpServerIP" > /dev/null 2>&1
+
+# Server erreichbar ?
+if [ "$?" = "0" ]
+then
+# Ist erreichbar, Anweisungen holen
+
+	wget -P /tmp/ http://"$httpServerIP"/updateanweisungen
+
+fi
+
+if [ -f /tmp/updateanweisungen ]; then
+
+	source /tmp/updateanweisungen
+
+fi
+
+unset httpServerIP
+
+}
+
+
 LokaleSystemMailsAnMailAdresseWeiterleitenAktivieren(){
 
 # Im Aufbau
@@ -1121,7 +1155,7 @@ if [ $1 == "online" ]; then
 	Mirror="http://"
 	echo "#### INTERNET ####" > "$SourcesList"
 elif [ $1 == "offline" ]; then
-	Mirror="ftp://paketkoenig.local/mirror/"
+	Mirror="ftp://paketkoenig.localdomain/mirror/"
 	echo "#### PAKETKOENIG ####" > "$SourcesList"
 else
 	DistributionsCodeName=false
@@ -1179,7 +1213,7 @@ NTPZeitserverSynchronisationEinstellen(){
 # Gucken ob die Zeile schon existiert.
 
 String1="$(sed -n '/12 \* \* \* \* root ntpdate 10.0.0.15 \&> \/dev\/null/p' /etc/crontab )"
-String2="$(sed -n '/12 \* \* \* \* root ntpdate zeitserver.local \&> \/dev\/null/p' /etc/crontab )"
+String2="$(sed -n '/12 \* \* \* \* root ntpdate zeitserver.localdomain \&> \/dev\/null/p' /etc/crontab )"
 
 # Falls nicht; hänge diese Zeile ans Dokument an.
 
@@ -1188,8 +1222,8 @@ if [ ! "$String1" == "12 * * * * root ntpdate 10.0.0.15 &> /dev/null"  ]; then
 	cp /tmp/kioskmodusNTP /etc/crontab
 fi
 
-if [ ! "$String2" == "12 * * * * root ntpdate zeitserver.local &> /dev/null" ]; then
-	sed -e '16a\12 * * * * root ntpdate zeitserver.local &> /dev/null' /etc/crontab > /tmp/kioskmodusNTP #/etc/crontab
+if [ ! "$String2" == "12 * * * * root ntpdate zeitserver.localdomain &> /dev/null" ]; then
+	sed -e '16a\12 * * * * root ntpdate zeitserver.localdomain &> /dev/null' /etc/crontab > /tmp/kioskmodusNTP #/etc/crontab
 	cp /tmp/kioskmodusNTP /etc/crontab
 fi
 
@@ -1293,6 +1327,9 @@ WakeOnLANAktivieren
 # Hier wird die Systemmailweiterleitung aktiviert
 LokaleSystemMailsAnMailAdresseWeiterleitenAktivieren
 
+# Die Sicherheitsaktualisierungen automatisch installieren
+#SicherheitsaktualisierungenAutomatischInstallieren
+
 ## GRUB mit Passwort versehen ( noch nicht vollständig implementiert )
 #GRUBabsichern off
 
@@ -1345,7 +1382,7 @@ case $1 in
 	GRUBgPXE on
 	;;
 	"-t"|"test")
-	LokaleSystemMailsAnMailAdresseWeiterleitenAktivieren
+	SicherheitsaktualisierungenAutomatischInstallieren
 	;;
 	"-v")
 	VideoAusgangHerausfinden
