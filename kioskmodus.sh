@@ -33,6 +33,54 @@ else
 fi
 Ausgang="none"
 
+
+WoIstDerServer(){
+
+# Im Aufbau
+
+
+## Serveradressen
+# Paketkoenig
+PossibleServerAdress[1]="paketkoenig.localdomain"
+PossibleServerAdress[2]="paketkoenig.local"
+WoIstDerServer
+PaketkoenigAdress=$Reply
+# IPCop
+PossibleServerAdress[1]="10.0.0.15"
+PossibleServerAdress[2]="zeitserver.local"
+PossibleServerAdress[3]="zeitserver.localdomain"
+WoIstDerServer
+IPCopAdress=$Reply
+# FileServer
+#PossibleServerAdress[1]="10.0.0.15"
+#PossibleServerAdress[2]="fileserver.local"
+#PossibleServerAdress[3]="fileserver.localdomain"
+#WoIstDerServer
+#FileServerAdress=$Reply
+
+
+# Speichervariable
+Reply=""
+
+# Alle Adressen durchtesten
+for wert in "${PossibleServerAdress[@]}"
+  do
+
+	# Sende 2 Pings, aber wirklich nur 2
+	if [[ `ping -c 2 "$wert"` ]];then
+
+		# Adresse in $Reply speichern
+		Reply="$wert"
+
+	fi
+
+done
+
+unset PossibleServerAdress
+
+}
+
+
 Beepen(){
 
 # Nette Beeptöne von sich geben
@@ -785,6 +833,7 @@ SicherheitsaktualisierungenAutomatischInstallieren(){
 #Cronstring="*/10   13-23   * * 5 cp /pfad/zu/datei /pfad/zur/kopie"
 
 httpServerIP=paketkoenig.localdomain
+httpServerIP2=paketkoenig.local
 
 ping -c 2 "$httpServerIP" > /dev/null 2>&1
 
@@ -794,6 +843,13 @@ then
 # Ist erreichbar, Anweisungen holen
 
 	wget -P /tmp/ http://"$httpServerIP"/updateanweisungen
+
+else
+
+	ping -c 2 "$httpServerIP2" > /dev/null 2>&1
+	if [ "$?" = "0" ];then
+		wget -P /tmp/ http://"$httpServerIP2"/updateanweisungen	
+	fi
 
 fi
 
@@ -1327,7 +1383,8 @@ WakeOnLANAktivieren
 # Hier wird die Systemmailweiterleitung aktiviert
 LokaleSystemMailsAnMailAdresseWeiterleitenAktivieren
 
-# Die Sicherheitsaktualisierungen automatisch installieren
+## Die Sicherheitsaktualisierungen automatisch installieren, wenn
+## Auf dem Server die Anweisungen liegen.
 #SicherheitsaktualisierungenAutomatischInstallieren
 
 ## GRUB mit Passwort versehen ( noch nicht vollständig implementiert )
