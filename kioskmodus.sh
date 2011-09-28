@@ -634,16 +634,10 @@ fi
 
 Wiederherstellen(){
 
-## VERALTET
-
-
-# Testausgabe ( Erzeugung einer Textdatei auf dem Desktop des Adminaccounts )
-#echo "VOR der Wiederhersterllung" > /home/verwaltung/Desktop/TEST
-
 ## Wiederherstellen des Homeverzeichnisses
 
 if [ $1 == "on" ]; then
-	if [ -f "$Instpfad"/Archive/"$Aufloesung"/schule.tar.lzma ]; then
+	if [ -f /etc/kioskmodus/schule.tar.lzma ]; then
 
 # Lösche den Ordner schule und seinen Inhalt
 		rm -r /home/schule
@@ -652,7 +646,7 @@ if [ $1 == "on" ]; then
 		mkdir /home/schule
 
 # Entpacke den Inhalt des mit lzma komprimierten Archives in /home/schule/
-		tar --lzma -C /home/schule -xf "$Instpfad"/Archive/"$Aufloesung"/schule.tar.lzma
+		tar --lzma -C /home/schule -xf /etc/kioskmodus/schule.tar.lzma
 
 # Setze die Rechte auf den Schuluser
 		chown -R schule:schule /home/schule/
@@ -660,9 +654,6 @@ if [ $1 == "on" ]; then
 	fi
 
 fi
-
-# Testausgabe ( Erzeugung einer Textdatei auf dem Desktop des Adminaccounts )
-#echo "NACH der Wiederhersterllung" > /home/verwaltung/Desktop/TEST
 
 }
 
@@ -788,7 +779,7 @@ fi
 
 ## Die Funktion zur Löschung aller alten Archive##
 
-Löschen(){
+Loeschen(){
 
 if [ -f "$Instpfad"/Archive/1024x768/schule2* ]; then
 
@@ -818,6 +809,101 @@ else
 	echo "Keine alten Archive vorhanden"
 
 fi
+
+}
+
+
+PaketlisteInstallieren(){
+
+## Hier werden die Pakte installiert die benötigt werden
+
+if [ $1 == "erstellen" ]; then
+
+# Hier wird die Datei packages.list erstellt.
+
+	# Falls dei Datei bereits existiert , dann löschen
+	if [ -f /etc/kioskmodus/packages.list ]; then
+		rm /etc/kioskmodus/packages.list
+	fi
+	# Alle Paketnamen in die Datei schreiben
+	dpkg --get-selections | awk '!/deinstall|purge|hold/ {print $1}' > /etc/kioskmodus/packages.list 
+
+else
+
+	# Paketquellen aktualisieren
+	apt-get update 
+
+	if [ -f /etc/kioskmodus/packages.list ]; then
+
+		# Alle Pakete der Paketliste installieren
+		xargs -a "/etc/kioskmodus/packages.list" sudo apt-get install 
+
+		# Kopiergeschützte DVDs wiedergeben
+		/usr/share/doc/libdvdread4/install-css.sh 
+	fi
+
+fi
+
+}
+
+
+MIMEtypesSetzen(){
+
+# Im Aufbau, noch nicht getestet
+
+## Hier werden die Dateityp->Programm-Verknüpfungen erstellt
+
+if [ -f /home/schule/.local/share/applications/mimeapps.list ]; then
+	rm /home/schule/.local/share/applications/mimeapps.list
+fi
+
+cat <<-\$EOFE >/home/schule/.local/share/applications/mimeapps.list
+
+[Default Applications]
+x-scheme-handler/http=firefox.desktop
+x-scheme-handler/https=firefox.desktop
+x-scheme-handler/ftp=firefox.desktop
+x-scheme-handler/chrome=firefox.desktop
+text/html=firefox.desktop
+application/x-extension-htm=firefox.desktop
+application/x-extension-html=firefox.desktop
+application/x-extension-shtml=firefox.desktop
+application/xhtml+xml=firefox.desktop
+application/x-extension-xhtml=firefox.desktop
+application/x-extension-xht=firefox.desktop
+audio/x-vorbis+ogg=vlc.desktop
+audio/x-musepack=vlc.desktop
+audio/x-ms-wma=vlc.desktop
+audio/x-wavpack=vlc.desktop
+audio/x-ape=vlc.desktop
+application/vnd.ms-wpl=vlc.desktop
+audio/x-mpegurl=vlc.desktop
+audio/mpeg=vlc.desktop
+
+[Added Associations]
+x-scheme-handler/http=firefox.desktop;
+x-scheme-handler/https=firefox.desktop;
+x-scheme-handler/ftp=firefox.desktop;
+x-scheme-handler/chrome=firefox.desktop;
+text/html=firefox.desktop;
+application/x-extension-htm=firefox.desktop;
+application/x-extension-html=firefox.desktop;
+application/x-extension-shtml=firefox.desktop;
+application/xhtml+xml=firefox.desktop;
+application/x-extension-xhtml=firefox.desktop;
+application/x-extension-xht=firefox.desktop;
+audio/x-vorbis+ogg=vlc.desktop;
+audio/x-musepack=vlc.desktop;
+audio/x-ms-wma=vlc.desktop;
+audio/x-wavpack=vlc.desktop;
+audio/x-ape=vlc.desktop;
+application/vnd.ms-wpl=vlc.desktop;
+audio/x-mpegurl=vlc.desktop;
+audio/mpeg=vlc.desktop;
+
+$EOFE
+
+	
 
 }
 
@@ -1036,17 +1122,19 @@ unset String2
 
 LibreOfficeExtensionGlobalInstallieren(){
 
+# Muss getestet werden
+
 ## Hier werden die Extensions für alle Benutzer installiert
 #  vgl. http://www.ooowiki.de/Extension und manpage von unopkg
 #  Es werden nur die folgenden Extensions installiert:
 #	- Sun_ODF_Template_Pack_de
 #	- Sun_ODF_Template_Pack2_de
 
-if [ -f /home/verwaltung/Downloads/Sun_ODF_Template_Pack_de.oxt ] && [ -f /home/verwaltung/Downloads/Sun_ODF_Template_Pack2_de.oxt ]; then
+if [ -f /etc/kioskmodus/Sun_ODF_Template_Pack_de.oxt ] && [ -f /etc/kioskmodus/Sun_ODF_Template_Pack2_de.oxt ]; then
 
 	# -s unterdrückt die Lizenzabsegnung, --shared installiert für alle Benutzer
-	unopkg add -s --shared /home/verwaltung/Downloads/Sun_ODF_Template_Pack2_de.oxt
-	unopkg add -s --shared /home/verwaltung/Downloads/Sun_ODF_Template_Pack_de.oxt
+	unopkg add -s --shared /etc/kioskmodus/Sun_ODF_Template_Pack2_de.oxt
+	unopkg add -s --shared /etc/kioskmodus/Sun_ODF_Template_Pack_de.oxt
 
 else
 
@@ -1173,7 +1261,7 @@ VerknuepfungsDatei="/usr/share/applications/Mediathek.desktop"
 if [ ! -f "$VerknuepfungsDatei" ]; then
 
 	echo "[Desktop Entry]" > "$VerknuepfungsDatei"
-	echo "Version=2.5.0" >> "$VerknuepfungsDatei"
+	echo "Version=2.6.0" >> "$VerknuepfungsDatei"
 	echo "Name=Mediathek" >> "$VerknuepfungsDatei"
 	echo "Comment=Read, capture your ARD, ZDF, ... TV streams" >> "$VerknuepfungsDatei"
 	echo "Name[de]=Mediathek" >> "$VerknuepfungsDatei"
@@ -1349,7 +1437,7 @@ schule_rw_cleanup on
 GDMAutoLogin
 
 ##Auflösungseinstellungen im Terminal verfügbar machen
-Aufloesungsskripteinfuegen
+#Aufloesungsskripteinfuegen
 
 ## gPXE Menueeintrag in GRUB setzen
 GRUBgPXE on
@@ -1368,8 +1456,8 @@ NTPZeitserverSynchronisationEinstellen
 PaketQuellenAnpassen offline
 
 ## Menueeintraege für die Programme Mediathek und Google Earth
-MediathekmenueeintragErstellen
-GoogleEarthMenueeintragErstellen
+#MediathekmenueeintragErstellen
+#GoogleEarthMenueeintragErstellen
 
 ## Dateisystemfehler beim booten beheben
 DateisystemFehlerAutomatischKorrigieren
@@ -1423,11 +1511,12 @@ case $1 in
 	KonfigurationsdateiErstellen
 	source "$Config"
 	;;
-	"erstellen"|"-e")
+	"erstellen"|"-e") ## Hier werden alle Dinge für die Paketierung erstellt, hierzu muss das image soweit fertig sein
+	PaketlisteInstallieren erstellen
 	Erstellen
 	;;
 	"löschen"|"-l")
-	Löschen
+	Loeschen
 	;;
 	"hilfe"|"--help"|"-h"|"--hilfe")
 	Hilfe
@@ -1444,11 +1533,18 @@ case $1 in
 	"-v")
 	VideoAusgangHerausfinden
 	;;
-	"-x")
+	"entwicklung") # Hier wird alles durchgeführt was am Anfang der Erstellung eines neues Images durchgeführt werden sollte
+#	PaketQuellenAnpassen online
+#	MIMEtypesSetzen
+	;;
+	"--install") # Dies wird direkt anch der Installation ausgeführt, damit auch alles installiert wird
+#	PaketQuellenAnpassen offline
+#	PaketlisteInstallieren
 	KonfigurationsdateiErstellen
 	LibreOfficeExtensionGlobalInstallieren
-	LokaleSystemMailsAnMailAdresseWeiterleitenAktivieren
-	Beepen
+#	Wiederherstellen
+	SysViniteinrichtung on
+	Beepen # Beepen nach Beendigung des Prozesses
 	;;
 	*)
 	echo "$1 ist ein falsches Parameter"
