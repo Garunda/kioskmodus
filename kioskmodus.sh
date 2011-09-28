@@ -739,8 +739,8 @@ echo "Es ist "$aktAufloesung" als Aufloesung gewaehlt"
 
 ## Umbennen des bisherigen LZMA-Archives in "schule'date'.tar.lzma"
 Zeit="$(date "+%Y%m%d%H%M%S")"
-if [ -f "$Instpfad"/Archive/"$aktAufloesung"/schule.tar.lzma ]; then
-	mv "$Instpfad"/Archive/"$aktAufloesung"/schule.tar.lzma "$Instpfad"/Archive/"$aktAufloesung"/schule"$Zeit".tar.lzma
+if [ -f /etc/kioskmodus/schule.tar.lzma ]; then
+	mv /etc/kioskmodus/schule.tar.lzma /etc/kioskmodus/schule"$Zeit".tar.lzma
 	echo "Das alte Archiv wurde in schule"$Zeit".tar.lzma umbenannt"
 else
 	echo "Es wurde kein altes Archiv vorgefunden"
@@ -748,7 +748,7 @@ fi
 
 ## Erstelle das neue Archiv mit dem Namen "schule.tar.lzma"
 echo "Das neue Archiv wird erstellt ..."
-tar --lzma -C /home/schule -cf "$Instpfad"/Archive/"$aktAufloesung"/schule.tar.lzma .
+tar --lzma -C /home/schule -cf /etc/kioskmodus/schule.tar.lzma .
 
 ## Anzeigen des Ergebnisses und Verwertung der alten Datei
 
@@ -757,18 +757,18 @@ Datei="$(du -h "$Instpfad"/Archive/"$aktAufloesung"/schule.tar.lzma)"
 echo "Folgende Datei wurde erstellt:"
 echo "$Datei"
 
-if [ -f "$Instpfad"/Archive/"$aktAufloesung"/schule"$Zeit".tar.lzma ]; then
+if [ -f /etc/kioskmodus/schule"$Zeit".tar.lzma ]; then
 	echo "Möchten sie die alte Datei löschen ?"
 	echo "(yes or no)"
 	read Loeschfrage
 	if [ "$Loeschfrage" = "yes" ]; then
 
-		rm "$Instpfad"/Archive/"$aktAufloesung"/schule"$Zeit".tar.lzma
+		rm /etc/kioskmodus/schule"$Zeit".tar.lzma
 		echo "Datei wurde entfernt"
 
 	else
 
-		echo "Datei wurde als schule"$Zeit".tar.lzma im Verzeichnis "$Instpfad"/Archive/"$aktAufloesung"/ belassen"
+		echo "Datei wurde als schule"$Zeit".tar.lzma im Verzeichnis /etc/kioskmodus/ belassen"
 
 	fi
 
@@ -886,7 +886,7 @@ x-scheme-handler/https=firefox.desktop;
 x-scheme-handler/ftp=firefox.desktop;
 x-scheme-handler/chrome=firefox.desktop;
 text/html=firefox.desktop;
-application/x-extension-htm=firefox.desktop;
+application/x-extension-htm=firefox.desktop;/etc/kioskmodus
 application/x-extension-html=firefox.desktop;
 application/x-extension-shtml=firefox.desktop;
 application/xhtml+xml=firefox.desktop;
