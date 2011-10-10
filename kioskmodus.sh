@@ -806,11 +806,11 @@ unset Loeschfrage
 }
 
 
-## Die Funktion zur Löschung aller alten Archive##
-
 Loeschen(){
 
-if [ -f "$Instpfad"/Archive/1024x768/schule2* ]; then
+## Die Funktion zur Löschung aller alten Archive
+
+if [ -f /etc/kioskmodus/*.tar.lzma ]; then
 
 #Sicherheitsabfrage
 
@@ -819,8 +819,8 @@ if [ -f "$Instpfad"/Archive/1024x768/schule2* ]; then
 	read Loeschen
 	if [ "$Loeschen" == "yes" ]; then
 
-		rm "$Instpfad"/Archive/1024x768/schule2*
-		rm "$Instpfad"/Archive/1280x1024/schule2*
+		rm /etc/kioskmodus/schule2*
+		rm /etc/kioskmodus/verwaltung2*
 		echo "Alle alten Archive gelöscht"
 
 	elif  [ "$Loeschen" == "no" ]; then
@@ -1405,15 +1405,15 @@ NTPZeitserverSynchronisationEinstellen(){
 
 # Gucken ob die Zeile schon existiert.
 
-String1="$(sed -n '/12 \* \* \* \* root ntpdate 10.0.0.15 \&> \/dev\/null/p' /etc/crontab )"
+#String1="$(sed -n '/12 \* \* \* \* root ntpdate 10.0.0.15 \&> \/dev\/null/p' /etc/crontab )"
 String2="$(sed -n '/12 \* \* \* \* root ntpdate zeitserver.localdomain \&> \/dev\/null/p' /etc/crontab )"
 
 # Falls nicht; hänge diese Zeile ans Dokument an.
 
-if [ ! "$String1" == "12 * * * * root ntpdate 10.0.0.15 &> /dev/null"  ]; then
-	sed -e '15a\12 * * * * root ntpdate 10.0.0.15 \&> /dev/null' /etc/crontab > /tmp/kioskmodusNTP  #/etc/crontab
-	cp /tmp/kioskmodusNTP /etc/crontab
-fi
+#if [ ! "$String1" == "12 * * * * root ntpdate 10.0.0.15 &> /dev/null"  ]; then
+#	sed -e '15a\12 * * * * root ntpdate 10.0.0.15 \&> /dev/null' /etc/crontab > /tmp/kioskmodusNTP  #/etc/crontab
+#	cp /tmp/kioskmodusNTP /etc/crontab
+#fi
 
 if [ ! "$String2" == "12 * * * * root ntpdate zeitserver.localdomain &> /dev/null" ]; then
 	sed -e '16a\12 * * * * root ntpdate zeitserver.localdomain &> /dev/null' /etc/crontab > /tmp/kioskmodusNTP #/etc/crontab
