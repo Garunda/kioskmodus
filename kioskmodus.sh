@@ -634,9 +634,13 @@ fi
 
 Wiederherstellen(){
 
+# Bei der Anpassung
+# Muss getestet werden
+
 ## Wiederherstellen des Homeverzeichnisses
 
-if [ $1 == "on" ]; then
+if [ $1 == "schule" ]; then
+
 	if [ -f /etc/kioskmodus/schule.tar.lzma ]; then
 
 # Lösche den Ordner schule und seinen Inhalt
@@ -652,6 +656,23 @@ if [ $1 == "on" ]; then
 		chown -R schule:schule /home/schule/
 
 	fi
+
+elif [ $1 == "verwaltung" ]; then
+
+	if [ -f /etc/kioskmodus/verwaltung.tar.lzma ]; then
+
+		# Lösche den Ordner schule und seinen Inhalt
+		rm -r /home/verwaltung
+
+		# Erstelle den Ordner schule neu
+		mkdir /home/verwaltung
+
+		# Entpacke den Inhalt des mit lzma komprimierten Archives in /home/schule/
+		tar --lzma -C /home/verwaltung -xf /etc/kioskmodus/verwaltung.tar.lzma
+
+		# Setze die Rechte auf den Schuluser
+		chown -R verwaltung:verwaltung /home/verwaltung/
+
 
 fi
 
@@ -729,7 +750,7 @@ Erstellen(){
 
 ## MUSS ANGEPASST WERDEN
 
-## Die Funktion zum erstellen des neuen LZMA Archives
+## Die Funktion zum erstellen eines neuen LZMA Archives
 
 ## Aufloesung in Erfahrung bringen
 
@@ -777,6 +798,10 @@ if [ -f /etc/kioskmodus/"$Benutzername""$Zeit".tar.lzma ]; then
 	fi
 
 fi
+
+unset Benutzername
+unset Datei
+unset Loeschfrage
 
 }
 
@@ -1314,11 +1339,9 @@ PaketQuellenAnpassen(){
 
 SourcesList="/etc/apt/sources.list"
 
-# Den Distributionscodenamen herausfinden
+# Den Distributionscodenamen einlesen
 
-awk '/DISTRIB_CODENAME/ { print $1 }' /etc/lsb-release > /tmp/kioskmodusPaketQuellenAnpassen
-
-DistributionsCodeName="$(sed s/DISTRIB_CODENAME=//g /tmp/kioskmodusPaketQuellenAnpassen )"
+. /etc/lsb-release
 
 # Spiegel ja oder nein ?
 
@@ -1329,24 +1352,24 @@ elif [ $1 == "offline" ]; then
 	Mirror="ftp://paketkoenig.localdomain/mirror/"
 	echo "#### PAKETKOENIG ####" > "$SourcesList"
 else
-	DistributionsCodeName=false
+	Mirror=false
 fi
 
 # Neue sources.list erzeugen
 
-if [ ! $DistributionsCodeName == false ]; then
+if [ ! $Mirror == false ]; then
 
 	
 	echo "" >> "$SourcesList"
 	echo "## Ubuntu" >> "$SourcesList"
 	echo "" >> "$SourcesList"
-	echo "deb "$Mirror"de.archive.ubuntu.com/ubuntu/ "$DistributionsCodeName" main restricted universe multiverse" >> "$SourcesList"
+	echo "deb "$Mirror"de.archive.ubuntu.com/ubuntu/ "$DISTRIB_CODENAME" main restricted universe multiverse" >> "$SourcesList"
 	echo "" >> "$SourcesList"
-	echo "deb "$Mirror"de.archive.ubuntu.com/ubuntu/ "$DistributionsCodeName"-updates main restricted universe multiverse" >> "$SourcesList"
+	echo "deb "$Mirror"de.archive.ubuntu.com/ubuntu/ "$DISTRIB_CODENAME"-updates main restricted universe multiverse" >> "$SourcesList"
 	echo "" >> "$SourcesList"
-	echo "deb "$Mirror"security.ubuntu.com/ubuntu "$DistributionsCodeName"-security main restricted universe multiverse" >> "$SourcesList"
+	echo "deb "$Mirror"de.archive.ubuntu.com/ubuntu "$DISTRIB_CODENAME"-security main restricted universe multiverse" >> "$SourcesList"
 	echo "" >> "$SourcesList"
-	echo "deb "$Mirror"extras.ubuntu.com/ubuntu "$DistributionsCodeName" main" >> "$SourcesList"
+	echo "deb "$Mirror"extras.ubuntu.com/ubuntu "$DISTRIB_CODENAME" main" >> "$SourcesList"
 	echo "" >> "$SourcesList"
 	echo "## Remastersys" >> "$SourcesList"
 	echo "" >> "$SourcesList"
@@ -1354,7 +1377,7 @@ if [ ! $DistributionsCodeName == false ]; then
 	echo "" >> "$SourcesList"
 	echo "## Medibuntu" >> "$SourcesList"
 	echo "" >> "$SourcesList"
-	echo "deb "$Mirror"packages.medibuntu.org/ "$DistributionsCodeName" free non-free" >> "$SourcesList"
+	echo "deb "$Mirror"packages.medibuntu.org/ "$DISTRIB_CODENAME" free non-free" >> "$SourcesList"
 	echo "" >> "$SourcesList"
 	echo "## Google Earth" >> "$SourcesList"
 	echo "" >> "$SourcesList"
@@ -1366,7 +1389,6 @@ fi
 # temporäre Variablen und Dateien löschen.
 
 unset Mirror
-unset DistributionsCodeName
 unset SourcesList
 
 if [ -f /tmp/kioskmodusPaketQuellenAnpassen ]; then
