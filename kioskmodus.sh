@@ -733,42 +733,46 @@ Erstellen(){
 
 ## Aufloesung in Erfahrung bringen
 
-aktAufloesung=`cat "$Instpfad"/X/aufloesung`
+#aktAufloesung=`cat "$Instpfad"/X/aufloesung`
 
-echo "Es ist "$aktAufloesung" als Aufloesung gewaehlt"
+#echo "Es ist "$aktAufloesung" als Aufloesung gewaehlt"
+
+echo "Wessen Homeverzeichnis soll als Archiv gesichert werden ?"
+echo "schule oder verwaltung ?"
+read Benutzername
 
 ## Umbennen des bisherigen LZMA-Archives in "schule'date'.tar.lzma"
 Zeit="$(date "+%Y%m%d%H%M%S")"
-if [ -f /etc/kioskmodus/schule.tar.lzma ]; then
-	mv /etc/kioskmodus/schule.tar.lzma /etc/kioskmodus/schule"$Zeit".tar.lzma
-	echo "Das alte Archiv wurde in schule"$Zeit".tar.lzma umbenannt"
+if [ -f /etc/kioskmodus/"$Benutzername".tar.lzma ]; then
+	mv /etc/kioskmodus/"$Benutzername".tar.lzma /etc/kioskmodus/"$Benutzername""$Zeit".tar.lzma
+	echo "Das alte Archiv wurde in "$Benutzername""$Zeit".tar.lzma umbenannt"
 else
 	echo "Es wurde kein altes Archiv vorgefunden"
 fi
 
 ## Erstelle das neue Archiv mit dem Namen "schule.tar.lzma"
 echo "Das neue Archiv wird erstellt ..."
-tar --lzma -C /home/schule -cf /etc/kioskmodus/schule.tar.lzma .
+tar --lzma -C /home/"$Benutzername" -cf /etc/kioskmodus/"$Benutzername".tar.lzma .
 
 ## Anzeigen des Ergebnisses und Verwertung der alten Datei
 
-Datei="$(du -h "$Instpfad"/Archive/"$aktAufloesung"/schule.tar.lzma)"
+Datei="$(du -h /etc/kioskmodus/"$Benutzername".tar.lzma)"
 
 echo "Folgende Datei wurde erstellt:"
 echo "$Datei"
 
-if [ -f /etc/kioskmodus/schule"$Zeit".tar.lzma ]; then
+if [ -f /etc/kioskmodus/"$Benutzername""$Zeit".tar.lzma ]; then
 	echo "Möchten sie die alte Datei löschen ?"
 	echo "(yes or no)"
 	read Loeschfrage
 	if [ "$Loeschfrage" = "yes" ]; then
 
-		rm /etc/kioskmodus/schule"$Zeit".tar.lzma
+		rm /etc/kioskmodus/"$Benutzername""$Zeit".tar.lzma
 		echo "Datei wurde entfernt"
 
 	else
 
-		echo "Datei wurde als schule"$Zeit".tar.lzma im Verzeichnis /etc/kioskmodus/ belassen"
+		echo "Datei wurde als "$Benutzername""$Zeit".tar.lzma im Verzeichnis /etc/kioskmodus/ belassen"
 
 	fi
 
@@ -807,6 +811,29 @@ if [ -f "$Instpfad"/Archive/1024x768/schule2* ]; then
 else
 
 	echo "Keine alten Archive vorhanden"
+
+fi
+
+}
+
+
+BenutzerSchuleAnlegen(){
+
+## Hier wird der Benutzer schule mit all seinen Gruppen erstellt
+
+if [ ! -d /home/schule ]; then
+
+	# User "schule" anlegen
+	adduser --gecos ',,,' --disabled-password schule
+	
+	# User "schule" mit den Standardgruppenzugehörigkeiten ausstatten
+	usermod -a -G adm,dialout,fax,cdrom,floppy,tape,audio,dip,video,plugdev,fuse,netdev,nopasswdlogin schule
+	
+	# Passwort auf einen leer-String setzen
+	usermod -p U6aMy0wojraho schule
+	
+	# Erlaubnis das Passwort erst nach 10000 Tagen ändern zu dürfen
+	passwd -n 100000 schule
 
 fi
 
@@ -1515,7 +1542,7 @@ case $1 in
 	PaketlisteInstallieren erstellen
 	Erstellen
 	;;
-	"löschen"|"-l")
+	"löschen"|"-l") # Hiermit kann man erstellte Archive löschen
 	Loeschen
 	;;
 	"hilfe"|"--help"|"-h"|"--hilfe")
@@ -1535,13 +1562,15 @@ case $1 in
 	;;
 	"entwicklung") # Hier wird alles durchgeführt was am Anfang der Erstellung eines neues Images durchgeführt werden sollte
 #	PaketQuellenAnpassen online
+#	BenutzerSchuleAnlegen
 #	MIMEtypesSetzen
 	;;
-	"--install") # Dies wird direkt anch der Installation ausgeführt, damit auch alles installiert wird
+	"--install") # Dies wird direkt nach der Installation ausgeführt, damit auch alles installiert wird
 #	PaketQuellenAnpassen offline
 #	PaketlisteInstallieren
 	KonfigurationsdateiErstellen
 	LibreOfficeExtensionGlobalInstallieren
+#	BenutzerSchuleAnlegen
 #	Wiederherstellen
 	SysViniteinrichtung on
 	Beepen # Beepen nach Beendigung des Prozesses
