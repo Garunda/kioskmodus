@@ -866,6 +866,30 @@ fi
 }
 
 
+PlymouthThemeAendern(){
+
+# Muss getestet werden
+
+## Plymouth ist für die grafische Darstellung des Bootsplash verantwortlich.
+## Es soll statt dem Standardtheme "xubuntu-plymouth-theme" das Thema 
+## "plymouth-theme-solar" verwendet werden. Hierzu muss es installiert sein, 
+## damit folgende Einstellung greifen kann.
+## vgl. http://wiki.ubuntuusers.de/Plymouth
+
+# Ist das Thema vorhanden ?
+if [ -f /lib/plymouth/themes/solar/solar.plymouth ]; then
+
+	# Splash einstellen
+	update-alternatives --set default.plymouth /lib/plymouth/themes/solar/solar.plymouth
+	
+	# Nun werden die Aenderungen ins Bootimage geschrieben
+	update-initramfs -u -k all 
+
+fi
+
+}
+
+
 BenutzerSchuleAnlegen(){
 
 ## Hier wird der Benutzer schule mit all seinen Gruppen erstellt
@@ -883,6 +907,23 @@ if [ ! -d /home/schule ]; then
 	
 	# Erlaubnis das Passwort erst nach 10000 Tagen ändern zu dürfen
 	passwd -n 100000 schule
+
+fi
+
+}
+
+
+PaketlisteDeinstallieren(){
+
+# Muss getestet werden
+
+## Hier werden alle Pakete deinstalliert die Standardmäßig installiert werden,
+## aber eigentlich nicht benötigt werden.
+
+if [ -f /etc/kioskmodus/Deinstallpackages.list ]; then
+
+	# Alle Pakete der Paketliste deinstallieren
+	xargs -a "/etc/kioskmodus/packages.list" sudo apt-get remove
 
 fi
 
@@ -1620,6 +1661,7 @@ case $1 in
 #	Wiederherstellen schule
 #	Wiederherstellen verwaltung
 	SysViniteinrichtung on
+#	PlymouthThemeAendern
 	Beepen # Beepen nach Beendigung des Prozesses
 	;;
 	*)
