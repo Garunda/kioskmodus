@@ -26,6 +26,10 @@
 Instpfad="/root/kioskmodus"
 Config="/etc/kioskmodus/kioskmodus.conf"
 
+if [ ! -d /etc/kioskmodus ]; then
+	mkdir /etc/kioskmodus
+fi
+
 if [ -f /etc/kioskmodus/aufloesung ]; then
 	Aufloesung=`cat /etc/kioskmodus/aufloesung`
 else
@@ -698,7 +702,7 @@ elif [ $1 == "verwaltung" ]; then
 		# Setze die Rechte auf den Schuluser
 		chown -R verwaltung:verwaltung /home/verwaltung/
 
-
+	fi
 fi
 
 }
@@ -868,8 +872,6 @@ fi
 
 
 PlymouthThemeAendern(){
-
-# Muss getestet werden
 
 ## Plymouth ist für die grafische Darstellung des Bootsplash verantwortlich.
 ## Es soll statt dem Standardtheme "xubuntu-plymouth-theme" das Thema 
@@ -1614,6 +1616,9 @@ WakeOnLANAktivieren
 # Hier wird die Systemmailweiterleitung aktiviert
 LokaleSystemMailsAnMailAdresseWeiterleitenAktivieren
 
+## Dateiprogrammverknüpfungen anpassen
+MIMEtypesSetzen
+
 ## Die Sicherheitsaktualisierungen automatisch installieren, wenn
 ## Auf dem Server die Anweisungen liegen.
 #SicherheitsaktualisierungenAutomatischInstallieren
@@ -1682,19 +1687,22 @@ case $1 in
 #	MIMEtypesSetzen
 	;;
 	"--install") # Dies wird direkt nach der Installation ausgeführt, damit auch alles installiert wird
-#	PaketQuellenAnpassen offline
-#	apt-get install medibuntu-keyring
+##	PaketQuellenAnpassen online
+##	apt-get install medibuntu-keyring
 #	apt-key adv --recv-keys --keyserver keyserver.ubuntu.com der_garunda_key
+	# Google earth key ( dl.google.com )
+##	apt-key adv --recv-keys --keyserver keyserver.ubuntu.com A040830F7FAC5991  
 #	PaketlisteInstallieren
 #	PaketlisteDeinstallieren
-	KonfigurationsdateiErstellen
-	LibreOfficeExtensionGlobalInstallieren
-#	BenutzerSchuleAnlegen
+#	apt-get -y install postfix funktioniert nicht
+##	KonfigurationsdateiErstellen
+#	LibreOfficeExtensionGlobalInstallieren
+##	BenutzerSchuleAnlegen
 #	Wiederherstellen schule
 #	Wiederherstellen verwaltung
-	SysViniteinrichtung on
-#	PlymouthThemeAendern
-	Beepen # Beepen nach Beendigung des Prozesses
+#	SysViniteinrichtung on
+##	PlymouthThemeAendern
+#	Beepen # Beepen nach Beendigung des Prozesses
 	;;
 	*)
 	echo "$1 ist ein falsches Parameter"
