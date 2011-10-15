@@ -772,7 +772,7 @@ unset Defaultmountoption
 
 Erstellen(){
 
-## MUSS ANGEPASST WERDEN
+## MUSS Getestet werden
 
 ## Die Funktion zum erstellen eines neuen LZMA Archives
 
@@ -786,7 +786,7 @@ echo "Wessen Homeverzeichnis soll als Archiv gesichert werden ?"
 echo "schule oder verwaltung ?"
 read Benutzername
 
-## Umbennen des bisherigen LZMA-Archives in "schule'date'.tar.lzma"
+## Umbennen des bisherigen LZMA-Archives in "<Benutzername><Datum>.tar.lzma"
 Zeit="$(date "+%Y%m%d%H%M%S")"
 if [ -f /etc/kioskmodus/"$Benutzername".tar.lzma ]; then
 	mv /etc/kioskmodus/"$Benutzername".tar.lzma /etc/kioskmodus/"$Benutzername""$Zeit".tar.lzma
@@ -795,7 +795,7 @@ else
 	echo "Es wurde kein altes Archiv vorgefunden"
 fi
 
-## Erstelle das neue Archiv mit dem Namen "schule.tar.lzma"
+## Erstelle das neue Archiv mit dem Namen "<Benutzername>.tar.lzma"
 echo "Das neue Archiv wird erstellt ..."
 tar --lzma -C /home/"$Benutzername" -cf /etc/kioskmodus/"$Benutzername".tar.lzma .
 
