@@ -1344,6 +1344,33 @@ fi
 }
 
 
+NetbeansMenueeintragErstellen(){
+
+## Erstellen einer netbeans.desktop in /usr/share/applications damit eine Menueverknüpfung erscheint
+
+VerknuepfungsDatei="/usr/share/applications/netbeans.desktop"
+
+if [ ! -f "$VerknuepfungsDatei" ]; then
+
+	echo "[Desktop Entry]" > "$VerknuepfungsDatei"
+	echo "Version=7.0.1" >> "$VerknuepfungsDatei"
+	echo "Name=Netbeans" >> "$VerknuepfungsDatei"
+	echo "Comment=design, implement, compile,... your programs" >> "$VerknuepfungsDatei"
+	echo "Name[de]=Netbeans" >> "$VerknuepfungsDatei"
+	echo "Comment[de]=Entwerfe, implementiere, compiliere,... deine Programme" >> "$VerknuepfungsDatei"
+	echo "Exec=/opt/Netbeans_7.0.1/netbeans/bin/netbeans" >> "$VerknuepfungsDatei"
+	echo "Icon=netbeans.png" >> "$VerknuepfungsDatei"
+	echo "Terminal=false" >> "$VerknuepfungsDatei"
+	echo "Type=Application" >> "$VerknuepfungsDatei"
+	echo "Categories=Development;IDE;Java;" >> "$VerknuepfungsDatei"
+	echo "StartupNotify=true" >> "$VerknuepfungsDatei"
+fi
+
+unset VerknuepfungsDatei
+
+}
+
+
 GoogleEarthMenueeintragErstellen(){
 
 ## Erstellen einer Googleearth6.desktop in /usr/share/applications damit eine Menueverknüpfung erscheint
@@ -1573,6 +1600,7 @@ PaketQuellenAnpassen offline
 ## Menueeintraege für die Programme Mediathek und Google Earth
 #MediathekmenueeintragErstellen
 #GoogleEarthMenueeintragErstellen
+#NetbeansMenueeintragErstellen
 
 ## Dateisystemfehler beim booten beheben
 DateisystemFehlerAutomatischKorrigieren
