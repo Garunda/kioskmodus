@@ -226,6 +226,8 @@ fi
 
 MountAufsEintraginFstab(){
 
+# Im Aufbau gewesen
+
 ## Eintrag für das Uniondateisystem in der fstab anlegen,
 #  aber nur wenn er noch nicht vorhanden ist.
 
@@ -411,6 +413,28 @@ if [ $1 == "on" ]; then
 		update-grub
 	fi
 fi
+
+}
+
+
+LightDMAutoLogin(){
+
+# Muss geteset werden
+
+## Hier wird der automatische Login für den Benutzer Schule erstellt.
+## Es wird angenommen das der Displaymanger LightDM verwendet wird,
+## deshlab wird dieer hier konfiguriert.
+
+
+# Die vorgefertigte Konfigurationsdatei einfügen
+cat <<-\$EOFE >/etc/lightdm/lightdm.conf
+
+[SeatDefaults]
+autologin-user=schule
+autologin-user-timeout=0
+
+$EOFE
+
 
 }
 
@@ -637,6 +661,10 @@ Wiederherstellen(){
 # Bei der Anpassung
 # Muss getestet werden
 
+## Hier werden die Archive, die die Homeverzeichnisse der Benutzer enthalten,
+## entpackt. Diese Dateien werden statt der bestehenden verwendet.
+
+
 ## Wiederherstellen des Homeverzeichnisses
 
 if [ $1 == "schule" ]; then
@@ -661,10 +689,6 @@ elif [ $1 == "verwaltung" ]; then
 
 	if [ -f /etc/kioskmodus/verwaltung.tar.lzma ]; then
 
-		# Lösche den Ordner schule und seinen Inhalt
-		rm -r /home/verwaltung
-
-		# Erstelle den Ordner schule neu
 		mkdir /home/verwaltung
 
 		# Entpacke den Inhalt des mit lzma komprimierten Archives in /home/schule/
@@ -1579,7 +1603,7 @@ case $1 in
 	"-t"|"test")
 	SicherheitsaktualisierungenAutomatischInstallieren
 	;;
-	"-v")
+	"-v") # wird nach dem Login ausgeführt
 	VideoAusgangHerausfinden
 	;;
 	"entwicklung") # Hier wird alles durchgeführt was am Anfang der Erstellung eines neues Images durchgeführt werden sollte
@@ -1593,7 +1617,8 @@ case $1 in
 	KonfigurationsdateiErstellen
 	LibreOfficeExtensionGlobalInstallieren
 #	BenutzerSchuleAnlegen
-#	Wiederherstellen
+#	Wiederherstellen schule
+#	Wiederherstellen verwaltung
 	SysViniteinrichtung on
 	Beepen # Beepen nach Beendigung des Prozesses
 	;;
