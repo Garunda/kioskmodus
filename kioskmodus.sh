@@ -1491,7 +1491,7 @@ if [ -f /tmp/kioskmodusNTP ]; then
 	rm /tmp/kioskmodusNTP
 fi
 
-unset String1
+#unset String1
 unset String2
 
 }
@@ -1654,7 +1654,10 @@ case $1 in
 	;;
 	"--install") # Dies wird direkt nach der Installation ausgeführt, damit auch alles installiert wird
 #	PaketQuellenAnpassen offline
+#	apt-get install medibuntu-keyring
+#	apt-key adv --recv-keys --keyserver keyserver.ubuntu.com der_garunda_key
 #	PaketlisteInstallieren
+#	PaketlisteDeinstallieren
 	KonfigurationsdateiErstellen
 	LibreOfficeExtensionGlobalInstallieren
 #	BenutzerSchuleAnlegen
