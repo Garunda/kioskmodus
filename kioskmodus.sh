@@ -83,7 +83,8 @@ unset PossibleServerAdress
 
 Beepen(){
 
-# Nette Beeptöne von sich geben
+## Nette Beeptöne über die internen PC-Lautsprecher ausgeben
+## vgl. http://wiki.ubuntuusers.de/Soundausgabe_Systemlautsprecher
 
 # Das Kernel-Modul laden
 modprobe -v pcspkr
