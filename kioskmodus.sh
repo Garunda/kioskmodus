@@ -955,6 +955,12 @@ else
 
 	if [ -f /etc/kioskmodus/packages.list ]; then
 
+		# Medibuntu Keys importieren
+		apt-get install medibuntu-keyring
+
+		# Google earth key ( dl.google.com ) herunterladen
+		apt-key adv --recv-keys --keyserver keyserver.ubuntu.com A040830F7FAC5991  
+
 		# Alle Pakete der Paketliste installieren
 		xargs -a "/etc/kioskmodus/packages.list" sudo apt-get install 
 
@@ -1682,16 +1688,13 @@ case $1 in
 	VideoAusgangHerausfinden
 	;;
 	"entwicklung") # Hier wird alles durchgeführt was am Anfang der Erstellung eines neues Images durchgeführt werden sollte
-#	PaketQuellenAnpassen online
+##	PaketQuellenAnpassen online
 #	BenutzerSchuleAnlegen
 #	MIMEtypesSetzen
 	;;
 	"--install") # Dies wird direkt nach der Installation ausgeführt, damit auch alles installiert wird
 ##	PaketQuellenAnpassen online
-##	apt-get install medibuntu-keyring
 #	apt-key adv --recv-keys --keyserver keyserver.ubuntu.com der_garunda_key
-	# Google earth key ( dl.google.com )
-##	apt-key adv --recv-keys --keyserver keyserver.ubuntu.com A040830F7FAC5991  
 #	PaketlisteInstallieren
 #	PaketlisteDeinstallieren
 #	apt-get -y install postfix funktioniert nicht
@@ -1702,7 +1705,7 @@ case $1 in
 #	Wiederherstellen verwaltung
 #	SysViniteinrichtung on
 ##	PlymouthThemeAendern
-#	Beepen # Beepen nach Beendigung des Prozesses
+##	Beepen # Beepen nach Beendigung des Prozesses
 	;;
 	*)
 	echo "$1 ist ein falsches Parameter"
