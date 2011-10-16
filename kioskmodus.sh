@@ -424,8 +424,6 @@ fi
 
 LightDMAutoLogin(){
 
-# Muss geteset werden
-
 ## Hier wird der automatische Login für den Benutzer Schule erstellt.
 ## Es wird angenommen das der Displaymanger LightDM verwendet wird,
 ## deshlab wird dieer hier konfiguriert.
@@ -1224,26 +1222,29 @@ SuchenInDerShellHistoryAktivieren(){
 #  Hierzu werden 2 Zeilen in der Datei "/etc/inputrc" einkommentiert
 #  vgl. http://wiki.ubuntuusers.de/Bash#Gezieltes-Blaettern-in-der-History-aktivieren
 
-String1="$(sed -n '/history-search-backward/p' /etc/inputrc )"
-String2="$(sed -n "/history-search-forward/p" /etc/inputrc )"
-echo "$String1"
-echo "$String2"
+#String1="$(sed -n '/history-search-backward/p' /etc/inputrc )"
+#String2="$(sed -n "/history-search-forward/p" /etc/inputrc )"
+#echo "$String1"
+#echo "$String2"
 
-if [ "$String1" == '# "\e[5~": history-search-backward'  ]; then
-	sed -e '/# "\e\[5~": history-search-backward/c\"\e\[5~": history-search-backward' /etc/inputrc #> /tmp/kioskmodusHistoryAktivieren
+#if [ "$String1" == '# "\e[5~": history-search-backward'  ]; then
+#	sed -e '/# "\e\[5~": history-search-backward/c\"\e\[5~": history-search-backward' /etc/inputrc #> /tmp/kioskmodusHistoryAktivieren
 #	sed -e 's/\[5~": history-search-backward/"\e[5~": history-search-backward/' /etc/inputrc
 #	mv /tmp/kioskmodusHistoryAktivieren /etc/inputrc
-	echo "jo"
-fi
+#	echo "jo"
+#fi
 
-if [ "$String1" == 'no# "\e[6~": history-search-forward'  ]; then
+#if [ "$String1" == 'no# "\e[6~": history-search-forward'  ]; then
 #	sed -e 's/# "\e[6~": history-search-forward/"\e[6~": history-search-forward/' /etc/inputrc > /tmp/kioskmodusHistoryAktivieren
 #	mv /tmp/kioskmodusHistoryAktivieren /etc/inputrc
-	echo "jo2"
-fi
+#	echo "jo2"
+#fi
 
-unset String1
-unset String2
+#unset String1
+#unset String2
+
+sed -i 's/^# "\\e\[5~": history-search-backward/"\\e\[5~": history-search-backward/;' /etc/inputrc
+sed -i 's/^# "\\e\[6~": history-search-forward/"\\e\[6~": history-search-forward/;' /etc/inputrc
 
 }
 
@@ -1421,7 +1422,7 @@ if [ ! -f "$VerknuepfungsDatei" ]; then
 	echo "Comment=Read, capture your ARD, ZDF, ... TV streams" >> "$VerknuepfungsDatei"
 	echo "Name[de]=Mediathek" >> "$VerknuepfungsDatei"
 	echo "Comment[de]=Wiedergabe und Aufnahme der Sendungen der öffentlich-rechtlichen Fernsehanstalten" >> "$VerknuepfungsDatei"
-	echo "Exec=java -jar /opt/Mediathek_2.5.0/Mediathek.jar" >> "$VerknuepfungsDatei"
+	echo "Exec=java -jar /opt/Mediathek_2.6.0/Mediathek.jar" >> "$VerknuepfungsDatei"
 	echo "Icon=oxygen.png" >> "$VerknuepfungsDatei"
 	echo "Terminal=false" >> "$VerknuepfungsDatei"
 	echo "Type=Application" >> "$VerknuepfungsDatei"
