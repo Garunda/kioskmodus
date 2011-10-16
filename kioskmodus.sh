@@ -923,10 +923,10 @@ PaketlisteDeinstallieren(){
 ## Hier werden alle Pakete deinstalliert die Standardmäßig installiert werden,
 ## aber eigentlich nicht benötigt werden.
 
-if [ -f /etc/kioskmodus/Deinstallpackages.list ]; then
+if [ -f /etc/kioskmodus/Removepackages.list ]; then
 
 	# Alle Pakete der Paketliste deinstallieren
-	xargs -a "/etc/kioskmodus/packages.list" sudo apt-get remove
+	xargs -a "/etc/kioskmodus/Removepackages.list" sudo apt-get remove
 
 fi
 
@@ -1484,6 +1484,10 @@ if [ ! $Mirror == false ]; then
 	echo "" >> "$SourcesList"
 	echo "deb "$Mirror"dl.google.com/linux/earth/deb/ stable main" >> "$SourcesList"  # vgl. http://www.ubuntuupdates.org/ppas/80
 	echo "" >> "$SourcesList"
+	echo "## OGT Kioskmodus Repository" >> "$SourcesList"
+	echo "" >> "$SourcesList"
+	echo "deb "$Mirror"192.168.1.105/repository ./" >> "$SourcesList"
+	echo "" >> "$SourcesList"
 
 fi
 
@@ -1695,7 +1699,7 @@ case $1 in
 	"--install") # Dies wird direkt nach der Installation ausgeführt, damit auch alles installiert wird
 ##	PaketQuellenAnpassen online
 #	apt-key adv --recv-keys --keyserver keyserver.ubuntu.com der_garunda_key
-#	PaketlisteInstallieren
+##	PaketlisteInstallieren
 #	PaketlisteDeinstallieren
 #	apt-get -y install postfix funktioniert nicht
 ##	KonfigurationsdateiErstellen
