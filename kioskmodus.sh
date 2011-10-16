@@ -923,10 +923,10 @@ PaketlisteDeinstallieren(){
 ## Hier werden alle Pakete deinstalliert die Standardmäßig installiert werden,
 ## aber eigentlich nicht benötigt werden.
 
-if [ -f /etc/kioskmodus/Removepackages.list ]; then
+if [ -f /etc/kioskmodus/removepackages.list ]; then
 
 	# Alle Pakete der Paketliste deinstallieren
-	xargs -a "/etc/kioskmodus/Removepackages.list" sudo apt-get remove
+	xargs -a "/etc/kioskmodus/removepackages.list" sudo apt-get remove
 
 fi
 
@@ -1213,8 +1213,6 @@ unset String4
 
 SuchenInDerShellHistoryAktivieren(){
 
-#  Funktioniert irgendwie nicht
-
 ## Hier wird das Gezielte Blättern in der Bash-History aktiviert.
 #  Durch Drücken der Tasten Bild ↑ und Bild ↓ kann man die History 
 #  der Bash anschließend nach Einträgen durchsuchen, welche mit
@@ -1242,6 +1240,8 @@ SuchenInDerShellHistoryAktivieren(){
 
 #unset String1
 #unset String2
+
+## vgl. https://bbs.archlinux.org/viewtopic.php?id=115348
 
 sed -i 's/^# "\\e\[5~": history-search-backward/"\\e\[5~": history-search-backward/;' /etc/inputrc
 sed -i 's/^# "\\e\[6~": history-search-forward/"\\e\[6~": history-search-forward/;' /etc/inputrc
