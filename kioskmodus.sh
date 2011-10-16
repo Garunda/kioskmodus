@@ -926,7 +926,7 @@ PaketlisteDeinstallieren(){
 if [ -f /etc/kioskmodus/removepackages.list ]; then
 
 	# Alle Pakete der Paketliste deinstallieren
-	xargs -a "/etc/kioskmodus/removepackages.list" sudo apt-get remove
+	xargs -a "/etc/kioskmodus/removepackages.list" sudo apt-get -y remove
 
 fi
 
@@ -1219,28 +1219,6 @@ SuchenInDerShellHistoryAktivieren(){
 #  den Worten beginnen, die vor der aktuellen Cursorposition stehen.
 #  Hierzu werden 2 Zeilen in der Datei "/etc/inputrc" einkommentiert
 #  vgl. http://wiki.ubuntuusers.de/Bash#Gezieltes-Blaettern-in-der-History-aktivieren
-
-#String1="$(sed -n '/history-search-backward/p' /etc/inputrc )"
-#String2="$(sed -n "/history-search-forward/p" /etc/inputrc )"
-#echo "$String1"
-#echo "$String2"
-
-#if [ "$String1" == '# "\e[5~": history-search-backward'  ]; then
-#	sed -e '/# "\e\[5~": history-search-backward/c\"\e\[5~": history-search-backward' /etc/inputrc #> /tmp/kioskmodusHistoryAktivieren
-#	sed -e 's/\[5~": history-search-backward/"\e[5~": history-search-backward/' /etc/inputrc
-#	mv /tmp/kioskmodusHistoryAktivieren /etc/inputrc
-#	echo "jo"
-#fi
-
-#if [ "$String1" == 'no# "\e[6~": history-search-forward'  ]; then
-#	sed -e 's/# "\e[6~": history-search-forward/"\e[6~": history-search-forward/' /etc/inputrc > /tmp/kioskmodusHistoryAktivieren
-#	mv /tmp/kioskmodusHistoryAktivieren /etc/inputrc
-#	echo "jo2"
-#fi
-
-#unset String1
-#unset String2
-
 ## vgl. https://bbs.archlinux.org/viewtopic.php?id=115348
 
 sed -i 's/^# "\\e\[5~": history-search-backward/"\\e\[5~": history-search-backward/;' /etc/inputrc
@@ -1703,17 +1681,17 @@ case $1 in
 ##	PaketQuellenAnpassen online
 #	apt-key adv --recv-keys --keyserver keyserver.ubuntu.com der_garunda_key
 ##	PaketlisteInstallieren
-#	PaketlisteDeinstallieren
+##	PaketlisteDeinstallieren
 #	apt-get -y install postfix funktioniert nicht
 ##	KonfigurationsdateiErstellen
-#	LibreOfficeExtensionGlobalInstallieren
+##	LibreOfficeExtensionGlobalInstallieren
 ##	BenutzerSchuleAnlegen
 #	Wiederherstellen schule
 #	Wiederherstellen verwaltung
 #	SysViniteinrichtung on
 ##	PlymouthThemeAendern
 ##	LightDMAutoLogin
-	SuchenInDerShellHistoryAktivieren
+##	SuchenInDerShellHistoryAktivieren
 ##	Beepen # Beepen nach Beendigung des Prozesses
 	;;
 	*)
