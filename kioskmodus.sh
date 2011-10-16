@@ -1712,7 +1712,8 @@ case $1 in
 #	Wiederherstellen verwaltung
 #	SysViniteinrichtung on
 ##	PlymouthThemeAendern
-	LightDMAutoLogin
+##	LightDMAutoLogin
+	SuchenInDerShellHistoryAktivieren
 ##	Beepen # Beepen nach Beendigung des Prozesses
 	;;
 	*)
