@@ -435,6 +435,8 @@ LightDMAutoLogin(){
 cat <<-\$EOFE >/etc/lightdm/lightdm.conf
 
 [SeatDefaults]
+user-session=xubuntu
+greeter-session=lightdm-gtk-greeter
 autologin-user=schule
 autologin-user-timeout=0
 
@@ -1709,6 +1711,7 @@ case $1 in
 #	Wiederherstellen verwaltung
 #	SysViniteinrichtung on
 ##	PlymouthThemeAendern
+	LightDMAutoLogin
 ##	Beepen # Beepen nach Beendigung des Prozesses
 	;;
 	*)
