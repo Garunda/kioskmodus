@@ -22,6 +22,9 @@
 
 
 
+# Als root ausführen
+if [ `id -u` -ne 0 ];then exec sudo $0; fi
+
 ## Die Pfad-Variabeln
 Instpfad="/root/kioskmodus"
 Config="/etc/kioskmodus/kioskmodus.conf"
@@ -1608,7 +1611,7 @@ WakeOnLANAktivieren
 LokaleSystemMailsAnMailAdresseWeiterleitenAktivieren
 
 ## Dateiprogrammverknüpfungen anpassen
-MIMEtypesSetzen
+#MIMEtypesSetzen
 
 ## Die Sicherheitsaktualisierungen automatisch installieren, wenn
 ## Auf dem Server die Anweisungen liegen.
