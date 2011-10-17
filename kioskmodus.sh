@@ -872,6 +872,39 @@ fi
 }
 
 
+LightDMGreeterAendern(){
+
+## Es soll ein spezieller Hintergrund statt dem
+## Standard-Xubuntu Hintergrund für den Loginbildschirm
+## verwendet werden.
+## Hierzu wird die erste Zeile der Config angepasst und
+## komplett neu geschrieben
+
+cat <<-\$EOFE >/etc/lightdm/lightdm-gtk-greeter.conf
+
+#
+# background = Background file to use, either an image path or a color (e.g. #772953)
+# theme-name = GTK+ theme to use
+# font-name = Font to use
+# xft-antialias = Whether to antialias Xft fonts (true or false)
+# xft-dpi = Resolution for Xft in dots per inch (e.g. 96)
+# xft-hintstyle = What degree of hinting to use (hintnone, hintslight, hintmedium, or hintfull)
+# xft-rgba = Type of subpixel antialiasing (none, rgb, bgr, vrgb or vbgr)
+#
+[greeter]
+background=/usr/share/xfce4/backdrops/xubuntu-greybird.png
+theme-name=greybird
+font-name=Droid Sans 10
+xft-antialias=true
+xft-dpi=96
+xft-hintstyle=slight
+xft-rgba=rgb
+
+$EOFE
+
+}
+
+
 PlymouthThemeAendern(){
 
 ## Plymouth ist für die grafische Darstellung des Bootsplash verantwortlich.
@@ -1692,6 +1725,7 @@ case $1 in
 #	SysViniteinrichtung on
 ##	PlymouthThemeAendern
 ##	LightDMAutoLogin
+#	LightDMGreeterAendern
 ##	SuchenInDerShellHistoryAktivieren
 ##	Beepen # Beepen nach Beendigung des Prozesses
 	;;
