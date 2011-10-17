@@ -103,6 +103,8 @@ beep -f 659 -l 460 -n -f 784 -l 340 -n -f 659 -l 230 -n -f 659 -l 110 -n -f 880 
 
 SysViniteinrichtung(){
 
+# Kontrolle ob schon vorhanden fehlerhaft
+
 if [ $1 == "on" ]; then
 
 ## Verlinkung des Skriptes nach /etc/rc0.d
@@ -202,6 +204,8 @@ fi
 }
 
 MountAufs(){
+
+# Test ob schon gemounted nicht vorhanden
 
 ## Hier wird das Homeverzeichnis Schreibgeschützt
 #  vgl. http://www.heise.de/ct/11/03/links/122.shtml
@@ -1642,7 +1646,7 @@ DateisystemUeberpruefungsRhythmusAendern
 WakeOnLANAktivieren
 
 # Hier wird die Systemmailweiterleitung aktiviert
-LokaleSystemMailsAnMailAdresseWeiterleitenAktivieren
+#LokaleSystemMailsAnMailAdresseWeiterleitenAktivieren
 
 # Hier wird der Loginseitenhintergrund geändert
 LightDMGreeterAendern
