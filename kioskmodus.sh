@@ -780,8 +780,6 @@ unset Defaultmountoption
 
 Erstellen(){
 
-## MUSS Getestet werden
-
 ## Die Funktion zum erstellen eines neuen LZMA Archives
 
 ## Aufloesung in Erfahrung bringen
