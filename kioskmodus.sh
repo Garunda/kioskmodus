@@ -879,6 +879,8 @@ LightDMGreeterAendern(){
 ## verwendet werden.
 ## Hierzu wird die erste Zeile der Config angepasst und
 ## komplett neu geschrieben
+## Es wird ein Bild aus der NASA "Image Gallery of the Day" verwendet
+## vgl. http://www.nasa.gov/multimedia/imagegallery/iotd.html
 
 cat <<-\$EOFE >/etc/lightdm/lightdm-gtk-greeter.conf
 
@@ -892,7 +894,7 @@ cat <<-\$EOFE >/etc/lightdm/lightdm-gtk-greeter.conf
 # xft-rgba = Type of subpixel antialiasing (none, rgb, bgr, vrgb or vbgr)
 #
 [greeter]
-background=/usr/share/xfce4/backdrops/xubuntu-greybird.png
+background=/usr/share/xfce4/backdrops/586473main_iss028e005671_full.jpg
 theme-name=greybird
 font-name=Droid Sans 10
 xft-antialias=true
@@ -1592,7 +1594,7 @@ cat <<-\$EOFE >"$Config"
 SysViniteinrichtung on
 
 ## xorg.conf kopieren
-XorgSetzen on
+#XorgSetzen on
 
 ## Zur Bearbeitung des Homeverzeichnisses von schule,
 # die Option auf Off setzen
@@ -1602,8 +1604,9 @@ MountAufs on
 Wiederherstellen off
 schule_rw_cleanup on
 
-## GDM Autologin vom User "schule" einrichten
-GDMAutoLogin
+## Displaymanager Autologin vom User "schule" einrichten
+#GDMAutoLogin
+LightDMAutoLogin
 
 ##Auflösungseinstellungen im Terminal verfügbar machen
 #Aufloesungsskripteinfuegen
@@ -1621,8 +1624,8 @@ UpgradeBenachrichtigungDeaktivieren
 NTPZeitserverSynchronisationEinstellen
 
 ## PaketQuellen entweder die Offiziellen oder der Spiegel
-#PaketQuellenAnpassen online
-PaketQuellenAnpassen offline
+PaketQuellenAnpassen online
+#PaketQuellenAnpassen offline
 
 ## Menueeintraege für die Programme Mediathek und Google Earth
 #MediathekmenueeintragErstellen
@@ -1640,6 +1643,9 @@ WakeOnLANAktivieren
 
 # Hier wird die Systemmailweiterleitung aktiviert
 LokaleSystemMailsAnMailAdresseWeiterleitenAktivieren
+
+# Hier wird der Loginseitenhintergrund geändert
+LightDMGreeterAendern
 
 ## Dateiprogrammverknüpfungen anpassen
 #MIMEtypesSetzen
