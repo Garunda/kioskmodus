@@ -113,17 +113,17 @@ if [ $1 == "on" ]; then
 		ln -s "$Instpfad"/kioskmodus.sh /etc/rcS.d/S10kioskmodus
 	fi
 
-	if [ ! -f /etc/gdm/PostLogin/Default ]; then
-		echo "#!/bin/sh" > /etc/gdm/PostLogin/Default
-		echo ""$Instpfad"/kioskmodus.sh -v" >> /etc/gdm/PostLogin/Default
-		chmod a+x /etc/gdm/PostLogin/Default
-	elif [ -f /etc/gdm/PostLogin/Default ]; then
-#		echo "test"
-		if [ ! "$(cat  /etc/gdm/PostLogin/Default | egrep "*"$Instpfad"/kioskmodus.sh*" | awk '{print $1}' )" == ""$Instpfad"/kioskmodus.sh" ]; then
-#		echo "test2"
-		echo ""$Instpfad"/kioskmodus.sh -v" >> /etc/gdm/PostLogin/Default
-		fi
-	fi
+#	if [ ! -f /etc/gdm/PostLogin/Default ]; then
+#		echo "#!/bin/sh" > /etc/gdm/PostLogin/Default
+#		echo ""$Instpfad"/kioskmodus.sh -v" >> /etc/gdm/PostLogin/Default
+#		chmod a+x /etc/gdm/PostLogin/Default
+#	elif [ -f /etc/gdm/PostLogin/Default ]; then
+##		echo "test"
+#		if [ ! "$(cat  /etc/gdm/PostLogin/Default | egrep "*"$Instpfad"/kioskmodus.sh*" | awk '{print $1}' )" == ""$Instpfad"/kioskmodus.sh" ]; then
+##		echo "test2"
+#		echo ""$Instpfad"/kioskmodus.sh -v" >> /etc/gdm/PostLogin/Default
+#		fi
+#	fi
 
 elif [ $1 == "off" ]; then
 
