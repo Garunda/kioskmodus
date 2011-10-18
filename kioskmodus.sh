@@ -1605,7 +1605,6 @@ SysViniteinrichtung on
 MountAufs on
 
 ## Wiederherstellen des Homeverzeichnisses von schule
-Wiederherstellen off
 schule_rw_cleanup on
 
 ## Displaymanager Autologin vom User "schule" einrichten
@@ -1648,7 +1647,7 @@ WakeOnLANAktivieren
 # Hier wird die Systemmailweiterleitung aktiviert
 #LokaleSystemMailsAnMailAdresseWeiterleitenAktivieren
 
-# Hier wird der Loginseitenhintergrund geändert
+# Hier wird der Displaymanagerhintergrund geändert
 LightDMGreeterAendern
 
 ## Dateiprogrammverknüpfungen anpassen
@@ -1692,7 +1691,9 @@ echo -e "\033[49;1;31m "$Config" ist die Konfigurationsdatei \033[0m"
 case $1 in
 	"start"|"")
 	KonfigurationsdateiErstellen
+	date > /etc/kioskmodus/Ausführungszeit
 	source "$Config"
+	date >> /etc/kioskmodus/Ausführungszeit
 	;;
 	"erstellen"|"-e") ## Hier werden alle Dinge für die Paketierung erstellt, hierzu muss das image soweit fertig sein
 	PaketlisteInstallieren erstellen
