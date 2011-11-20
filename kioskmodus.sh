@@ -876,6 +876,37 @@ fi
 }
 
 
+PCAutoShutdown(){
+
+# Muss getestet werden
+
+## Der PC soll automatisch um 1700 Uhr heruntergefahren werden.
+## Das ganze soll aber nur durchgeführt werden wenn die Systemuhrzeit
+## aktuell ist. Hierzu wird ein entsprechender Eintrag in der neu
+## zu erstellenden Datei /etc/cron.d/autoshutdown angelegt.
+
+# Nachsehen ob die Datei schon existiert.
+if [ ! -f /etc/cron.d/autoshutdown ]; then
+
+# Sie existiert noch nicht und wird deshlab angelegt
+cat <<-\$EOFE >/etc/cron.d/autoshutdown
+
+## Dies ist der Cron-job für das automatische
+## Herunterfahren des Rechners um 1700 Uhr
+## Das ganze ist nur wegen dem DAU notwendig 
+## und wäre ohne ihm unnötig.
+
+#M   S     T M W   user Befehl
+
+0    17    * * *   root /usr/sbin/ntpdate zeitserver.localdomain > /dev/null && /sbin/halt
+
+$EOFE
+
+fi
+
+}
+
+
 LightDMGreeterAendern(){
 
 ## Es soll ein spezieller Hintergrund statt dem
@@ -1045,6 +1076,7 @@ audio/x-ape=vlc.desktop
 application/vnd.ms-wpl=vlc.desktop
 audio/x-mpegurl=vlc.desktop
 audio/mpeg=vlc.desktop
+audio/x-wav=vlc.desktop
 
 [Added Associations]
 x-scheme-handler/http=firefox.desktop;
@@ -1066,10 +1098,9 @@ audio/x-ape=vlc.desktop;
 application/vnd.ms-wpl=vlc.desktop;
 audio/x-mpegurl=vlc.desktop;
 audio/mpeg=vlc.desktop;
+audio/x-wav=vlc.desktop;
 
 $EOFE
-
-	
 
 }
 
@@ -1650,6 +1681,9 @@ WakeOnLANAktivieren
 # Hier wird der Displaymanagerhintergrund geändert
 LightDMGreeterAendern
 
+# PC automatisch ausschalten wenn es 1700 Uhr ist
+#PCAutoShutdown
+
 ## Dateiprogrammverknüpfungen anpassen
 #MIMEtypesSetzen
 
@@ -1727,7 +1761,7 @@ case $1 in
 #	apt-key adv --recv-keys --keyserver keyserver.ubuntu.com der_garunda_key
 ##	PaketlisteInstallieren
 ##	PaketlisteDeinstallieren
-#	apt-get -y install postfix funktioniert nicht
+#	apt-get -y install postfix funktioniert nicht und auch nciht notwendig
 ##	KonfigurationsdateiErstellen
 ##	LibreOfficeExtensionGlobalInstallieren
 ##	BenutzerSchuleAnlegen
