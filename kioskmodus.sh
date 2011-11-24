@@ -266,6 +266,7 @@ if [ $1 == "on" ]; then
 
 			# ansonsten erstellen des Verzeichnisses
 			install -d -o schule -g schule /home/.schule_rw
+			LogEintragErstellen "MountAufs : .schule_rw wird erstellt"
 		fi
 		# Sind Hardlinks erlaubt ?
 		Hardlinkserlauben
@@ -273,7 +274,7 @@ if [ $1 == "on" ]; then
 		# Wenn angeschaltet, dann verglase das Homeverzeichnis
 
 		mount -t aufs -o br:/home/.schule_rw/:/home/schule/ none /home/schule
-	
+		LogEintragErstellen "MountAufs : Aufs-Dateisystem über das Homeverzeichnis legen"
 	fi
 
 else
@@ -329,6 +330,7 @@ if [ $1 == "on" ]; then
 	  # insbesondere zu Testzwecken auf einem normalen Arbeitsrechner. Mit der folgenden Kombination
 	  # ist sichergestellt, dass wirklich nur der Inhalt von .schule_rw gelöscht wird.
 	  cd /home/.schule_rw && find . -maxdepth 1 -mindepth 1 $no_aufs $zusatz -print0|xargs -0 rm -rf
+	LogEintragErstellen "schule_rw_cleanup : .schule_rw wurde bereinigt"
 #	echo "nein"	
 #	fi
 #echo "ja"
@@ -411,6 +413,8 @@ $EOFE
 
 # Rechte geben
 chmod a+x /etc/grub.d/35_gpxe
+
+LogEintragErstellen "gPXEgrubmenuedateieinfuegen : Eintrag erstellt"
 
 }
 
@@ -947,6 +951,8 @@ cat <<-\$EOFE >/etc/cron.d/autoshutdown
 0    17    * * *   root /usr/sbin/ntpdate zeitserver.localdomain > /dev/null && /sbin/halt
 
 $EOFE
+
+LogEintragErstellen "PCAutoShutdown eingerichtet"
 
 fi
 
