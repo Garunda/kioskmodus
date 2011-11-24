@@ -28,6 +28,7 @@ if [ `id -u` -ne 0 ];then exec sudo $0; fi
 ## Die Pfad-Variabeln
 Instpfad="/root/kioskmodus"
 Config="/etc/kioskmodus/kioskmodus.conf"
+LogDatei="/var/log/kioskmodus"
 
 if [ ! -d /etc/kioskmodus ]; then
 	mkdir /etc/kioskmodus
@@ -39,6 +40,51 @@ else
 	echo "1024x768" > /etc/kioskmodus/aufloesung
 fi
 Ausgang="none"
+
+
+LogEintragErstellen(){
+
+## Hier werden Logeinträge für den Kioskmodus in die Datei /var/log/kioskmodus
+## geschrieben. Der Aufruf dieser Funktion erfolgt nach folgendem Schema:
+##      LogEintragErstellen "Dies ist ein Logeintrag"
+## Dieser Befehl wird folgenden Eintrag erzeugen:
+## Nov 24, 2011 14:36:18 +0100 : Dies ist ein Logeintrag
+## Desweitern ist auch folgnder Aufruf möglich:
+##      Befehl | LogEintragErstellen
+## Hierbei wird die Ausgabe von Befehl in die Eingabe dieser Funktion umgeleitet.
+## Durch diese Funktion wird das finden eines Fehlers vereinfacht.
+## vgl. http://wiki.ubuntuusers.de/Logdateien
+
+Message="$1"
+
+# Falls kein Sting als Parameter übergeben wurde,
+# dann wurde vielelciht einer als Eingabe übergeben. ( Pipeoperator )
+if [ "$Message"  == "" ];then
+	# Einlesen der Eingabe, aber nur 0,5 Sekunden lang dieses tun,
+	# damit im Fehlerfall abgebrochen wird.
+	read -t 0.5 Message
+fi
+
+# Kein String zum Eintragen wurde übergeben, Fehler ausgeben
+if [ "$Message"  == "" ];then
+	# Fehler melden
+	Message="ERROR Es wurde kein String für die Logdatei übergeben"
+fi
+
+# Existiert die Logdatei, falls nicht wird Sie erstellt.
+if [ ! -f "$LogDatei" ]; then
+	echo "#### Dies ist die Logdatei vom Kioskscript ####" > "$LogDatei"
+fi
+
+# Die momentane Uhrzeit wird ermittelt
+Uhrzeit="$(date "+%b %d, %Y %H:%M:%S %z")"
+
+# Schreiben des Logeintrags
+echo "$Uhrzeit : $Message" >> "$LogDatei"
+
+unset Message
+
+}
 
 
 WoIstDerServer(){
