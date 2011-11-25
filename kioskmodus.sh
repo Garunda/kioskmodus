@@ -1005,11 +1005,19 @@ PlymouthThemeAendern(){
 # Ist das Thema vorhanden ?
 if [ -f /lib/plymouth/themes/solar/solar.plymouth ]; then
 
-	# Splash einstellen
-	update-alternatives --set default.plymouth /lib/plymouth/themes/solar/solar.plymouth
+	# aktuelles Thema ermitteln
+	AktuellesThema="$(update-alternatives --display default.plymouth | awk '/Zeit/ { print $6 }' )"
+
+	# Ist das aktuelle Thema das gewünschte ?
+	if [ ! "$AktuellesThema" == "/lib/plymouth/themes/solar/solar.plymouth" ]; then
+
+		# es ist es nicht, Splash einstellen
+		update-alternatives --set default.plymouth /lib/plymouth/themes/solar/solar.plymouth
 	
-	# Nun werden die Aenderungen ins Bootimage geschrieben
-	update-initramfs -u -k all 
+		# Nun werden die Aenderungen ins Bootimage geschrieben
+		update-initramfs -u -k all 
+
+	fi
 
 fi
 
@@ -1736,6 +1744,9 @@ LightDMGreeterAendern
 # PC automatisch ausschalten wenn es 1700 Uhr ist
 #PCAutoShutdown
 
+# Hier wird das Standard-Plymouth-Thema durch ein spezielles ausgetauscht
+#PlymouthThemeAendern
+
 ## Dateiprogrammverknüpfungen anpassen
 #MIMEtypesSetzen
 
@@ -1813,14 +1824,12 @@ case $1 in
 #	apt-key adv --recv-keys --keyserver keyserver.ubuntu.com der_garunda_key
 ##	PaketlisteInstallieren
 ##	PaketlisteDeinstallieren
-#	apt-get -y install postfix funktioniert nicht und auch nciht notwendig
 ##	KonfigurationsdateiErstellen
 ##	LibreOfficeExtensionGlobalInstallieren
 ##	BenutzerSchuleAnlegen
 #	Wiederherstellen schule
 #	Wiederherstellen verwaltung
 #	SysViniteinrichtung on
-##	PlymouthThemeAendern
 ##	LightDMAutoLogin
 #	LightDMGreeterAendern
 ##	SuchenInDerShellHistoryAktivieren
