@@ -1745,7 +1745,7 @@ LightDMGreeterAendern
 #PCAutoShutdown
 
 # Hier wird das Standard-Plymouth-Thema durch ein spezielles ausgetauscht
-#PlymouthThemeAendern
+PlymouthThemeAendern
 
 ## Dateiprogrammverknüpfungen anpassen
 #MIMEtypesSetzen
@@ -1822,7 +1822,6 @@ case $1 in
 	"--install") # Dies wird direkt nach der Installation ausgeführt, damit auch alles installiert wird
 ##	PaketQuellenAnpassen online
 #	apt-key adv --recv-keys --keyserver keyserver.ubuntu.com der_garunda_key
-##	PaketlisteInstallieren
 ##	PaketlisteDeinstallieren
 ##	KonfigurationsdateiErstellen
 ##	LibreOfficeExtensionGlobalInstallieren
