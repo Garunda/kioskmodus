@@ -846,6 +846,25 @@ echo "Wessen Homeverzeichnis soll als Archiv gesichert werden ?"
 echo "schule oder verwaltung ?"
 read Benutzername
 
+# Ist die Eingabe eine mögliche Eingabe ?
+if [ "$Benutzername" == "" ]; then
+
+	echo "Kein Benutzer gewählt, es wird nichts gemacht."
+	LogEintragErstellen "Erstellen : Es wurde kein Benutzer angegeben, weiter ohne diese Funktion"
+
+elif [ "$Benutzername" == "verwaltung" ] || [ "$Benutzername" == "schule" ]; then
+
+	echo "Benutzer korrekt, los gehts"
+	LogEintragErstellen "Erstellen : Benutzer korrekt, los gehts"
+
+else
+
+	echo "Eingabe nicht korrekt, es wird nichts gemacht."
+	LogEintragErstellen "Erstellen : Es wurde kein möglciher Benutzer angegeben, weiter ohne diese Funktion"
+	return
+
+fi
+
 ## Umbennen des bisherigen LZMA-Archives in "<Benutzername><Datum>.tar.lzma"
 Zeit="$(date "+%Y%m%d%H%M%S")"
 if [ -f /etc/kioskmodus/"$Benutzername".tar.lzma ]; then
