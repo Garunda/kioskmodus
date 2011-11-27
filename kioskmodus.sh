@@ -949,6 +949,34 @@ fi
 }
 
 
+SicherheitsupdatesEinspielenUndHerunterfahren(){
+
+## Diese Funtion wird durch einen Cronjob ausgeführt.
+## Dieser wurde durch PCAutoShutdown erstellt.
+## Es wird nach Sicherheitsupdates gesucht und diese werden dann installiert.
+## Dannach werden auch andere unkritische Updates installiert.
+## Zum Abschluss wird der PC heruntergefahren
+
+# Zunächst wird überprüft ob die Systemuhrzeit korrekt sein kann.
+if [ "$(ntpdate ptbtime1.ptb.de)" ]; then
+
+	# Den Distributionscodenamen einlesen
+	. /etc/lsb-release
+	# Paketquellen neu laden
+	apt-get update
+	# Sicherheitsupdates installieren
+	apt-get -yt "$DISTRIB_CODENAME"-security dist-upgrade
+	# Alle einfachen Updates installieren
+	apt-get --trivial-only dist-upgrade 
+	# PC herunterfahren
+	LogEintragErstellen "SicherheitsupdatesEinspielenUndHerunterfahren : Der PC muss durch das Script heruntergefahren, der DAU war am Werk"
+	halt
+
+fi
+
+}
+
+
 PCAutoShutdown(){
 
 # Muss getestet werden
@@ -971,7 +999,8 @@ cat <<-\$EOFE >/etc/cron.d/autoshutdown
 
 #M   S     T M W   user Befehl
 
-0    17    * * *   root /usr/sbin/ntpdate zeitserver.localdomain > /dev/null && /sbin/halt
+59   16    * * *   root /usr/sbin/ntpdate zeitserver.localdomain > /dev/null
+0    17    * * *   root /usr/sbin/ntpdate zeitserver.localdomain > /dev/null && /usr/bin/kioskmodus.sh -S #/sbin/halt
 
 $EOFE
 
@@ -1842,6 +1871,9 @@ case $1 in
 	;;
 	"-v") # wird nach dem Login ausgeführt
 	VideoAusgangHerausfinden
+	;;
+	"-S")
+	SicherheitsupdatesEinspielenUndHerunterfahren
 	;;
 	"entwicklung") # Hier wird alles durchgeführt was am Anfang der Erstellung eines neues Images durchgeführt werden sollte
 ##	PaketQuellenAnpassen online
