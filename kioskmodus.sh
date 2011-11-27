@@ -870,12 +870,15 @@ Zeit="$(date "+%Y%m%d%H%M%S")"
 if [ -f /etc/kioskmodus/"$Benutzername".tar.lzma ]; then
 	mv /etc/kioskmodus/"$Benutzername".tar.lzma /etc/kioskmodus/"$Benutzername""$Zeit".tar.lzma
 	echo "Das alte Archiv wurde in "$Benutzername""$Zeit".tar.lzma umbenannt"
+	LogEintragErstellen "Erstellen : Das alte Archiv wurde in "$Benutzername""$Zeit".tar.lzma umbenannt"
 else
 	echo "Es wurde kein altes Archiv vorgefunden"
+	LogEintragErstellen "Erstellen : Es wurde kein altes Archiv vorgefunden"
 fi
 
 ## Erstelle das neue Archiv mit dem Namen "<Benutzername>.tar.lzma"
 echo "Das neue Archiv wird erstellt ..."
+LogEintragErstellen "Erstellen : Das neue Archiv wird erstellt ..."
 tar --lzma -C /home/"$Benutzername" -cf /etc/kioskmodus/"$Benutzername".tar.lzma .
 
 ## Anzeigen des Ergebnisses und Verwertung der alten Datei
@@ -884,6 +887,7 @@ Datei="$(du -h /etc/kioskmodus/"$Benutzername".tar.lzma)"
 
 echo "Folgende Datei wurde erstellt:"
 echo "$Datei"
+LogEintragErstellen "Erstellen : Folgende Datei wurde erstellt: "$Datei""
 
 if [ -f /etc/kioskmodus/"$Benutzername""$Zeit".tar.lzma ]; then
 	echo "Möchten sie die alte Datei löschen ?"
@@ -971,7 +975,7 @@ cat <<-\$EOFE >/etc/cron.d/autoshutdown
 
 $EOFE
 
-LogEintragErstellen "PCAutoShutdown eingerichtet"
+LogEintragErstellen "PCAutoShutdown : Datei /etc/cron.d/autoshutdown erstellt"
 
 fi
 
@@ -1010,6 +1014,8 @@ xft-rgba=rgb
 
 $EOFE
 
+LogEintragErstellen "LightDMGreeterAendern : Datei wurde abgeändert"
+
 }
 
 
@@ -1030,6 +1036,7 @@ if [ -f /lib/plymouth/themes/solar/solar.plymouth ]; then
 	# Ist das aktuelle Thema das gewünschte ?
 	if [ ! "$AktuellesThema" == "/lib/plymouth/themes/solar/solar.plymouth" ]; then
 
+		LogEintragErstellen "PlymouthThemeAendern : Das aktuelle Thema ist nciht das gewünschte, Thema einstellen"
 		# es ist es nicht, Splash einstellen
 		update-alternatives --set default.plymouth /lib/plymouth/themes/solar/solar.plymouth
 	
@@ -1095,6 +1102,9 @@ if [ $1 == "erstellen" ]; then
 	if [ -f /etc/kioskmodus/packages.list ]; then
 		rm /etc/kioskmodus/packages.list
 	fi
+
+	LogEintragErstellen "PaketlisteInstallieren : packages.list wird erstellt"
+
 	# Alle Paketnamen in die Datei schreiben
 	dpkg --get-selections | awk '!/deinstall|purge|hold/ {print $1}' > /etc/kioskmodus/packages.list 
 
@@ -1807,9 +1817,9 @@ echo -e "\033[49;1;31m "$Config" ist die Konfigurationsdatei \033[0m"
 case $1 in
 	"start"|"")
 	KonfigurationsdateiErstellen
-	date > /etc/kioskmodus/Ausführungszeit
+	LogEintragErstellen "Parameterauswertung : Beginn der Ausführung der Konfiguaratinsdatei"
 	source "$Config"
-	date >> /etc/kioskmodus/Ausführungszeit
+	LogEintragErstellen "Parameterauswertung : Ende der Ausführung der Konfiguaratinsdatei"
 	;;
 	"erstellen"|"-e") ## Hier werden alle Dinge für die Paketierung erstellt, hierzu muss das image soweit fertig sein
 	PaketlisteInstallieren erstellen
