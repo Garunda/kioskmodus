@@ -1135,6 +1135,7 @@ if [ $1 == "erstellen" ]; then
 	fi
 
 	LogEintragErstellen "PaketlisteInstallieren : packages.list wird erstellt"
+	echo "packages.list wird erstellt ..."
 
 	# Alle Paketnamen in die Datei schreiben
 	dpkg --get-selections | awk '!/deinstall|purge|hold/ {print $1}' > /etc/kioskmodus/packages.list 
