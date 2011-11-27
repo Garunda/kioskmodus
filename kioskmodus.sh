@@ -851,6 +851,8 @@ if [ "$Benutzername" == "" ]; then
 
 	echo "Kein Benutzer gewählt, es wird nichts gemacht."
 	LogEintragErstellen "Erstellen : Es wurde kein Benutzer angegeben, weiter ohne diese Funktion"
+	# Springe raus aus dieser Funktion
+	return
 
 elif [ "$Benutzername" == "verwaltung" ] || [ "$Benutzername" == "schule" ]; then
 
@@ -1800,7 +1802,7 @@ WakeOnLANAktivieren
 LightDMGreeterAendern
 
 # PC automatisch ausschalten wenn es 1700 Uhr ist
-#PCAutoShutdown
+PCAutoShutdown
 
 # Hier wird das Standard-Plymouth-Thema durch ein spezielles ausgetauscht
 PlymouthThemeAendern
