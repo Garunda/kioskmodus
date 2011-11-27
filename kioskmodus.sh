@@ -1067,7 +1067,7 @@ if [ -f /lib/plymouth/themes/solar/solar.plymouth ]; then
 	# Ist das aktuelle Thema das gewünschte ?
 	if [ ! "$AktuellesThema" == "/lib/plymouth/themes/solar/solar.plymouth" ]; then
 
-		LogEintragErstellen "PlymouthThemeAendern : Das aktuelle Thema ist nciht das gewünschte, Thema einstellen"
+		LogEintragErstellen "PlymouthThemeAendern : Das aktuelle Thema ("$AktuellesThema")ist nicht das gewünschte, ändern"
 		# es ist es nicht, Splash einstellen
 		update-alternatives --set default.plymouth /lib/plymouth/themes/solar/solar.plymouth
 	
