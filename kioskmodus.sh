@@ -1091,7 +1091,7 @@ if [ -f /lib/plymouth/themes/solar/solar.plymouth ]; then
 	LogEintragErstellen "PlymouthThemeAendern : "$PlymouthHash""
 	echo "$PlymouthHash"
 
-	if [ "$PlymouthHash" == "c3e5e3fe3cf039627fc4e90a0ca1f4dd  /etc/alternatives/default.plymouth" ]; then
+	if [ "$PlymouthHash" == "cb61d8dbfb9c0f5a24002a6b8aa76175  /etc/alternatives/default.plymouth" ]; then
 
 		echo "gewünschtes Thema eingestellt, nichts zu tun"
 		LogEintragErstellen "PlymouthThemeAendern : gewünschtes Thema eingestellt, nichts zu tun"
@@ -1103,13 +1103,12 @@ if [ -f /lib/plymouth/themes/solar/solar.plymouth ]; then
 
 cat <<-\$EOFE >/etc/alternatives/default.plymouth
 [Plymouth Theme]
-Name=Ubuntu Logo
-Description=A theme that features a blank background with a logo.
-ModuleName=script
+Name=Solar
+Description=Space theme with violent flaring blue star
+ModuleName=space-flares
 
-[script]
-ImageDir=/lib/plymouth/themes/ubuntu-logo
-ScriptFile=/lib/plymouth/themes/ubuntu-logo/ubuntu-logo.script
+[space-flares]
+ImageDir=/lib/plymouth/themes/solar
 $EOFE
 
 		# Nun werden die Aenderungen ins Bootimage geschrieben
