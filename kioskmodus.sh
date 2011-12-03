@@ -1055,28 +1055,71 @@ PlymouthThemeAendern(){
 ## Plymouth ist für die grafische Darstellung des Bootsplash verantwortlich.
 ## Es soll statt dem Standardtheme "xubuntu-plymouth-theme" das Thema 
 ## "plymouth-theme-solar" verwendet werden. Hierzu muss es installiert sein, 
-## damit folgende Einstellung greifen kann.
+## damit folgende Einstellung greifen kann. Der Ansatz über 
+## update-alternatives --set default.plymouth /lib/plymouth/themes/solar/solar.plymouth
+## funktioniert leider nicht beim Systemstart, daher wird stattdessen die 
+## Datei /etc/alternatives/default.plymouth in der die Einstellung hinterlegt
+## ist direkt verändert. Die überprüfung ob die Einstellung schon gemacht wurde
+## wird mit der Hashfunktion md5sum geprüft.
 ## vgl. http://wiki.ubuntuusers.de/Plymouth
+##      http://wiki.ubuntuusers.de/Shell/md5sum
+
 
 # Ist das Thema vorhanden ?
 if [ -f /lib/plymouth/themes/solar/solar.plymouth ]; then
 
-	# aktuelles Thema ermitteln
-	AktuellesThema="$(update-alternatives --display default.plymouth | awk '/Zeit/ { print $6 }' )"
+#	# aktuelles Thema ermitteln
+#	AktuellesThema="$(update-alternatives --display default.plymouth | awk '/Zeit/ { print $6 }' )"
 
-	# Ist das aktuelle Thema das gewünschte ?
-	if [ ! "$AktuellesThema" == "/lib/plymouth/themes/solar/solar.plymouth" ]; then
+#	# Ist das aktuelle Thema das gewünschte ?
+#	if [ ! "$AktuellesThema" == "/lib/plymouth/themes/solar/solar.plymouth" ]; then
 
-		LogEintragErstellen "PlymouthThemeAendern : Das aktuelle Thema ("$AktuellesThema")ist nicht das gewünschte, ändern"
-		# es ist es nicht, Splash einstellen
-		update-alternatives --set default.plymouth /lib/plymouth/themes/solar/solar.plymouth
-	
+#		LogEintragErstellen "PlymouthThemeAendern : Das aktuelle Thema ("$AktuellesThema")ist nicht das gewünschte, ändern"
+#		# es ist es nicht, Splash einstellen
+#		update-alternatives --set default.plymouth /lib/plymouth/themes/solar/solar.plymouth
+#	
+#		# Nun werden die Aenderungen ins Bootimage geschrieben
+#		update-initramfs -u -k all 
+
+#	fi
+
+	# Ist das richtige Thema ist momentan gesetzt ?
+	# Hierzu wird die md5-Summe gebildet
+	PlymouthHash="$(md5sum /etc/alternatives/default.plymouth)"
+
+	# OUTPUT: c3e5e3fe3cf039627fc4e90a0ca1f4dd  /etc/alternatives/default.plymouth
+	LogEintragErstellen "PlymouthThemeAendern : "$PlymouthHash""
+	echo "$PlymouthHash"
+
+	if [ "$PlymouthHash" == "c3e5e3fe3cf039627fc4e90a0ca1f4dd  /etc/alternatives/default.plymouth" ]; then
+
+		echo "gewünschtes Thema eingestellt, nichts zu tun"
+		LogEintragErstellen "PlymouthThemeAendern : gewünschtes Thema eingestellt, nichts zu tun"
+
+	else
+
+		echo "momentanes Thema ist nicht das richtige, Datei wird überschrieben"	
+		LogEintragErstellen "PlymouthThemeAendern : momentanes Thema ist nicht das richtige, Datei wird überschrieben"
+
+cat <<-\$EOFE >/etc/alternatives/default.plymouth
+[Plymouth Theme]
+Name=Ubuntu Logo
+Description=A theme that features a blank background with a logo.
+ModuleName=script
+
+[script]
+ImageDir=/lib/plymouth/themes/ubuntu-logo
+ScriptFile=/lib/plymouth/themes/ubuntu-logo/ubuntu-logo.script
+$EOFE
+
 		# Nun werden die Aenderungen ins Bootimage geschrieben
 		update-initramfs -u -k all 
 
 	fi
 
 fi
+
+unset PlymouthHash
 
 }
 
