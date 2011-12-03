@@ -1093,12 +1093,12 @@ if [ -f /lib/plymouth/themes/solar/solar.plymouth ]; then
 
 	if [ "$PlymouthHash" == "cb61d8dbfb9c0f5a24002a6b8aa76175  /etc/alternatives/default.plymouth" ]; then
 
-		echo "gewünschtes Thema eingestellt, nichts zu tun"
+		echo "PlymouthThemeAendern : gewünschtes Thema eingestellt, nichts zu tun"
 		LogEintragErstellen "PlymouthThemeAendern : gewünschtes Thema eingestellt, nichts zu tun"
 
 	else
 
-		echo "momentanes Thema ist nicht das richtige, Datei wird überschrieben"	
+		echo "PlymouthThemeAendern : momentanes Thema ist nicht das richtige, Datei wird überschrieben"	
 		LogEintragErstellen "PlymouthThemeAendern : momentanes Thema ist nicht das richtige, Datei wird überschrieben"
 
 cat <<-\$EOFE >/etc/alternatives/default.plymouth
@@ -1115,6 +1115,11 @@ $EOFE
 		update-initramfs -u -k all 
 
 	fi
+
+else
+
+	echo "PlymouthThemeAendern : Das Thema ist noch nicht installiert"
+	LogEintragErstellen "PlymouthThemeAendern : Das Thema ist noch nicht installiert"
 
 fi
 
