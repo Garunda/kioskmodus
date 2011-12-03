@@ -1063,6 +1063,8 @@ if [ -f /lib/plymouth/themes/solar/solar.plymouth ]; then
 
 	# aktuelles Thema ermitteln
 	AktuellesThema="$(update-alternatives --display default.plymouth | awk '/Zeit/ { print $6 }' )"
+	LogEintragErstellen "PlymouthThemeAendern : Das aktuelle Thema ist "$AktuellesThema""
+	echo "Das aktuelle Thema ist "$AktuellesThema""
 
 	# Ist das aktuelle Thema das gewünschte ?
 	if [ ! "$AktuellesThema" == "/lib/plymouth/themes/solar/solar.plymouth" ]; then
@@ -1075,6 +1077,11 @@ if [ -f /lib/plymouth/themes/solar/solar.plymouth ]; then
 		update-initramfs -u -k all 
 
 	fi
+
+else
+
+	echo "Das Plymouththeme ist noch nicht vorhanden"
+	LogEintragErstellen "Das Plymouththeme ist noch nicht vorhanden"
 
 fi
 
