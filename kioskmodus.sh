@@ -1123,7 +1123,6 @@ unset PlymouthHash
 
 }
 
-
 BenutzerSchuleAnlegen(){
 
 ## Hier wird der Benutzer schule mit all seinen Gruppen erstellt
