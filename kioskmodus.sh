@@ -1127,6 +1127,7 @@ unset PlymouthHash
 
 }
 
+
 BenutzerSchuleAnlegen(){
 
 ## Hier wird der Benutzer schule mit all seinen Gruppen erstellt
@@ -1843,7 +1844,7 @@ DateisystemUeberpruefungsRhythmusAendern
 WakeOnLANAktivieren
 
 # Hier wird die Systemmailweiterleitung aktiviert
-#LokaleSystemMailsAnMailAdresseWeiterleitenAktivieren
+LokaleSystemMailsAnMailAdresseWeiterleitenAktivieren
 
 # Hier wird der Displaymanagerhintergrund geändert
 LightDMGreeterAendern
