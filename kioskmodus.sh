@@ -1806,7 +1806,7 @@ LightDMGreeterAendern
 PCAutoShutdown
 
 # Hier wird das Standard-Plymouth-Thema durch ein spezielles ausgetauscht
-PlymouthThemeAendern
+#PlymouthThemeAendern
 
 ## Dateiprogrammverknüpfungen anpassen
 #MIMEtypesSetzen
@@ -1870,7 +1870,7 @@ case $1 in
 	GRUBgPXE on
 	;;
 	"-t"|"test")
-	SicherheitsaktualisierungenAutomatischInstallieren
+	PlymouthThemeAendern
 	;;
 	"-v") # wird nach dem Login ausgeführt
 	VideoAusgangHerausfinden
