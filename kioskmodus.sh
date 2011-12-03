@@ -1847,7 +1847,7 @@ LightDMGreeterAendern
 PCAutoShutdown
 
 # Hier wird das Standard-Plymouth-Thema durch ein spezielles ausgetauscht
-#PlymouthThemeAendern
+PlymouthThemeAendern
 
 ## Dateiprogrammverknüpfungen anpassen
 #MIMEtypesSetzen
