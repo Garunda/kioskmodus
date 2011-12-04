@@ -1480,6 +1480,33 @@ LibreOfficeExtensionGlobalInstallieren(){
 #	- Sun_ODF_Template_Pack_de
 #	- Sun_ODF_Template_Pack2_de
 
+# Liste aller installierter Extensions in eine Datei schreiben
+unopkg list --shared >> /tmp/KioskmodusLOExtension
+IstInstalliert="yes"
+# Nach den Extensions suchen
+if [ ! grep -q "org.openoffice.legacy.Sun_ODF_Template_Pack_de.oxt" /tmp/KioskmodusLOExtension ]; then
+
+	echo "LibreOfficeExtensionGlobalInstallieren : Template Pack I nicht installiert, installieren ..."
+	LogEintragErstellen "LibreOfficeExtensionGlobalInstallieren : Template Pack I nicht installiert, installieren ..."
+	IstInstalliert="no"
+fi
+
+if [ ! grep -q "com.sun.ProfessionalTemplatePack2_de" /tmp/KioskmodusLOExtension ]; then
+
+	echo "LibreOfficeExtensionGlobalInstallieren : Template Pack II nicht installiert, installieren ..."
+        LogEintragErstellen "LibreOfficeExtensionGlobalInstallieren : Template Pack II nicht installiert, installieren ..."
+	IstInstalliert="no"
+
+fi
+
+if [ "$IstInstalliert" == "yes" ]; then
+
+	echo "LibreOfficeExtensionGlobalInstallieren : alles schon installiert"
+	LogEintragErstellen "LibreOfficeExtensionGlobalInstallieren : alles schon installiert"
+	return
+
+fi
+
 if [ -f /etc/kioskmodus/Sun_ODF_Template_Pack_de.oxt ] && [ -f /etc/kioskmodus/Sun_ODF_Template_Pack2_de.oxt ]; then
 
 	# -s unterdrückt die Lizenzabsegnung, --shared installiert für alle Benutzer
@@ -1509,7 +1536,7 @@ DateisystemUeberpruefungsRhythmusAendern(){
 MaxMountCount="$(tune2fs -l /dev/sda1 | grep -i "Maximum mount count" | awk '{print $4}') "
 
 if [ ! "10 " == "$MaxMountCount" ]; then
-	
+
 	tune2fs -c 10 /dev/sda1
 
 fi
