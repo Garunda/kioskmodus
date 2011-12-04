@@ -158,7 +158,10 @@ if [ $1 == "on" ]; then
 
 #	if ([ ! -f /etc/rcS.d/S60kioskmodus ] && [ ! -f /etc/rcS.d/S60* ]); then
 	if [ ! -f /etc/rcS.d/S10kioskmodus ]; then
+
+		LogEintragErstellen "SysViniteinrichtung : Eintrag wird erstellt, da noch nicht vorhanden"
 		ln -s "$Instpfad"/kioskmodus.sh /etc/rcS.d/S10kioskmodus
+
 	fi
 
 #	if [ ! -f /etc/gdm/PostLogin/Default ]; then
@@ -824,6 +827,7 @@ if [ ! $Defaultmountoption == "journal_data" ]; then
 
 	# Dateisystem auf Journaling stellen
 	tune2fs -o journal_data /dev/sda1
+	LogEintragErstellen "Journaldateisystemverwenden : Option wird gesetzt"
 
 fi
 
