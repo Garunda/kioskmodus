@@ -1474,24 +1474,28 @@ LibreOfficeExtensionGlobalInstallieren(){
 
 # Muss getestet werden
 
-## Hier werden die Extensions für alle Benutzer installiert
+## Hier werden die Extensions für alle Benutzer installiert.
+## Zunächst wird hierfür überprüft ob sie vielleciht doch
+## schon installiert sind. Wenn nicht, dann werden sie jetzt
+## installiert.
 #  vgl. http://www.ooowiki.de/Extension und manpage von unopkg
 #  Es werden nur die folgenden Extensions installiert:
 #	- Sun_ODF_Template_Pack_de
 #	- Sun_ODF_Template_Pack2_de
 
+
 # Liste aller installierter Extensions in eine Datei schreiben
 unopkg list --shared >> /tmp/KioskmodusLOExtension
 IstInstalliert="yes"
 # Nach den Extensions suchen
-if [ ! grep -q "org.openoffice.legacy.Sun_ODF_Template_Pack_de.oxt" /tmp/KioskmodusLOExtension ]; then
+if ! grep -q "org.openoffice.legacy.Sun_ODF_Template_Pack_de.oxt" /tmp/KioskmodusLOExtension ; then
 
 	echo "LibreOfficeExtensionGlobalInstallieren : Template Pack I nicht installiert, installieren ..."
 	LogEintragErstellen "LibreOfficeExtensionGlobalInstallieren : Template Pack I nicht installiert, installieren ..."
 	IstInstalliert="no"
 fi
 
-if [ ! grep -q "com.sun.ProfessionalTemplatePack2_de" /tmp/KioskmodusLOExtension ]; then
+if ! grep -q "com.sun.ProfessionalTemplatePack2_de" /tmp/KioskmodusLOExtension ; then
 
 	echo "LibreOfficeExtensionGlobalInstallieren : Template Pack II nicht installiert, installieren ..."
         LogEintragErstellen "LibreOfficeExtensionGlobalInstallieren : Template Pack II nicht installiert, installieren ..."
@@ -1517,7 +1521,16 @@ else
 
 	echo "LibreOffice Extensions noch nicht heruntergeladen"
 	echo "--<== Schleunigst nachholen !!!!! ==>--"
+	LogEintragErstellen "LibreOffice Extensions noch nicht heruntergeladen"
+	LogEintragErstellen "--<== Schleunigst nachholen !!!!! ==>--"
 
+fi
+
+
+unset IstInstalliert
+
+if [ -f /tmp/KioskmodusLOExtension ]; then
+	rm /tmp/KioskmodusLOExtension
 fi
 
 }
@@ -1886,6 +1899,10 @@ PCAutoShutdown
 # Hier wird das Standard-Plymouth-Thema durch ein spezielles ausgetauscht
 PlymouthThemeAendern
 
+# Hier wird überprüft ob die Extensions schon installiert sind
+# und falls nciht werden sie installiert
+LibreOfficeExtensionGlobalInstallieren
+
 ## Dateiprogrammverknüpfungen anpassen
 #MIMEtypesSetzen
 
@@ -1966,7 +1983,6 @@ case $1 in
 #	apt-key adv --recv-keys --keyserver keyserver.ubuntu.com der_garunda_key
 ##	PaketlisteDeinstallieren
 ##	KonfigurationsdateiErstellen
-##	LibreOfficeExtensionGlobalInstallieren
 ##	BenutzerSchuleAnlegen
 #	Wiederherstellen schule
 #	Wiederherstellen verwaltung
