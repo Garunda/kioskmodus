@@ -748,6 +748,9 @@ if [ $1 == "schule" ]; then
 # Setze die Rechte auf den Schuluser
 		chown -R schule:schule /home/schule/
 
+		echo "Wiederherstellen : /home/schule wiederhergestellt"
+		LogEintragErstellen "Wiederherstellen : /home/schule wiederhergestellt"
+
 	fi
 
 elif [ $1 == "verwaltung" ]; then
@@ -761,6 +764,9 @@ elif [ $1 == "verwaltung" ]; then
 
 		# Setze die Rechte auf den Schuluser
 		chown -R verwaltung:verwaltung /home/verwaltung/
+
+                echo "Wiederherstellen : /home/verwaltung wiederhergestellt"
+                LogEintragErstellen "Wiederherstellen : /home/verwaltung wiederhergestellt"
 
 	fi
 fi
@@ -1140,15 +1146,21 @@ if [ ! -d /home/schule ]; then
 
 	# User "schule" anlegen
 	adduser --gecos ',,,' --disabled-password schule
-	
+
 	# User "schule" mit den Standardgruppenzugehörigkeiten ausstatten
 	usermod -a -G adm,dialout,fax,cdrom,floppy,tape,audio,dip,video,plugdev,fuse,netdev,nopasswdlogin schule
-	
+
 	# Passwort auf einen leer-String setzen
 	usermod -p U6aMy0wojraho schule
-	
+
 	# Erlaubnis das Passwort erst nach 10000 Tagen ändern zu dürfen
 	passwd -n 100000 schule
+
+	echo "BenutzerSchuleAnlegen : Benutzer angelegt"
+	LogEintragErstellen "BenutzerSchuleAnlegen : Benutzer angelegt"
+
+	# Der Homeordner wird nun mit dem erstellten Archiv gefüllt
+	Wiederherstellen schule
 
 fi
 
@@ -1984,7 +1996,6 @@ case $1 in
 ##	PaketlisteDeinstallieren
 ##	KonfigurationsdateiErstellen
 ##	BenutzerSchuleAnlegen
-#	Wiederherstellen schule
 #	Wiederherstellen verwaltung
 #	SysViniteinrichtung on
 ##	LightDMAutoLogin
