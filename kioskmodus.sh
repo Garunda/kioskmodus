@@ -1550,7 +1550,7 @@ fi
 
 DateisystemUeberpruefungsRhythmusAendern(){
 
-## Hier wird die Anzahl der mounts zwischen denen eine Ueberpruefung stattfindet 
+## Hier wird die Anzahl der mounts, zwischen denen eine Ueberpruefung stattfindet,
 #  von dem Ursprünglichen Wert ( 30 ) auf 10 gesetzt. So fallen Fehler früher auf
 #  vgl. http://wiki.ubuntuusers.de/Dateisystemcheck#berpruefungs-Rhythmus-aendern
 
@@ -1571,7 +1571,7 @@ fi
 
 WakeOnLANAktivieren(){
 
-## Hier wird das Ferngesteruerte Anschalten der Recher ermöglicht.
+## Hier wird das ferngesteuerte Anschalten der Recher ermöglicht.
 #  vgl. http://wiki.ubuntuusers.de/Wake_on_LAN
 
 # Eintrag in /etc/rc.local für die Ausführung des Befehls beim start des Rechners.
@@ -1711,7 +1711,7 @@ unset VerknuepfungsDatei
 PaketQuellenAnpassen(){
 
 ## Hier werden die Paketquellen leserlich hergerichtet, 
-## sodass sie schnell zu überschauen sind und außeredm werden sie
+## sodass sie schnell zu überschauen sind und außerdem werden sie
 ## auf den Netzwerkspiegel umgestellt.
 
 SourcesList="/etc/apt/sources.list"
@@ -1911,8 +1911,8 @@ PCAutoShutdown
 # Hier wird das Standard-Plymouth-Thema durch ein spezielles ausgetauscht
 PlymouthThemeAendern
 
-# Hier wird überprüft ob die Extensions schon installiert sind
-# und falls nciht werden sie installiert
+# Hier wird überprüft, ob die Extensions schon installiert sind
+# Falls nicht werden sie installiert.
 LibreOfficeExtensionGlobalInstallieren
 
 ## Dateiprogrammverknüpfungen anpassen
@@ -1956,11 +1956,11 @@ echo -e "\033[49;1;31m "$Config" ist die Konfigurationsdatei \033[0m"
 case $1 in
 	"start"|"")
 	KonfigurationsdateiErstellen
-	LogEintragErstellen "Parameterauswertung : Beginn der Ausführung der Konfiguaratinsdatei"
+	LogEintragErstellen "Parameterauswertung : Beginn der Ausführung der Konfiguarationsdatei"
 	source "$Config"
-	LogEintragErstellen "Parameterauswertung : Ende der Ausführung der Konfiguaratinsdatei"
+	LogEintragErstellen "Parameterauswertung : Ende der Ausführung der Konfiguarationsdatei"
 	;;
-	"erstellen"|"-e") ## Hier werden alle Dinge für die Paketierung erstellt, hierzu muss das image soweit fertig sein
+	"erstellen"|"-e") ## Hier werden alle Dinge für die Paketierung erstellt, hierzu muss das Image soweit fertig sein
 	PaketlisteInstallieren erstellen
 	Erstellen
 	;;
