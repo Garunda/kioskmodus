@@ -1915,6 +1915,9 @@ PlymouthThemeAendern
 # Falls nicht werden sie installiert.
 LibreOfficeExtensionGlobalInstallieren
 
+# Druch drücken der Bild hoch/unter Tasten in der Shellhistory suchen
+SuchenInDerShellHistoryAktivieren
+
 ## Dateiprogrammverknüpfungen anpassen
 #MIMEtypesSetzen
 
@@ -1992,15 +1995,12 @@ case $1 in
 	;;
 	"--install") # Dies wird direkt nach der Installation ausgeführt, damit auch alles installiert wird
 ##	PaketQuellenAnpassen online
-#	apt-key adv --recv-keys --keyserver keyserver.ubuntu.com der_garunda_key
+#	apt-key adv --recv-keys --keyserver keyserver.ubuntu.com 82BA8E0F # Der Schlüssel von garunda
 ##	PaketlisteDeinstallieren
-##	KonfigurationsdateiErstellen
 ##	BenutzerSchuleAnlegen
 #	Wiederherstellen verwaltung
 #	SysViniteinrichtung on
 ##	LightDMAutoLogin
-#	LightDMGreeterAendern
-##	SuchenInDerShellHistoryAktivieren
 ##	Beepen # Beepen nach Beendigung des Prozesses
 	;;
 	*)
