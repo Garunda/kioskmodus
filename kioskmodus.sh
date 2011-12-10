@@ -26,7 +26,7 @@
 if [ `id -u` -ne 0 ];then exec sudo $0; fi
 
 ## Die Pfad-Variabeln
-Instpfad="/root/kioskmodus"
+Instpfad="/usr/bin"
 Config="/etc/kioskmodus/kioskmodus.conf"
 LogDatei="/var/log/kioskmodus"
 
