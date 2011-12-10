@@ -789,7 +789,7 @@ cat <<-\$EOFE >/usr/bin/aufloesungeinstellen
 
 ##Aufloesung einstellen mittels Dialog
 
-#Abfrage nach der Aufloesung mit Hilfe einer Radiobox
+#Abfrage nach der Aufloesung mit #Hilfe einer Radiobox
 auswahl=`dialog --stdout --backtitle Desktopaufloesungseinstellungen --title Auswahl --radiolist "Welche Aufloesung möchten Sie verwenden ? Sie können nur eine wählen." 16 60 5 \
      "1024x768" "1024x768 - XGA Aufloesung" on \
      "1280x1024" "1280x1024 - SXGA Aufloesung" off`
@@ -1944,12 +1944,14 @@ fi
 
 Hilfe(){
 
-echo -e "\033[49;1;31m kioskmodus.sh                 \033[49;1;33m >> \033[49;1;32m stellt das homeverzeichnis wieder her \033[0m"
+echo -e "\033[49;1;31m kioskmodus.sh                 \033[49;1;33m >> \033[49;1;32m Führt die in der Conf festgelegten Operationen durch \033[0m"
 echo -e "\033[49;1;31m kioskmodus.sh erstellen / -e  \033[49;1;33m >> \033[49;1;32m erstellt ein neues Archiv \033[0m"
 echo -e "\033[49;1;31m kioskmodus.sh löschen / -l    \033[49;1;33m >> \033[49;1;32m löscht alle alten Archive \033[0m"
+echo -e "\033[49;1;31m kioskmodus.sh --install       \033[49;1;33m >> \033[49;1;32m Verwandelt das System in ein System mit kioskmodus \033[0m"
 echo -e "\033[49;1;31m kioskmodus.sh hilfe / --help  \033[49;1;33m >> \033[49;1;32m öffnen die Hilfe \033[0m"
 echo -e "\033[49;1;31m $Instpfad \033[0m"
-echo -e "\033[49;1;31m "$Config" ist die Konfigurationsdatei \033[0m"
+echo -e "\033[49;1;31m "$Config" \033[49;1;33m >> Die Konfigurationsdatei \033[0m"
+echo -e "\033[49;1;31m "$LogDatei" \033[49;1;33m >> Die Logdatei \033[0m"
 
 }
 # Der Grundbefehl für die Farbe in der Konsole lautet
