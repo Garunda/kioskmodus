@@ -1496,6 +1496,8 @@ LibreOfficeExtensionGlobalInstallieren(){
 #	- Sun_ODF_Template_Pack2_de
 
 
+LogEintragErstellen "LibreOfficeExtensionGlobalInstallieren : Nun  werden die Extensions aufgelistet"
+
 # Liste aller installierter Extensions in eine Datei schreiben
 unopkg list --shared >> /tmp/KioskmodusLOExtension
 IstInstalliert="yes"
