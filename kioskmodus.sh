@@ -1174,10 +1174,16 @@ PaketlisteDeinstallieren(){
 ## Hier werden alle Pakete deinstalliert die Standardmäßig installiert werden,
 ## aber eigentlich nicht benötigt werden.
 
-if [ -f /etc/kioskmodus/removepackages.list ]; then
+if [ -f /usr/bin/pidgin ]; then
 
-	# Alle Pakete der Paketliste deinstallieren
-	xargs -a "/etc/kioskmodus/removepackages.list" sudo apt-get -y remove
+	if [ -f /etc/kioskmodus/removepackages.list ]; then
+
+		LogEintragErstellen "PaketlisteDeinstallieren : Pakete entfernen"
+
+		# Alle Pakete der Paketliste deinstallieren
+		xargs -a "/etc/kioskmodus/removepackages.list" sudo apt-get -y remove
+
+	fi
 
 fi
 
@@ -1922,6 +1928,9 @@ LibreOfficeExtensionGlobalInstallieren
 
 # Druch drücken der Bild hoch/unter Tasten in der Shellhistory suchen
 SuchenInDerShellHistoryAktivieren
+
+# Es werden alle überflüssigen Pakete deinstalliert
+PaketlisteDeinstallieren
 
 ## Dateiprogrammverknüpfungen anpassen
 #MIMEtypesSetzen
