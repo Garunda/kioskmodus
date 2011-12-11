@@ -2001,10 +2001,10 @@ case $1 in
 ##	PaketQuellenAnpassen online
 #	apt-key adv --recv-keys --keyserver keyserver.ubuntu.com 82BA8E0F # Der Schlüssel von garunda
 ##	PaketlisteDeinstallieren
-##	BenutzerSchuleAnlegen
-#	Wiederherstellen verwaltung
-#	SysViniteinrichtung on
-##	LightDMAutoLogin
+	BenutzerSchuleAnlegen
+	Wiederherstellen verwaltung
+	SysViniteinrichtung on
+	LightDMAutoLogin
 ##	Beepen # Beepen nach Beendigung des Prozesses
 	;;
 	*)
