@@ -1857,6 +1857,9 @@ SysViniteinrichtung on
 ## xorg.conf kopieren
 #XorgSetzen on
 
+# Wenn noch nicht geschehn wird hier der Benutzer Schule angelegt
+BenutzerSchuleAnlegen
+
 ## Zur Bearbeitung des Homeverzeichnisses von schule,
 # die Option auf Off setzen
 MountAufs on
@@ -1919,9 +1922,6 @@ LibreOfficeExtensionGlobalInstallieren
 
 # Druch drücken der Bild hoch/unter Tasten in der Shellhistory suchen
 SuchenInDerShellHistoryAktivieren
-
-# Wenn noch nicht geschehn wird hier der Benutzer Schule angelegt
-BenutzerSchuleAnlegen
 
 ## Dateiprogrammverknüpfungen anpassen
 #MIMEtypesSetzen
