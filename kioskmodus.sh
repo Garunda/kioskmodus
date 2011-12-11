@@ -2004,8 +2004,8 @@ case $1 in
 	BenutzerSchuleAnlegen
 	Wiederherstellen verwaltung
 	SysViniteinrichtung on
-	LightDMAutoLogin
-##	Beepen # Beepen nach Beendigung des Prozesses
+#	LightDMAutoLogin # wird bereits in der config ausgeführt
+	Beepen # Beepen nach Beendigung des Prozesses
 	;;
 	*)
 	echo "$1 ist ein falsches Parameter"
