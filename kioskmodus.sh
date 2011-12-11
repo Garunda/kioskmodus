@@ -1920,6 +1920,9 @@ LibreOfficeExtensionGlobalInstallieren
 # Druch drücken der Bild hoch/unter Tasten in der Shellhistory suchen
 SuchenInDerShellHistoryAktivieren
 
+# Wenn noch nicht geschehn wird hier der Benutzer Schule angelegt
+BenutzerSchuleAnlegen
+
 ## Dateiprogrammverknüpfungen anpassen
 #MIMEtypesSetzen
 
@@ -1998,13 +2001,11 @@ case $1 in
 #	MIMEtypesSetzen
 	;;
 	"--install") # Dies wird direkt nach der Installation ausgeführt, damit auch alles installiert wird
-##	PaketQuellenAnpassen online
 #	apt-key adv --recv-keys --keyserver keyserver.ubuntu.com 82BA8E0F # Der Schlüssel von garunda
 ##	PaketlisteDeinstallieren
-	BenutzerSchuleAnlegen
+#	BenutzerSchuleAnlegen
 	Wiederherstellen verwaltung
 	SysViniteinrichtung on
-#	LightDMAutoLogin # wird bereits in der config ausgeführt
 	Beepen # Beepen nach Beendigung des Prozesses
 	;;
 	*)
