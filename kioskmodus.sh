@@ -1734,7 +1734,7 @@ if [ $1 == "online" ]; then
 	Mirror="http://"
 	echo "#### INTERNET ####" > "$SourcesList"
 elif [ $1 == "offline" ]; then
-	Mirror="ftp://paketkoenig.localdomain/mirror/"
+	Mirror="http://paketkoenig.localdomain/mirror/"
 	echo "#### PAKETKOENIG ####" > "$SourcesList"
 else
 	Mirror=false
@@ -1770,7 +1770,7 @@ if [ ! $Mirror == false ]; then
 	echo "" >> "$SourcesList"
 	echo "## OGT Kioskmodus Repository" >> "$SourcesList"
 	echo "" >> "$SourcesList"
-	echo "deb "$Mirror"192.168.1.105/repository ./" >> "$SourcesList"
+	echo "deb http://paketkoenig.localdomain/repository ./" >> "$SourcesList"
 	echo "" >> "$SourcesList"
 
 fi
@@ -2010,7 +2010,7 @@ case $1 in
 #	MIMEtypesSetzen
 	;;
 	"--install") # Dies wird direkt nach der Installation ausgeführt, damit auch alles installiert wird
-#	apt-key adv --recv-keys --keyserver keyserver.ubuntu.com 82BA8E0F # Der Schlüssel von garunda
+#	apt-key adv --recv-keys --keyserver keyserver.ubuntu.com 82BA8E0F # Der Schlüssel von garunda; nicht nötig ( kioskmodus-keyring )
 ##	PaketlisteDeinstallieren
 #	BenutzerSchuleAnlegen
 	Wiederherstellen verwaltung
