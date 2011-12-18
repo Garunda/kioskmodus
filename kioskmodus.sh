@@ -1352,8 +1352,6 @@ unset httpServerIP
 
 LokaleSystemMailsAnMailAdresseWeiterleitenAktivieren(){
 
-# Im Aufbau
-
 ## Bei Problemen mit Hard- und Software schicken viele Linux-Programme
 #  Mails an den lokalen Systemadministrator. Damit Sie diese züpgig sehen,
 #  sollte das System die Mails an ihre normale E-Mail-Adresse weiterleiten.
