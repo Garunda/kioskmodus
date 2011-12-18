@@ -1167,6 +1167,19 @@ fi
 }
 
 
+KopiergeschuetzteDVDswiedergeben(){
+
+## Es wird ein Skript ausgefpührt, welches die Wiedergabe von
+## kopierschutzbehafteten DVDs ermöglicht.
+## vgl. http://wiki.ubuntuusers.de/Codecs
+
+LogEintragErstellen "KopiergeschuetzteDVDswiedergeben : Skript wird asugeführt"
+
+/usr/share/doc/libdvdread4/install-css.sh
+
+}
+
+
 PaketlisteDeinstallieren(){
 
 # Muss getestet werden
@@ -1226,7 +1239,7 @@ else
 		xargs -a "/etc/kioskmodus/packages.list" sudo apt-get install 
 
 		# Kopiergeschützte DVDs wiedergeben
-		/usr/share/doc/libdvdread4/install-css.sh 
+		KopiergeschuetzteDVDswiedergeben
 	fi
 
 fi
@@ -2015,6 +2028,7 @@ case $1 in
 #	BenutzerSchuleAnlegen
 	Wiederherstellen verwaltung
 	SysViniteinrichtung on
+	KopiergeschuetzteDVDswiedergeben # Muss einmal ausgeführt werden
 	Beepen # Beepen nach Beendigung des Prozesses
 	;;
 	*)
