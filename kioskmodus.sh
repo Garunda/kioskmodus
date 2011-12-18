@@ -1169,11 +1169,11 @@ fi
 
 KopiergeschuetzteDVDswiedergeben(){
 
-## Es wird ein Skript ausgefpührt, welches die Wiedergabe von
+## Es wird ein Skript ausgeführt, welches die Wiedergabe von
 ## kopierschutzbehafteten DVDs ermöglicht.
 ## vgl. http://wiki.ubuntuusers.de/Codecs
 
-LogEintragErstellen "KopiergeschuetzteDVDswiedergeben : Skript wird asugeführt"
+LogEintragErstellen "KopiergeschuetzteDVDswiedergeben : Skript wird ausgeführt"
 
 /usr/share/doc/libdvdread4/install-css.sh
 
