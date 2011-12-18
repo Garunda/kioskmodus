@@ -1176,10 +1176,11 @@ LogEintragErstellen "KopiergeschuetzteDVDswiedergeben : Skript wird ausgeführt"
 
 PaketlisteDeinstallieren(){
 
-# Muss getestet werden
-
-## Hier werden alle Pakete deinstalliert die Standardmäßig installiert werden,
-## aber eigentlich nicht benötigt werden.
+## Hier werden alle Pakete deinstalliert die Standardmäßig installiert
+## werden, aber eigentlich nicht benötigt werden. Es werden hierzu
+## alle Pakete, die in der Datei /etc/kioskmodus/removepackages.list
+## hinterlegt sind, deinstalliert.
+## vgl. http://wiki.ubuntuusers.de/Paketverwaltung/Tipps
 
 if [ -f /usr/bin/pidgin ]; then
 
@@ -1199,7 +1200,10 @@ fi
 
 PaketlisteInstallieren(){
 
-## Hier werden die Pakte installiert die benötigt werden
+## Hier werden die Pakete installiert, die benötigt werden.
+## Es werden diese aus der Datei /etc/kioskmodus/packages.list
+## eingelesen.
+## vgl. http://wiki.ubuntuusers.de/Paketverwaltung/Tipps
 
 if [ $1 == "erstellen" ]; then
 
@@ -1217,6 +1221,8 @@ if [ $1 == "erstellen" ]; then
 	dpkg --get-selections | awk '!/deinstall|purge|hold/ {print $1}' > /etc/kioskmodus/packages.list 
 
 else
+
+# Hier werden die Pakete installiert.
 
 	# Paketquellen aktualisieren
 	apt-get update 
