@@ -723,9 +723,6 @@ fi
 
 Wiederherstellen(){
 
-# Bei der Anpassung
-# Muss getestet werden
-
 ## Hier werden die Archive, die die Homeverzeichnisse der Benutzer enthalten,
 ## entpackt. Diese Dateien werden statt der bestehenden verwendet.
 
