@@ -486,7 +486,7 @@ LightDMAutoLogin(){
 
 ## Hier wird der automatische Login für den Benutzer Schule erstellt.
 ## Es wird angenommen das der Displaymanger LightDM verwendet wird,
-## deshlab wird dieer hier konfiguriert.
+## deshalb wird dieser hier konfiguriert.
 
 
 # Die vorgefertigte Konfigurationsdatei einfügen
@@ -507,9 +507,6 @@ $EOFE
 GDMAutoLogin(){
 
 ## Kopieren der custom.conf von GDM in den GDM Ordner
-
-# veraltet
-#	cp "$Instpfad"/gdm/custom.conf /etc/gdm/custom.conf
 
 # Datei einfügen
 cat <<-\$EOFE >/etc/gdm/custom.conf
