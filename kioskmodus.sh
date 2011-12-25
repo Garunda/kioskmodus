@@ -707,7 +707,7 @@ if [ $1 == "on" ]; then
 		elif [ "$Aufloesung" == "1280x1024" ]; then
 			xorgeinfügenSXGA
 		fi
-		RandRstatischeAufloesung
+#		RandRstatischeAufloesung
 
 elif [ $1 == "off" ]; then
 	if [ -f /etc/X11/xorg.conf ]; then
@@ -1872,7 +1872,7 @@ cat <<-\$EOFE >"$Config"
 SysViniteinrichtung on
 
 ## xorg.conf kopieren
-#XorgSetzen on
+XorgSetzen on
 
 # Wenn noch nicht geschehn wird hier der Benutzer Schule angelegt
 BenutzerSchuleAnlegen
