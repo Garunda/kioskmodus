@@ -2022,8 +2022,6 @@ case $1 in
 	;;
 	"--install") # Dies wird direkt nach der Installation ausgeführt, damit auch alles installiert wird
 #	apt-key adv --recv-keys --keyserver keyserver.ubuntu.com 82BA8E0F # Der Schlüssel von garunda; nicht nötig ( kioskmodus-keyring )
-##	PaketlisteDeinstallieren
-#	BenutzerSchuleAnlegen
 	Wiederherstellen verwaltung
 	SysViniteinrichtung on
 	KopiergeschuetzteDVDswiedergeben # Muss einmal ausgeführt werden
