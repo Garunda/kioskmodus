@@ -1795,6 +1795,16 @@ if [ -f /tmp/kioskmodusPaketQuellenAnpassen ]; then
 	rm /tmp/kioskmodusPaketQuellenAnpassen
 fi
 
+# Fehler: "W: Duplicate sources.list entry
+#	http://dl.google.com/linux/earth/deb/ stable/main_binary-i386_Packages
+#	(/var/lib/apt/lists/dl.google.com_linux_earth_deb_dists_stable_main_binary-i386_Packages)"
+# Google Earth erstellt automatisch einen eigenen sources.list Eintrag in /etc/apt/sources.list.d
+# Zur Fehlerbehebnung wird dieser Eintrag gelöscht / alle Dateien in /etc/apt/sources.list.d gelöscht.
+
+if [ -f /etc/apt/sources.list.d/* ]; then
+	rm /etc/apt/sources.list.d/*
+fi
+
 }
 
 
