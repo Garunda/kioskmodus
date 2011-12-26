@@ -681,20 +681,20 @@ if [ -f /root/.aufloesung ]; then
 	if [ -f /home/verwaltung/.aufloesung ]; then
 		rm /home/verwaltung/.aufloesung
 	fi
-	if [ -f /home/schule/.aufloesung ]; then
-		rm /home/schule/.aufloesung
+	if [ -f /home/.schule_rw/.aufloesung ]; then
+		rm /home/.schule_rw/.aufloesung
 	fi
 elif [ -f /home/verwaltung/.aufloesung ]; then
 	Aufloesung=`cat /home/verwaltung/.aufloesung`
 	echo "$Aufloesung" > /etc/kioskmodus/aufloesung
 	rm /home/verwaltung/.aufloesung
-	if [ -f /home/schule/.aufloesung ]; then
-		rm /home/schule/.aufloesung
+	if [ -f /home/.schule_rw/.aufloesung ]; then
+		rm /home/.schule_rw/.aufloesung
 	fi
-elif [ -f /home/schule/.aufloesung ]; then
-	Aufloesung=`cat /home/schule/.aufloesung`
+elif [ -f /home/.schule_rw/.aufloesung ]; then
+	Aufloesung=`cat /home/.schule_rw/.aufloesung`
 	echo "$Aufloesung" > /etc/kioskmodus/aufloesung
-	rm /home/schule/.aufloesung
+	rm /home/.schule_rw/.aufloesung
 fi
 
 
