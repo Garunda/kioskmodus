@@ -1511,19 +1511,33 @@ LibreOfficeExtensionGlobalInstallieren(){
 #  Es werden nur die folgenden Extensions installiert:
 #	- Sun_ODF_Template_Pack_de
 #	- Sun_ODF_Template_Pack2_de
-
+#	- Italian and Latin spelling dictionaries 
+#	  ( http://extensions.libreoffice.org/extension-center/italian-and-latin-spelling-dictionaries )
 
 LogEintragErstellen "LibreOfficeExtensionGlobalInstallieren : Nun  werden die Extensions aufgelistet"
 
 # Liste aller installierter Extensions in eine Datei schreiben
 unopkg list --shared >> /tmp/KioskmodusLOExtension
 IstInstalliert="yes"
+
 # Nach den Extensions suchen
 if ! grep -q "org.openoffice.legacy.Sun_ODF_Template_Pack_de.oxt" /tmp/KioskmodusLOExtension ; then
 
 	echo "LibreOfficeExtensionGlobalInstallieren : Template Pack I nicht installiert, installieren ..."
 	LogEintragErstellen "LibreOfficeExtensionGlobalInstallieren : Template Pack I nicht installiert, installieren ..."
 	IstInstalliert="no"
+	if [ -f /etc/kioskmodus/Sun_ODF_Template_Pack_de.oxt ]; then
+
+		# -s unterdrückt die Lizenzabsegnung, --shared installiert für alle Benutzer
+		unopkg add -s --shared /etc/kioskmodus/Sun_ODF_Template_Pack_de.oxt
+
+	else
+
+		echo "LibreOfficeExtensionGlobalInstallieren : Template Pack I nicht vorhanden"
+		LogEintragErstellen "LibreOfficeExtensionGlobalInstallieren : Template Pack I nicht vorhanden"
+
+	fi
+
 fi
 
 if ! grep -q "com.sun.ProfessionalTemplatePack2_de" /tmp/KioskmodusLOExtension ; then
@@ -1531,6 +1545,36 @@ if ! grep -q "com.sun.ProfessionalTemplatePack2_de" /tmp/KioskmodusLOExtension ;
 	echo "LibreOfficeExtensionGlobalInstallieren : Template Pack II nicht installiert, installieren ..."
         LogEintragErstellen "LibreOfficeExtensionGlobalInstallieren : Template Pack II nicht installiert, installieren ..."
 	IstInstalliert="no"
+	if [ -f /etc/kioskmodus/Sun_ODF_Template_Pack2_de.oxt ]; then
+
+		# -s unterdrückt die Lizenzabsegnung, --shared installiert für alle Benutzer
+		unopkg add -s --shared /etc/kioskmodus/Sun_ODF_Template_Pack2_de.oxt
+
+	else
+
+		echo "LibreOfficeExtensionGlobalInstallieren : Template Pack II nicht vorhanden"
+		LogEintragErstellen "LibreOfficeExtensionGlobalInstallieren : Template Pack II nicht vorhanden"
+
+	fi
+
+fi
+
+if ! grep -q "Italian.IT-only.and.Latin.dictionaries.from.org.openoffice.de.by.Karl.Zeiler" /tmp/KioskmodusLOExtension ; then
+
+	echo "LibreOfficeExtensionGlobalInstallieren : Italian and Latin spelling dictionaries nicht installiert, installieren ..."
+        LogEintragErstellen "LibreOfficeExtensionGlobalInstallieren : Italian and Latin spelling dictionaries nicht installiert, installieren ..."
+	IstInstalliert="no"
+	if [ -f /etc/kioskmodus/dict-it-it_and_latin_2011-08-07.oxt ]; then
+
+		# -s unterdrückt die Lizenzabsegnung, --shared installiert für alle Benutzer
+		unopkg add -s --shared /etc/kioskmodus/dict-it-it_and_latin_2011-08-07.oxt
+
+	else
+
+		echo "LibreOfficeExtensionGlobalInstallieren : Italian and Latin spelling dictionaries nicht vorhanden"
+		LogEintragErstellen "LibreOfficeExtensionGlobalInstallieren : Italian and Latin spelling dictionaries nicht vorhanden"
+
+	fi
 
 fi
 
@@ -1539,21 +1583,6 @@ if [ "$IstInstalliert" == "yes" ]; then
 	echo "LibreOfficeExtensionGlobalInstallieren : alles schon installiert"
 	LogEintragErstellen "LibreOfficeExtensionGlobalInstallieren : alles schon installiert"
 	return
-
-fi
-
-if [ -f /etc/kioskmodus/Sun_ODF_Template_Pack_de.oxt ] && [ -f /etc/kioskmodus/Sun_ODF_Template_Pack2_de.oxt ]; then
-
-	# -s unterdrückt die Lizenzabsegnung, --shared installiert für alle Benutzer
-	unopkg add -s --shared /etc/kioskmodus/Sun_ODF_Template_Pack2_de.oxt
-	unopkg add -s --shared /etc/kioskmodus/Sun_ODF_Template_Pack_de.oxt
-
-else
-
-	echo "LibreOffice Extensions noch nicht heruntergeladen"
-	echo "--<== Schleunigst nachholen !!!!! ==>--"
-	LogEintragErstellen "LibreOffice Extensions noch nicht heruntergeladen"
-	LogEintragErstellen "--<== Schleunigst nachholen !!!!! ==>--"
 
 fi
 
