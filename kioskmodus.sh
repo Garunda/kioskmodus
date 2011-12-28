@@ -1534,8 +1534,7 @@ for file in /etc/kioskmodus/*.oxt ; do
 		if [ -f "$file" ]; then
 
 			# -s unterdrückt die Lizenzabsegnung, --shared installiert für alle Benutzer
-			#unopkg add -s --shared "$file"   #/etc/kioskmodus/Sun_ODF_Template_Pack_de.oxt
-			echo "vorhanden"
+			unopkg add -s --shared "$file"
 
 		else
 
