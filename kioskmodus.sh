@@ -964,7 +964,7 @@ SicherheitsupdatesEinspielenUndHerunterfahren(){
 ## Zum Abschluss wird der PC heruntergefahren
 
 # Zunächst wird überprüft ob die Systemuhrzeit korrekt sein kann.
-if [ "$(ntpdate ptbtime1.ptb.de)" ]; then
+if [ "$(ntpdate zeitserver.localdomain)" ]; then
 
 	# Den Distributionscodenamen einlesen
 	. /etc/lsb-release
@@ -974,9 +974,9 @@ if [ "$(ntpdate ptbtime1.ptb.de)" ]; then
 	apt-get -yt "$DISTRIB_CODENAME"-security dist-upgrade
 	# Alle einfachen Updates installieren
 	apt-get --trivial-only dist-upgrade 
-	# PC herunterfahren
+	# PC herunterfahren, verwenden von shutdown, da halt Fehler verursacht ( PC friert ein )
 	LogEintragErstellen "SicherheitsupdatesEinspielenUndHerunterfahren : Der PC muss durch das Script heruntergefahren, der DAU war am Werk"
-	halt
+	shutdown -h now
 
 fi
 
@@ -1003,10 +1003,13 @@ cat <<-\$EOFE >/etc/cron.d/autoshutdown
 ## Das ganze ist nur wegen dem DAU notwendig 
 ## und wäre ohne ihm unnötig.
 
+# Path Varibale erzeugen, damit das Skript funktioniert
+PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
+
 #M   S     T M W   user Befehl
 
 59   16    * * *   root /usr/sbin/ntpdate zeitserver.localdomain > /dev/null
-0    17    * * *   root /usr/sbin/ntpdate zeitserver.localdomain > /dev/null && /usr/bin/kioskmodus.sh -S #/sbin/halt
+0    17    * * *   root /usr/sbin/ntpdate zeitserver.localdomain > /dev/null && /usr/bin/kioskmodus.sh -S
 
 $EOFE
 
