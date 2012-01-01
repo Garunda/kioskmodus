@@ -1766,7 +1766,7 @@ if [ ! $Mirror == false ]; then
 	echo "" >> "$SourcesList"
 	echo "deb "$Mirror"de.archive.ubuntu.com/ubuntu "$DISTRIB_CODENAME"-security main restricted universe multiverse" >> "$SourcesList"
 	echo "" >> "$SourcesList"
-	echo "deb "$Mirror"extras.ubuntu.com/ubuntu "$DISTRIB_CODENAME" main" >> "$SourcesList"
+	echo "#deb "$Mirror"extras.ubuntu.com/ubuntu "$DISTRIB_CODENAME" main" >> "$SourcesList"
 	echo "" >> "$SourcesList"
 	echo "## Remastersys" >> "$SourcesList"
 	echo "" >> "$SourcesList"
