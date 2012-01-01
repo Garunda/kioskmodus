@@ -1915,8 +1915,8 @@ UpgradeBenachrichtigungDeaktivieren
 NTPZeitserverSynchronisationEinstellen
 
 ## PaketQuellen entweder die Offiziellen oder der Spiegel
-PaketQuellenAnpassen online
-#PaketQuellenAnpassen offline
+#PaketQuellenAnpassen online
+PaketQuellenAnpassen offline
 
 ## Menueeintraege für die Programme Mediathek und Google Earth
 #MediathekmenueeintragErstellen
