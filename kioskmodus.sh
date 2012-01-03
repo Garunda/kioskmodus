@@ -1770,7 +1770,7 @@ if [ ! $Mirror == false ]; then
 	echo "" >> "$SourcesList"
 	echo "## Remastersys" >> "$SourcesList"
 	echo "" >> "$SourcesList"
-	echo "deb "$Mirror"www.geekconnection.org/remastersys/repository karmic/" >> "$SourcesList"
+	echo "deb "$Mirror"www.geekconnection.org/remastersys/repository lucid/" >> "$SourcesList"
 	echo "" >> "$SourcesList"
 	echo "## Medibuntu" >> "$SourcesList"
 	echo "" >> "$SourcesList"
