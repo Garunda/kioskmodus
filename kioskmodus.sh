@@ -1064,59 +1064,27 @@ PlymouthThemeAendern(){
 ## "plymouth-theme-solar" verwendet werden. Hierzu muss es installiert sein, 
 ## damit folgende Einstellung greifen kann. Der Ansatz über 
 ## update-alternatives --set default.plymouth /lib/plymouth/themes/solar/solar.plymouth
-## funktioniert leider nicht beim Systemstart, daher wird stattdessen die 
-## Datei /etc/alternatives/default.plymouth in der die Einstellung hinterlegt
-## ist direkt verändert. Die überprüfung ob die Einstellung schon gemacht wurde
-## wird mit der Hashfunktion md5sum geprüft.
+## funktioniert leider nicht beim Systemstart, daher wird stattdessen der 
+## symbolische Link /etc/alternatives/default.plymouth auf das neue Ziel gesetzt.
+## ( /lib/plymouth/themes/xubuntu-logo/xubuntu-logo.plymouth =>
+##          /lib/plymouth/themes/solar/solar.plymouth )
+## Zunächst wird aber mittels "readlink" überprüft ob der Link überhaupt
+## noch geändert werden muss. Erst dannach wird die Änderung vorgenommen.
 ## vgl. http://wiki.ubuntuusers.de/Plymouth
-##      http://wiki.ubuntuusers.de/Shell/md5sum
-
+##      http://linuxwiki.de/SymLink
 
 # Ist das Thema vorhanden ?
 if [ -f /lib/plymouth/themes/solar/solar.plymouth ]; then
 
-#	# aktuelles Thema ermitteln
-#	AktuellesThema="$(update-alternatives --display default.plymouth | awk '/Zeit/ { print $6 }' )"
+	# readlink gibt die Datei aus auf die der symbolische Link zeigt.
+	aktLink="$(readlink /etc/alternatives/default.plymouth)"
 
-#	# Ist das aktuelle Thema das gewünschte ?
-#	if [ ! "$AktuellesThema" == "/lib/plymouth/themes/solar/solar.plymouth" ]; then
+	if [ ! "$aktLink" == "/lib/plymouth/themes/solar/solar.plymouth" ]; then
 
-#		LogEintragErstellen "PlymouthThemeAendern : Das aktuelle Thema ("$AktuellesThema")ist nicht das gewünschte, ändern"
-#		# es ist es nicht, Splash einstellen
-#		update-alternatives --set default.plymouth /lib/plymouth/themes/solar/solar.plymouth
-#	
-#		# Nun werden die Aenderungen ins Bootimage geschrieben
-#		update-initramfs -u -k all 
-
-#	fi
-
-	# Ist das richtige Thema ist momentan gesetzt ?
-	# Hierzu wird die md5-Summe gebildet
-	PlymouthHash="$(md5sum /etc/alternatives/default.plymouth)"
-
-	# OUTPUT: c3e5e3fe3cf039627fc4e90a0ca1f4dd  /etc/alternatives/default.plymouth
-	LogEintragErstellen "PlymouthThemeAendern : "$PlymouthHash""
-	echo "$PlymouthHash"
-
-	if [ "$PlymouthHash" == "cb61d8dbfb9c0f5a24002a6b8aa76175  /etc/alternatives/default.plymouth" ]; then
-
-		echo "PlymouthThemeAendern : gewünschtes Thema eingestellt, nichts zu tun"
-		LogEintragErstellen "PlymouthThemeAendern : gewünschtes Thema eingestellt, nichts zu tun"
-
-	else
-
-		echo "PlymouthThemeAendern : momentanes Thema ist nicht das richtige, Datei wird überschrieben"	
-		LogEintragErstellen "PlymouthThemeAendern : momentanes Thema ist nicht das richtige, Datei wird überschrieben"
-
-cat <<-\$EOFE >/etc/alternatives/default.plymouth
-[Plymouth Theme]
-Name=Solar
-Description=Space theme with violent flaring blue star
-ModuleName=space-flares
-
-[space-flares]
-ImageDir=/lib/plymouth/themes/solar
-$EOFE
+		# Löschen des alten Links
+		rm /etc/alternatives/default.plymouth
+		# Erstellen eines neuen, der auf das gewünschte Thema zeigt.
+		ln -s /lib/plymouth/themes/solar/solar.plymouth /etc/alternatives/default.plymouth
 
 		# Nun werden die Aenderungen ins Bootimage geschrieben
 		update-initramfs -u -k all 
@@ -1130,7 +1098,7 @@ else
 
 fi
 
-unset PlymouthHash
+unset aktLink
 
 }
 
