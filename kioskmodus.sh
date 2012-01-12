@@ -1887,6 +1887,9 @@ cat <<-\$EOFE >"$Config"
 ## SysVinit Skriptstart beim booten einrichten
 SysViniteinrichtung on
 
+## Top Level Domain herausfinden ( z.B. ".local" )
+LokaleTopLevelDomainHerausfinden
+
 ## xorg.conf kopieren
 XorgSetzen on
 
