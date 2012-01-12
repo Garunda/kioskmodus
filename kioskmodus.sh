@@ -955,6 +955,43 @@ fi
 }
 
 
+LokaleTopLevelDomainHerausfinden(){
+
+## Um eideutige Server-Hostnamen zu verwenden muss
+## die im lokalen Netzwerk verwendete Top-Level-Domain
+## bekannt sein. Da diese verändert werden kann und
+## zentral vom DHCP-Server festgelegt wird, ist es nur
+## logisch diese durch diesen auch in Erfahrung zu bringen.
+## Hierzu wird der "dhclient" angezapft. Dieser schreibt die
+## aktuelle DHCP-Einstellungen nach "/var/lib/dhcp3" und
+## dort in in Dateien nach dem Schema:
+## "./dhclient-df1c490c-a733-4b80-a9fc-174cd2cf7bb6-eth1.lease"
+## Zunächst gilt es die neueste Datei zu finden. Das Konstrukt
+## "ls -lt $(for i in $(find -type f) ; do ls -t $i ; done) | head -1"
+## liefert die neueste Datei aus dem aktuellen Verzeichnis
+## und allen Unterverzeichnissen. Uns reicht in diesem
+## Fall dieses schnelle und einfachere Codeschnipsel :
+## "ls -t | head -1"
+## vgl. http://www.e-cs.co/2010/08/26/linux/neuste-datei-finden/
+##      http://linuxint.com/DOCS/Linux_Docs/openbook_shell/shell_004_002.htm
+
+# neuste Datei finden, Option "-t" sortiert nach Änderungsdatum
+# "head -1" gibt nur die oberste Zeile aus.
+AktuelleDHCPLeaseDatei="$(ls -t /var/lib/dhcp3/ | head -1)"
+
+# awk: Zeile "option domain-name" herausfiltern
+# head: Falls mehrmals vorhanden, nur erste verwenden
+# cut: erstes Zeichen abschneiden ( alles ab dem 2. ausgeben )
+AktuelleLokaleTopLevelDomain="$(awk '/option domain-name / {print $3 }' /var/lib/dhcp3/$AktuelleDHCPLeaseDatei | head -1 | cut -c2- )"
+
+# Die letzten beiden Zeichen abschneiden ( Quote und Semikolon )
+AktuelleLokaleTopLevelDomain="${AktuelleLokaleTopLevelDomain%??}"
+
+unset AktuelleDHCPLeaseDatei
+
+}
+
+
 SicherheitsupdatesEinspielenUndHerunterfahren(){
 
 ## Diese Funtion wird durch einen Cronjob ausgeführt.
