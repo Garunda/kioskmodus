@@ -25,6 +25,9 @@
 # Als root ausführen
 if [ `id -u` -ne 0 ];then exec sudo $0; fi
 
+# Version dieses Skriptes
+Version=0.3.05
+
 ## Die Pfad-Variabeln
 Instpfad="/usr/bin"
 Config="/etc/kioskmodus/kioskmodus.conf"
