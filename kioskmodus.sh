@@ -22,8 +22,8 @@
 
 
 
-# Als root ausführen
-if [ `id -u` -ne 0 ];then exec sudo $0; fi
+# Als root ausführen ( Funkltioniert nicht !! Parameter werden abgeschnitten )
+#if [ `id -u` -ne 0 ];then exec sudo $0; fi
 
 # Version dieses Skriptes
 Version=0.3.05
@@ -2060,6 +2060,9 @@ case $1 in
 	;;
 	"--Autostarteinrichten")
 	SysViniteinrichtung on
+	;;
+	"--version"|"--Version")
+	echo "$Version"
 	;;
 	"entwicklung") # Hier wird alles durchgeführt was am Anfang der Erstellung eines neues Images durchgeführt werden sollte
 ##	PaketQuellenAnpassen online
