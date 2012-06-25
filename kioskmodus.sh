@@ -22,8 +22,10 @@
 
 
 
-# Als root ausführen ( Funkltioniert nicht !! Parameter werden abgeschnitten )
-#if [ `id -u` -ne 0 ];then exec sudo $0; fi
+## Als root ausführen
+## if [ `id -u` -ne 0 ];then exec sudo $0; fi # ( Funktioniert nicht !! Parameter werden abgeschnitten )
+## So wird ein Abbruch erzeugt und zum Neuaufruf aufgefordert.
+if [ `id -u` -ne 0 ];then echo "ERROR: You need to be root"; exit ; fi
 
 # Version dieses Skriptes
 Version=0.3.05
