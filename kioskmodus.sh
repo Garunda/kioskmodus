@@ -2066,6 +2066,9 @@ case $1 in
 	"--version"|"--Version")
 	echo "$Version"
 	;;
+	"--Beepen")
+	Beepen
+	;;
 	"entwicklung") # Hier wird alles durchgeführt was am Anfang der Erstellung eines neues Images durchgeführt werden sollte
 ##	PaketQuellenAnpassen online
 #	BenutzerSchuleAnlegen
