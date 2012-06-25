@@ -1956,7 +1956,7 @@ PlymouthThemeAendern
 # Falls nicht werden sie installiert.
 LibreOfficeExtensionGlobalInstallieren
 
-# Druch drücken der Bild hoch/unter Tasten in der Shellhistory suchen
+# Durch drücken der Bild hoch/unter Tasten in der Shellhistory suchen
 SuchenInDerShellHistoryAktivieren
 
 # Es werden alle überflüssigen Pakete deinstalliert
@@ -2033,6 +2033,30 @@ case $1 in
 	;;
 	"-S")
 	SicherheitsupdatesEinspielenUndHerunterfahren
+	;;
+	"--SuchenInDerShellHistoryAktivieren")
+	SuchenInDerShellHistoryAktivieren
+	;;
+	"--PaketQuellenAnpassen_online")
+	PaketQuellenAnpassen online
+	;;
+	"--PaketQuellenAnpassen_offline")
+	PaketQuellenAnpassen offline
+	;;
+	"--NTPZeitserverSynchronisationEinstellen")
+	NTPZeitserverSynchronisationEinstellen
+	;;
+	"--LightDMAutoLogin")
+	LightDMAutoLogin
+	;;
+	"--WakeOnLANAktivieren")
+	WakeOnLANAktivieren
+	;;
+	"--KopiergeschuetzteDVDswiedergeben")
+	KopiergeschuetzteDVDswiedergeben
+	;;
+	"--Autostarteinrichten")
+	SysViniteinrichtung on
 	;;
 	"entwicklung") # Hier wird alles durchgeführt was am Anfang der Erstellung eines neues Images durchgeführt werden sollte
 ##	PaketQuellenAnpassen online
