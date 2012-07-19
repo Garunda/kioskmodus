@@ -1792,7 +1792,7 @@ if [ ! $Mirror == false ]; then
 	echo "" >> "$SourcesList"
 	echo "## OGT Kioskmodus Repository" >> "$SourcesList"
 	echo "" >> "$SourcesList"
-	echo "deb http://paketkoenig.localdomain/repository ./" >> "$SourcesList"
+	echo "deb http://repository.ostsee-gymnasium.de precise main kioskmodus" >> "$SourcesList"
 	echo "" >> "$SourcesList"
 
 fi
