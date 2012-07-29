@@ -2039,6 +2039,9 @@ case $1 in
 	"-S")
 	SicherheitsupdatesEinspielenUndHerunterfahren
 	;;
+	"--BenutzerSchuleAnlegen")
+	BenutzerSchuleAnlegen
+	;;
 	"--SuchenInDerShellHistoryAktivieren")
 	SuchenInDerShellHistoryAktivieren
 	;;
