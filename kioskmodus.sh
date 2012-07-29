@@ -2045,6 +2045,9 @@ case $1 in
 	"--LibreOfficeExtensionGlobalInstallieren")
 	LibreOfficeExtensionGlobalInstallieren
 	;;
+	"--LightDMGreeterAendern")
+	LightDMGreeterAendern
+	;;
 	"--SuchenInDerShellHistoryAktivieren")
 	SuchenInDerShellHistoryAktivieren
 	;;
