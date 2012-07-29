@@ -2042,6 +2042,9 @@ case $1 in
 	"--BenutzerSchuleAnlegen")
 	BenutzerSchuleAnlegen
 	;;
+	"--LibreOfficeExtensionGlobalInstallieren")
+	LibreOfficeExtensionGlobalInstallieren
+	;;
 	"--SuchenInDerShellHistoryAktivieren")
 	SuchenInDerShellHistoryAktivieren
 	;;
@@ -2050,6 +2053,9 @@ case $1 in
 	;;
 	"--PaketQuellenAnpassen_offline")
 	PaketQuellenAnpassen offline
+	;;
+	"--PlymouthThemeAendern")
+	PlymouthThemeAendern
 	;;
 	"--NTPZeitserverSynchronisationEinstellen")
 	NTPZeitserverSynchronisationEinstellen
