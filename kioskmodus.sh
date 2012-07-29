@@ -1788,7 +1788,7 @@ if [ ! $Mirror == false ]; then
 	echo "" >> "$SourcesList"
 	echo "## Google Earth" >> "$SourcesList"
 	echo "" >> "$SourcesList"
-	echo "deb "$Mirror"dl.google.com/linux/earth/deb/ stable main" >> "$SourcesList"  # vgl. http://www.ubuntuupdates.org/ppas/80
+	echo "#deb "$Mirror"dl.google.com/linux/earth/deb/ stable main" >> "$SourcesList"  # vgl. http://www.ubuntuupdates.org/ppas/80
 	echo "" >> "$SourcesList"
 	echo "## OGT Kioskmodus Repository" >> "$SourcesList"
 	echo "" >> "$SourcesList"
