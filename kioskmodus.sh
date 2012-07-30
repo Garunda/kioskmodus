@@ -2021,14 +2021,8 @@ case $1 in
 	"löschen"|"-l") # Hiermit kann man erstellte Archive löschen
 	Loeschen
 	;;
-	"hilfe"|"--help"|"-h"|"--hilfe")
-	Hilfe
-	;;
 	"RandR")
 	RandRstatischeAufloesung
-	;;
-	"gpxe")
-	GRUBgPXE on
 	;;
 	"-t"|"test")
 	PlymouthThemeAendern
@@ -2039,17 +2033,47 @@ case $1 in
 	"-S")
 	SicherheitsupdatesEinspielenUndHerunterfahren
 	;;
+	"--Autostarteinrichten")
+	SysViniteinrichtung on
+	;;
+	"--Beepen")
+	Beepen
+	;;
 	"--BenutzerSchuleAnlegen")
 	BenutzerSchuleAnlegen
+	;;
+	"--DateisystemFehlerAutomatischKorrigieren")
+	DateisystemFehlerAutomatischKorrigieren
+	;;
+	"--DateisystemUeberpruefungsRhythmusAendern")
+	DateisystemUeberpruefungsRhythmusAendern
+	;;
+	"--gpxe")
+	GRUBgPXE on
+	;;
+	"--help"|"-h"|"--hilfe")
+	Hilfe
+	;;
+	"--Journaldateisystemverwenden")
+	Journaldateisystemverwenden
+	;;
+	"--KopiergeschuetzteDVDswiedergeben")
+	KopiergeschuetzteDVDswiedergeben
 	;;
 	"--LibreOfficeExtensionGlobalInstallieren")
 	LibreOfficeExtensionGlobalInstallieren
 	;;
+	"--LightDMAutoLogin")
+	LightDMAutoLogin
+	;;
 	"--LightDMGreeterAendern")
 	LightDMGreeterAendern
 	;;
-	"--SuchenInDerShellHistoryAktivieren")
-	SuchenInDerShellHistoryAktivieren
+	"--LokaleSystemMailsAnMailAdresseWeiterleitenAktivieren")
+	LokaleSystemMailsAnMailAdresseWeiterleitenAktivieren
+	;;
+	"--NTPZeitserverSynchronisationEinstellen")
+	NTPZeitserverSynchronisationEinstellen
 	;;
 	"--PaketQuellenAnpassen_online")
 	PaketQuellenAnpassen online
@@ -2057,29 +2081,23 @@ case $1 in
 	"--PaketQuellenAnpassen_offline")
 	PaketQuellenAnpassen offline
 	;;
+	"--PCAutoShutdown")
+	PCAutoShutdown
+	;;
 	"--PlymouthThemeAendern")
 	PlymouthThemeAendern
 	;;
-	"--NTPZeitserverSynchronisationEinstellen")
-	NTPZeitserverSynchronisationEinstellen
+	"--SuchenInDerShellHistoryAktivieren")
+	SuchenInDerShellHistoryAktivieren
 	;;
-	"--LightDMAutoLogin")
-	LightDMAutoLogin
-	;;
-	"--WakeOnLANAktivieren")
-	WakeOnLANAktivieren
-	;;
-	"--KopiergeschuetzteDVDswiedergeben")
-	KopiergeschuetzteDVDswiedergeben
-	;;
-	"--Autostarteinrichten")
-	SysViniteinrichtung on
+	"--UpgradeBenachrichtigungDeaktivieren")
+	UpgradeBenachrichtigungDeaktivieren
 	;;
 	"--version"|"--Version")
 	echo "$Version"
 	;;
-	"--Beepen")
-	Beepen
+	"--WakeOnLANAktivieren")
+	WakeOnLANAktivieren
 	;;
 	"entwicklung") # Hier wird alles durchgeführt was am Anfang der Erstellung eines neues Images durchgeführt werden sollte
 ##	PaketQuellenAnpassen online
