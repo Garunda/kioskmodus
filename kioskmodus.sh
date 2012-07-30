@@ -1084,7 +1084,7 @@ cat <<-\$EOFE >/etc/lightdm/lightdm-gtk-greeter.conf
 # xft-rgba = Type of subpixel antialiasing (none, rgb, bgr, vrgb or vbgr)
 #
 [greeter]
-background=/usr/share/xfce4/backdrops/586473main_iss028e005671_full.jpg
+background=/usr/share/xfce4/backdrops/638099main_iss030e185321_full.jpg
 theme-name=greybird
 font-name=Droid Sans 10
 xft-antialias=true
