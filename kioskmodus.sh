@@ -1085,7 +1085,7 @@ cat <<-\$EOFE >/etc/lightdm/lightdm-gtk-greeter.conf
 #
 [greeter]
 background=/usr/share/xfce4/backdrops/638099main_iss030e185321_full.jpg
-theme-name=greybird
+theme-name=Greybird-lightdm
 font-name=Droid Sans 10
 xft-antialias=true
 xft-dpi=96
