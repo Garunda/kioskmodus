@@ -1530,7 +1530,8 @@ LibreOfficeExtensionGlobalInstallieren(){
 LogEintragErstellen "LibreOfficeExtensionGlobalInstallieren : Nun  werden die Extensions aufgelistet"
 
 # Liste aller installierter Extensions in eine Datei schreiben
-unopkg list --shared >> /tmp/KioskmodusLOExtension
+# unopkg list --shared >> /tmp/KioskmodusLOExtension
+/usr/lib/libreoffice/program/unopkg list --shared >> /tmp/KioskmodusLOExtension
 IstInstalliert="yes"
 
 # Nach den Extensions suchen
@@ -1547,7 +1548,7 @@ for file in /etc/kioskmodus/*.oxt ; do
 		if [ -f "$file" ]; then
 
 			# -s unterdrückt die Lizenzabsegnung, --shared installiert für alle Benutzer
-			unopkg add -s --shared "$file"
+			/usr/lib/libreoffice/program/unopkg add -s --shared "$file"
 
 		else
 
