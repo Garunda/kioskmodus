@@ -2015,10 +2015,6 @@ case $1 in
 	source "$Config"
 	LogEintragErstellen "Parameterauswertung : Ende der Ausführung der Konfiguarationsdatei"
 	;;
-	"erstellen"|"-e") ## Hier werden alle Dinge für die Paketierung erstellt, hierzu muss das Image soweit fertig sein
-	PaketlisteInstallieren erstellen
-	Erstellen
-	;;
 	"löschen"|"-l") # Hiermit kann man erstellte Archive löschen
 	Loeschen
 	;;
@@ -2048,6 +2044,10 @@ case $1 in
 	;;
 	"--DateisystemUeberpruefungsRhythmusAendern")
 	DateisystemUeberpruefungsRhythmusAendern
+	;;
+	"--erstelle_Home-Dir-Archive"|"-e")
+	PaketlisteInstallieren erstellen
+	Erstellen
 	;;
 	"--gpxe")
 	GRUBgPXE on
