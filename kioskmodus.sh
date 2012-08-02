@@ -1948,7 +1948,7 @@ DateisystemUeberpruefungsRhythmusAendern
 WakeOnLANAktivieren
 
 # Hier wird die Systemmailweiterleitung aktiviert
-LokaleSystemMailsAnMailAdresseWeiterleitenAktivieren
+#LokaleSystemMailsAnMailAdresseWeiterleitenAktivieren
 
 # Hier wird der Displaymanagerhintergrund geändert
 LightDMGreeterAendern
