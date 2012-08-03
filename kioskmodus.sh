@@ -982,12 +982,12 @@ LokaleTopLevelDomainHerausfinden(){
 
 # neuste Datei finden, Option "-t" sortiert nach Änderungsdatum
 # "head -1" gibt nur die oberste Zeile aus.
-AktuelleDHCPLeaseDatei="$(ls -t /var/lib/dhcp3/ | head -1)"
+AktuelleDHCPLeaseDatei="$(ls -t /var/lib/dhcp/ | head -1)"
 
 # awk: Zeile "option domain-name" herausfiltern
 # head: Falls mehrmals vorhanden, nur erste verwenden
 # cut: erstes Zeichen abschneiden ( alles ab dem 2. ausgeben )
-AktuelleLokaleTopLevelDomain="$(awk '/option domain-name / {print $3 }' /var/lib/dhcp3/$AktuelleDHCPLeaseDatei | head -1 | cut -c2- )"
+AktuelleLokaleTopLevelDomain="$(awk '/option domain-name / {print $3 }' /var/lib/dhcp/$AktuelleDHCPLeaseDatei | head -1 | cut -c2- )"
 
 # Die letzten beiden Zeichen abschneiden ( Quote und Semikolon )
 AktuelleLokaleTopLevelDomain="${AktuelleLokaleTopLevelDomain%??}"
