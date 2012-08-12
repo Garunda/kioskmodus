@@ -2074,6 +2074,9 @@ case $1 in
 	"--LokaleSystemMailsAnMailAdresseWeiterleitenAktivieren")
 	LokaleSystemMailsAnMailAdresseWeiterleitenAktivieren
 	;;
+	"--LokaleTopLevelDomainHerausfinden")
+	LokaleTopLevelDomainHerausfinden
+	;;
 	"--NTPZeitserverSynchronisationEinstellen")
 	NTPZeitserverSynchronisationEinstellen
 	;;
