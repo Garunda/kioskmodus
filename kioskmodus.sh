@@ -1835,7 +1835,7 @@ NTPZeitserverSynchronisationEinstellen(){
 # Gucken ob die Zeile schon existiert.
 
 #String1="$(sed -n '/12 \* \* \* \* root ntpdate 10.0.0.15 \&> \/dev\/null/p' /etc/crontab )"
-String2="$(sed -n '/12 \* \* \* \* root ntpdate zeitserver.localdomain \&> \/dev\/null/p' /etc/crontab )"
+#String2="$(sed -n '/12 \* \* \* \* root ntpdate zeitserver.localdomain \&> \/dev\/null/p' /etc/crontab )"
 
 # Falls nicht; hänge diese Zeile ans Dokument an.
 
@@ -1844,19 +1844,42 @@ String2="$(sed -n '/12 \* \* \* \* root ntpdate zeitserver.localdomain \&> \/dev
 #	cp /tmp/kioskmodusNTP /etc/crontab
 #fi
 
-if [ ! "$String2" == "12 * * * * root ntpdate zeitserver.localdomain &> /dev/null" ]; then
-	sed -e '16a\12 * * * * root ntpdate zeitserver.localdomain &> /dev/null' /etc/crontab > /tmp/kioskmodusNTP #/etc/crontab
-	cp /tmp/kioskmodusNTP /etc/crontab
-fi
+#if [ ! "$String2" == "12 * * * * root ntpdate zeitserver.localdomain &> /dev/null" ]; then
+#	sed -e '16a\12 * * * * root ntpdate zeitserver.localdomain &> /dev/null' /etc/crontab > /tmp/kioskmodusNTP #/etc/crontab
+#	cp /tmp/kioskmodusNTP /etc/crontab
+#fi
 
 # Entfernen aller Zwischenspeicher
 
-if [ -f /tmp/kioskmodusNTP ]; then
-	rm /tmp/kioskmodusNTP
-fi
+#if [ -f /tmp/kioskmodusNTP ]; then
+#	rm /tmp/kioskmodusNTP
+#fi
 
 #unset String1
-unset String2
+#unset String2
+
+# Datei existiert --> Überprüfung ob die korrekte Topleveldomain eingetragen ist.
+if [ -e /etc/cron.d/kioskmodus_NTPsync  ]; then
+
+	TLDkorrekt="$(awk '/'$AktuelleLokaleTopLevelDomain'/  { print $8 }' /etc/cron.d/kioskmodus_NTPsync )"
+
+	if [ ! "$TLDkorrekt" == "zeitserver.$AktuelleLokaleTopLevelDomain" ];then
+		rm /etc/cron.d/kioskmodus_NTPsync
+	fi
+
+fi
+
+# Datei existiert noch nicht --> wird erstellt.
+if [ ! -e /etc/cron.d/kioskmodus_NTPsync  ]; then
+
+	echo "## Synchronisieren der Uhrzeit mit dem lokalen Zeitserver" > /etc/cron.d/kioskmodus_NTPsync
+	echo "## Es wird einmal pro Stunde um 12 nach die Zeit synchronisiert." >> /etc/cron.d/kioskmodus_NTPsync
+	echo "12 * * * * root ntpdate zeitserver."$AktuelleLokaleTopLevelDomain" &> /dev/null" >> /etc/cron.d/kioskmodus_NTPsync
+	echo "" >> /etc/cron.d/kioskmodus_NTPsync
+
+fi
+
+unset TLDkorrekt
 
 }
 
