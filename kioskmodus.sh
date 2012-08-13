@@ -1614,7 +1614,7 @@ Netzwerkschnittstelle="$(ifconfig | awk '/eth/ { print $1 }') "  # == "eth1 "
 # Falls die Netzwerkschnittstelle noch nicht aktiv ist wird "" zurückgegeben.
 # Dieser Fall wird hier abgefangen, damit keine fehlerhaften Zeilen erzeugt werden.
 if [ "$Netzwerkschnittstelle" == "" ]; then
-	return
+	Netzwerkschnittstelle="eth0"
 fi
 
 # Gucken ob die Zeile schon existiert.
