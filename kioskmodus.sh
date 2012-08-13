@@ -1930,7 +1930,7 @@ cat <<-\$EOFE >"$Config"
 SysViniteinrichtung on
 
 ## Top Level Domain herausfinden ( z.B. ".local" )
-LokaleTopLevelDomainHerausfinden
+LokaleTopLevelDomainHerausfinden localdomain
 
 ## xorg.conf kopieren
 XorgSetzen on
