@@ -1611,6 +1611,12 @@ WakeOnLANAktivieren(){
 
 Netzwerkschnittstelle="$(ifconfig | awk '/eth/ { print $1 }') "  # == "eth1 "
 
+# Falls die Netzwerkschnittstelle noch nicht aktiv ist wird "" zurückgegeben.
+# Dieser Fall wird hier abgefangen, damit keine fehlerhaften Zeilen erzeugt werden.
+if [ "$Netzwerkschnittstelle" == "" ]; then
+	return
+fi
+
 # Gucken ob die Zeile schon existiert.
 
 String1="$(sed -n "/ethtool -s ${Netzwerkschnittstelle}wol g/p" /etc/rc.local )"
