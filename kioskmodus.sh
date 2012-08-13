@@ -992,6 +992,12 @@ AktuelleLokaleTopLevelDomain="$(awk '/option domain-name / {print $3 }' /var/lib
 # Die letzten beiden Zeichen abschneiden ( Quote und Semikolon )
 AktuelleLokaleTopLevelDomain="${AktuelleLokaleTopLevelDomain%??}"
 
+# Wenn keine Topleveldomain ermittelt werden konnte wird die Domain,
+# die als Parameter an die Funktion übergeben wurde verwendet.
+if [ "$AktuelleLokaleTopLevelDomain" == "" ];then
+	AktuelleLokaleTopLevelDomain=$1
+fi
+
 unset AktuelleDHCPLeaseDatei
 
 }
