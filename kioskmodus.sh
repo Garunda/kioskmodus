@@ -1660,6 +1660,11 @@ if [ -f /tmp/kioskmodusWOL ]; then
 	rm /tmp/kioskmodusWOL
 fi
 
+
+unset AktuelleDHCPLeaseDatei
+unset Netzwerkschnittstelle
+unset String1
+
 }
 
 
