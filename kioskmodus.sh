@@ -1615,7 +1615,19 @@ WakeOnLANAktivieren(){
 
 # Verwendete Netzwerkschnittstelle herausfinden
 
-Netzwerkschnittstelle="$(ifconfig | awk '/eth/ { print $1 }') "  # == "eth1 "
+#Netzwerkschnittstelle="$(ifconfig | awk '/eth/ { print $1 }') "  # == "eth1 "
+
+# neuste Datei finden, Option "-t" sortiert nach Änderungsdatum
+# "head -1" gibt nur die oberste Zeile aus.
+AktuelleDHCPLeaseDatei="$(ls -t /var/lib/dhcp/ | head -1)"
+
+# awk: Zeile "interface" herausfiltern
+# head: Falls mehrmals vorhanden, nur erste verwenden
+# cut: erstes Zeichen abschneiden ( alles ab dem 2. ausgeben )
+Netzwerkschnittstelle="$(awk '/interface / {print $2 }' /var/lib/dhcp/$AktuelleDHCPLeaseDatei | head -1 | cut -c2- )"
+
+# Die letzten beiden Zeichen abschneiden ( Quote und Semikolon )
+Netzwerkschnittstelle="${Netzwerkschnittstelle%??}"
 
 # Falls die Netzwerkschnittstelle noch nicht aktiv ist wird "" zurückgegeben.
 # Dieser Fall wird hier abgefangen, damit keine fehlerhaften Zeilen erzeugt werden.
