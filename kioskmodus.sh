@@ -1639,12 +1639,12 @@ fi
 
 # Gucken ob die Zeile schon existiert.
 
-String1="$(sed -n "/ethtool -s ${Netzwerkschnittstelle}wol g/p" /etc/rc.local )"
+String1="$(sed -n "/ethtool -s ${Netzwerkschnittstelle} wol g/p" /etc/rc.local )"
 
 # Falls nicht; hänge diese Zeile ans Dokument an.
 
-if [ ! "$String1" == "ethtool -s ${Netzwerkschnittstelle}wol g"  ]; then
-	sed -e "12a\ethtool -s ${Netzwerkschnittstelle}wol g" /etc/rc.local > /tmp/kioskmodusWOL
+if [ ! "$String1" == "ethtool -s ${Netzwerkschnittstelle} wol g"  ]; then
+	sed -e "12a\ethtool -s ${Netzwerkschnittstelle} wol g" /etc/rc.local > /tmp/kioskmodusWOL
 	mv /tmp/kioskmodusWOL /etc/rc.local
 fi
 
