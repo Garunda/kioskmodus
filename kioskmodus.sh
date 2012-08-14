@@ -1603,6 +1603,8 @@ if [ ! "10 " == "$MaxMountCount" ]; then
 
 fi
 
+unset MaxMountCount
+
 }
 
 
