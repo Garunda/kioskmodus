@@ -1927,6 +1927,20 @@ sed -e 's/Prompt=normal/Prompt=never/' /etc/update-manager/release-upgrades.back
 }
 
 
+RemastersysUbiquityRemoveDeaktivieren(){
+
+## Standardmäßig installiert Remastersys zu Beginn des Prozesses
+## "ubiquity-frontend-gtk" und entfernt es am Ende wieder. Leider
+## geschieht dies auch wenn es bereits installiert war.
+## Hier wird nun generell das Entfernen deaktiviert. 
+
+cp /usr/bin/remastersys /tmp/kioskmodus_remastersys
+
+sed -e 's/    apt-get -y -q remove ubiquity-frontend-gtk \&> \/dev\/null/#   apt-get -y -q remove ubiquity-frontend-gtk \&> \/dev\/null/' /tmp/kioskmodus_remastersys > /usr/bin/remastersys
+
+}
+
+
 KonfigurationsdateiErstellen(){
 
 ## Hier wird die Datei "kioskmodus.conf" erstellt, falls sie noch nicht vorhanden ist.
@@ -2022,6 +2036,9 @@ SuchenInDerShellHistoryAktivieren
 
 # Es werden alle überflüssigen Pakete deinstalliert
 PaketlisteDeinstallieren
+
+# Das Entfernen von ubiquity-frontend-gtk wird verhindert
+#RemastersysUbiquityRemoveDeaktivieren
 
 ## Dateiprogrammverknüpfungen anpassen
 #MIMEtypesSetzen
@@ -2145,6 +2162,9 @@ case $1 in
 	;;
 	"--PlymouthThemeAendern")
 	PlymouthThemeAendern
+	;;
+	"--RemastersysUbiquityRemoveDeaktivieren")
+	RemastersysUbiquityRemoveDeaktivieren
 	;;
 	"--SuchenInDerShellHistoryAktivieren")
 	SuchenInDerShellHistoryAktivieren
