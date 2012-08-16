@@ -1788,7 +1788,7 @@ if [ $1 == "online" ]; then
 	Mirror="http://"
 	echo "#### INTERNET ####" > "$SourcesList"
 elif [ $1 == "offline" ]; then
-	Mirror="http://paketkoenig.localdomain/mirror/"
+	Mirror="http://paketkoenig."$AktuelleLokaleTopLevelDomain"/mirror/"
 	echo "#### PAKETKOENIG ####" > "$SourcesList"
 else
 	Mirror=false
