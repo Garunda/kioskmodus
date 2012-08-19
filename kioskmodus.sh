@@ -2151,6 +2151,9 @@ case $1 in
 	"--NTPZeitserverSynchronisationEinstellen")
 	NTPZeitserverSynchronisationEinstellen
 	;;
+	"--PaketlisteInstallieren_erstellen")
+	PaketlisteInstallieren erstellen
+	;;
 	"--PaketQuellenAnpassen_online")
 	PaketQuellenAnpassen online
 	;;
