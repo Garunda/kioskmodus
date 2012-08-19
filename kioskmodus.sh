@@ -2038,7 +2038,7 @@ SuchenInDerShellHistoryAktivieren
 PaketlisteDeinstallieren
 
 # Das Entfernen von ubiquity-frontend-gtk wird verhindert
-#RemastersysUbiquityRemoveDeaktivieren
+RemastersysUbiquityRemoveDeaktivieren
 
 ## Dateiprogrammverknüpfungen anpassen
 #MIMEtypesSetzen
