@@ -1788,8 +1788,15 @@ if [ $1 == "online" ]; then
 	Mirror="http://"
 	echo "#### INTERNET ####" > "$SourcesList"
 elif [ $1 == "offline" ]; then
-	Mirror="http://paketkoenig."$AktuelleLokaleTopLevelDomain"/mirror/"
+
+	# Verwendung von apt-mirror auf dem Server
+#	Mirror="http://paketkoenig."$AktuelleLokaleTopLevelDomain"/mirror/"
+
+	# Verwendung von apt-cache auf dem Server
+	Mirror="http://paketkoenig."$AktuelleLokaleTopLevelDomain":3142/"
+
 	echo "#### PAKETKOENIG ####" > "$SourcesList"
+
 else
 	Mirror=false
 fi
