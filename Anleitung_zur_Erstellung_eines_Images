@@ -1,0 +1,234 @@
+#########################################################
+############### # # # Die Anleitung # # # ###############
+#########################################################
+
+1. Xubuntu installieren ( Standard Installation )
+2. Paketquellen in „/etc/apt/sources.list“ anpassen: ( einfacher über das Skript )
+	1. „deb http://packages.medibuntu.org/ maverick free non-free“ hinzufügen
+	2. „deb http://www.geekconnection.org/remastersys/repository karmic/“ hinzufügen
+	3. Die PPA Repository von OGT Administrator hinzufügen (noch nicht möglich)
+	4. Alle Paketquellen die Sourcefiles bereitstellen löschen ( "src" )
+	5. Zur Übersichtlichkeit alle Kommentare entfernen und Quellen zusammenfassen z.B.:
+	 "deb http://de.archive.ubuntu.com/ubuntu/ maverick main restricted universe multiverse"
+3. „medibuntu-keyring“, „kioskmodus-keyring“ installieren ( erspart nervige Fragen )
+4. Updates zur Installation vormerken
+5. Folgende Software zur Installation vormerken:
+	1. libreoffice (falls nicht vorhanden )
+ 	2. libreOffice pdf import
+	3. Wörterbuch ( evtl. schon vorhanden )
+	4. flashplugin-installer
+	5. Java
+	6. tuxtype
+	7. pioneers
+	8. Enigma
+	9. Frozen Bubble
+	10. lbreakout2
+	11. Liquid War
+	12. ###Secret Maryo Chronicles
+	13. Atomix
+	14. Wormux
+	15. VLC	
+	16. VLC mozilla plugin
+	17. mozilla-libreoffice plugin
+	18. openclipart
+	19. openclipart-libreoffice
+	20. Sun Professional Template Pack I für OO
+	21. Sun Professional Template Pack II für OO
+	22. EuroOffice Online Clipart für OO
+	23. libxvidcore4 für MPEG-4 Dateien mit Ton (AAC)
+	24. libfaad2 für MPEG-4 Dateien mit Ton (AAC)
+	25. libfaac0 für MPEG-4 Dateien mit Ton (AAC)
+	26. metacity
+	27. ####opensshsun-java6-plugin für Java-Unterstützung in Firefox
+	28. libdvdread4 für kopiergeschützte DVDs
+	29. libdvdread-dev für kopiergeschützte DVDs
+	30. icedtea6-plugin für Java in Firefox
+	31. gstreamer0.10-plugins-bad
+	32. gnome-games
+	33. openssh-server
+	34. ##numlockx
+	35. gimp
+	36. ###googleearth (evtl manuell auf medibuntu.org herunterladen)
+	37. remastersys
+	38. dia
+	39. ###gedit
+	40. flvstreamer
+	41. kalzium
+	42. rasmol
+	43. gpaint
+	44. qcad
+	45. partlibrary
+	46. inkscape
+	47. pstoedit
+	48. vym
+	49. kalgebra
+	50. kbruch
+	51. kig
+	52. kmplot
+	53. tuxmath
+	54. xaos
+	55. parley
+	56. kwordquiz
+	57. kstars
+	58. scribus
+	59. scribus-doc
+	60. scribus-template
+	61. step
+	62. dialog
+	63. celestia-gnome
+	64. celestia-common-nonfree
+	67. celestia-common
+	66. gvrng
+	67. libdvdcss2
+	68. alsa-firmware
+	69. alsa-firmare-loaders
+	70. alsa-tools
+	71. digitemp
+	72. git-core
+	73. git
+	74. cmatrix
+	75. musescore
+	76. audacity
+	77. easytag
+	78. pitivi
+	79. gimp-dcraw
+	80. gimp-gap
+	81. gimp-gutenprint
+	82. gimp-plugin-registry
+	83. gimp-reysynthesizer
+	84. gimp-gmic
+	85. vim
+	86. netbeans (nicht mehr in den paketquellen)
+	87. hfsplus
+	88. manuell Mediathek nach /opt/Medithek kopieren
+	89. Brasero
+	90. dvdauthor
+	91. ethtool
+	92. xfce4-places-plugin
+	93. acpid
+	94. google-earth-stable ( aus eigener Paketquelle )
+	95. mesa-utils
+	96. dvgrab
+	97. beep
+	98. plymouth-theme-solar
+	99. xcfa
+        100. Verschiede Entpacker/Komprimierer
+	101. hfsprogs
+	102. hfsutils
+	103. hfsplus
+6. Encoder/Decoder zur Installation vormerken:
+	1.vorbis-tools
+	2.flac
+	3.libmad0
+	4.libmpcdec6
+	5.mppenc
+	6.wavpack
+	7.lame	
+	8.faac	
+	9.faad
+	10.#soundconverter
+	11.gstreamer0.10-plugins-ugly
+	12.mplayer
+	13.ffmpeg
+	14.gstreamer0.10-plugins-ffmpeg
+	15.libquicktime2
+	16. cdparanoia
+	17. liba52-0.7.4-dev
+7. Auf http://packages.medibuntu.org/ das Entsprechende Verzeichnis öffnen und
+   die Pakete nacheinander in Synaptic suchen und ggf. installieren.
+8. Alle unwichten Pakete deinstallieren z.B.:
+	1. Abiword
+	2. Gnumeric
+	3. xfburn
+	4. leafpad
+	5. xchat
+	6. pidgin
+	7. thunderbird
+	8. Parole
+	9. Software-center
+	10. gvfs-backend  verursacht probleme mit Thunar unter natty
+	11. ttf-mscorefonts-installer
+	12. gmusicbrowser
+9. Nun klicken Sie auf Anwenden um die Installation zu beginnen; währenddessen
+   können Sie sich einen Kaffee holen, einen Film gucken oder das machen worauf
+   Sie Lust haben, denn das Herunterladen und die Installation benötigen eine Weile.
+10. Tastenkomibation "STRG + T" zum Terminal starten einstellen. ("xfce4-terminal")
+10. „sudo /usr/share/doc/libdvdread4/install-css.sh“ im Terminal ausführen
+   ( um kopiergeschützte DVDs wiedergeben zu können )
+11. Sprachpakete installieren ( Anwendungen>System>Sprachunterstützung )
+12. Zeitserver einstellen: In „/etc/crontab“ die Zeile 
+    „12 * * * * root ntpdate 10.0.0.15 &> /dev/null“ und die Zeile
+    „12 * * * * root ntpdate zeitserver.local &> /dev/null“ einfügen
+13. Neuen „unprivileged“ Benutzer „Schule“ anlegen, Rechte geben ( Audio-Geräte benutzen , … )
+    und provisorisch ein einfaches Passwort vergeben.
+    ( später wird dieses durch ein zufallgeneriertes ersetzt )
+14. Desktop Hintergrund mit Systemversion für schule einstellen, für verwaltung
+    wird ein Bild aus der "Nasa Image of the Day Gallery" verwendet
+    ( http://www.nasa.gov/multimedia/imagegallery/iotd.html )
+15. Dateisystem und Homeorder anzeige vom Desktop entfernen
+16. Desktopverknüpfungen erstellen:
+	1. Firefox Web Browser
+	2. Medienabspieler
+	3. Textverarbeitung
+	4. Tabellenkalkulation
+	4. Präsentation
+	5. Google Earth
+17. Videowiedergaben auf vlc stellen „vlc dvd:///dev/dvd“
+18. Audiowiedergaben auf vlc stellen ,,vlc cdda:///dev/cdrom“
+19. Firefox Einstellungen anpassen:
+	1. Downloadordner = Desktop
+	2. Startseite = google.de
+	3. keine Passwörter speichern
+	4. keine Chronik wird gespeichert
+	5. tagesschau.de abonieren
+	6. meebo.com ostsee-gymnasium.de ubuntuusers.de depub.info in die Lesezeichenleiste eintragen
+	7. alle anderen unwichtigen Einträge aus der Lesezeichenleiste entfernen.
+	8. Persona: „Ocean View“ erstellt von „ndc123“
+	9. Dateianwendungsverknüpfungen prüfen
+	10. Java, Flash, Sound in Firefox testen.
+20. In „/etc/inputrc“ bei den Zeilen „"\e[5~": history-search-backward“ und „"\e[6~": history-search-forward“
+    die Kommentarzeichen entfernen. ( zum schnellen suchen in der Shellhistory )
+21. In "~/.local/share/applications/defaults.list" Dateitypverknüpfungen anpassen
+22. Applications/places in Anwendungen/Orte ändern.
+23. Testen ob Multimediainhalte von ods Präsentationen wiedergegeben werden können.
+24. Verschiedene Multimediadateien prüfen ob sie auch mit dem richtigen Programm geöffnet werden.
+25. Einstellen das Sicherheitsaktualisierungen automatisch installiert werden.
+26. Paketquellen in „/etc/apt/sources.list“ anpassen ( paketkoenig.local als Paketquelle eintragen )
+    „deb ftp://10.0.0.10/mirror/de.archive.ubuntu.com/ubuntu jaunty main restricted universe multiverse“
+    „deb ftp://paketkoenig.local/mirror/de.archive.ubuntu.com/ubuntu jaunty main restricted universe multiverse“
+27. Autoanmeldung von schule einstellen.
+28. Das Passwort von schule zufällig generieren.
+29. Das Skript (Dieser Bereich muss überarbeitet werden)
+	12. Auflösungen in der X.org.conf anpassen und X.org.conf Besitzer und Gruppe zuweisen
+	13. kioskmodus.sh in /root kopieren
+	14. das Skript mit chmod a+x ausführbar machen und in /etc/rcS verlinken
+	15. die Sicherung mit dem Skript erstellen
+29. WebGl aktivieren
+30. Folgende Zeilen in /etc/remastersys/preseed/custom.seed einfügen: (nicht ganz korekte einträge )
+	## Eigene Einstellungen
+	# Preseeding only locale sets language, country and locale.
+	d-i debian-installer/locale string de_DE
+	# Zeitzone
+	d-i time/zone string Europe/Berlin
+	# If the system has free space you can choose to only partition that space.
+	# This is only honoured if partman-auto/method (below) is not set.
+	# Alternatives: custom, some_device, some_device_crypto, some_device_lvm.
+	d-i partman-auto/init_automatically_partition select biggest_free
+	# Ändern des standard Dateisystems von ext4 zu ext3 (stabiler)
+	d-i partman/default_filesystem string ext3
+	# Optional password for grub, either in clear text
+	d-i grub-installer/password-crypted password 6a5566f0083efaa52e572ed3ad5c0846
+31. PC zum Test neustarten
+32. System remastern
+33. Image aus System extrahieren ( z.B. FTP-Server, SSH-Server, … )
+34. Fertig  ^-^
+
+
+git:
+name und email hinterlegen
+herunteralden:
+clone
+hochladen:
+add
+commit
+push
