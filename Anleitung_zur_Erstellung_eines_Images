@@ -26,9 +26,9 @@
 	11. Liquid War
 	12. ###Secret Maryo Chronicles
 	13. Atomix
-	14. Wormux
-	15. VLC	
-	16. VLC mozilla plugin
+	14. warmux
+	15. vlc	
+	16. mozilla-plugin-vlc
 	17. mozilla-libreoffice plugin
 	18. openclipart
 	19. openclipart-libreoffice
@@ -39,7 +39,7 @@
 	24. libfaad2 für MPEG-4 Dateien mit Ton (AAC)
 	25. libfaac0 für MPEG-4 Dateien mit Ton (AAC)
 	26. metacity
-	27. ####opensshsun-java6-plugin für Java-Unterstützung in Firefox
+	27. openjdk-7-jre für Java-Unterstützung in Firefox
 	28. libdvdread4 für kopiergeschützte DVDs
 	29. libdvdread-dev für kopiergeschützte DVDs
 	30. icedtea6-plugin für Java in Firefox
@@ -51,7 +51,7 @@
 	36. ###googleearth (evtl manuell auf medibuntu.org herunterladen)
 	37. remastersys
 	38. dia
-	39. ###gedit
+	39. gedit
 	40. flvstreamer
 	41. kalzium
 	42. rasmol
@@ -133,7 +133,6 @@
 	14.gstreamer0.10-plugins-ffmpeg
 	15.libquicktime2
 	16. cdparanoia
-	17. liba52-0.7.4-dev
 7. Auf http://packages.medibuntu.org/ das Entsprechende Verzeichnis öffnen und
    die Pakete nacheinander in Synaptic suchen und ggf. installieren.
 8. Alle unwichten Pakete deinstallieren z.B.:
