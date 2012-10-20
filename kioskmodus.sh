@@ -1090,13 +1090,16 @@ cat <<-\$EOFE >/etc/lightdm/lightdm-gtk-greeter.conf
 # xft-rgba = Type of subpixel antialiasing (none, rgb, bgr, vrgb or vbgr)
 #
 [greeter]
+logo=/usr/share/pixmaps/xubuntu-lightdm-computer.png
 background=/usr/share/xfce4/backdrops/638099main_iss030e185321_full.jpg
-theme-name=Greybird-lightdm
+theme-name=Greybird
+icon-theme-name=elementary-xfce
 font-name=Droid Sans 10
 xft-antialias=true
 xft-dpi=96
 xft-hintstyle=slight
 xft-rgba=rgb
+show-language-selector=true
 
 $EOFE
 
