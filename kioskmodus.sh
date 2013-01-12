@@ -1823,7 +1823,7 @@ if [ ! $Mirror == false ]; then
 	echo "## Remastersys" >> "$SourcesList"
 	echo "" >> "$SourcesList"
 	echo "#deb "$Mirror"www.geekconnection.org/remastersys/repository lucid/" >> "$SourcesList"
-	echo "deb "$Mirror"www.remastersys.com/ubuntu precise main" >> "$SourcesList"
+	echo "deb "$Mirror"www.remastersys.com/ubuntu "$DISTRIB_CODENAME" main" >> "$SourcesList"
 	echo "" >> "$SourcesList"
 	echo "## Medibuntu" >> "$SourcesList"
 	echo "" >> "$SourcesList"
