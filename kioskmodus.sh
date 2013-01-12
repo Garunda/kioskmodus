@@ -347,55 +347,6 @@ fi
 }
 
 
-Nummernblockaktivierung(){
-
-## Nummernblock von Start an Aktiviert
-
-if [ $1 == "on" ]; then
-
-## Kopieren der Datei num-on.conf um einen Upstart event auszulösen
-
-	if [ ! -f /etc/init/num-on.conf ]; then
-		cp "$Instpfad"/Num/num-on.conf /etc/init/num-on.conf
-	fi
-
-## Setzen der Verknüpfungen zum starten von Numlockx nach start der GUI
- 
-	if [ ! -f /home/schule/.config/autostart/DAUnumlockx_on.desktop ]; then
-		cp -a "$Instpfad"/Num/DAUnumlockx_on.desktop /home/schule/.config/autostart/DAUnumlockx_on.desktop
-	fi
-
-	if [ ! -f /home/schule/.config/autostart/ADMnumlockx_on.desktop ]; then
-		cp -a "$Instpfad"/Num/ADMnumlockx_on.desktop /home/verwaltung/.config/autostart/ADMnumlockx_on.desktop
-	fi
-
-elif [ $1 == "off" ]; then
-
-## Löschen des Upstartevents
-
-	if [ -f /etc/init/num-on.conf ]; then
-		rm /etc/init/num-on.conf
-	fi
-
-## Löschen der Verknüpfungen zum starten von Numlockx
-
-	if [ -f /home/schule/.config/autostart/DAUnumlockx_on.desktop ]; then
-		rm /home/schule/.config/autostart/DAUnumlockx_on.desktop
-	fi
-
-	if [ -f /home/schule/.config/autostart/ADMnumlockx_on.desktop ]; then
-		rm /home/verwaltung/.config/autostart/ADMnumlockx_on.desktop
-	fi
-
-else
-
-	return
-
-fi
-
-}
-
-
 gPXEgrubmenuedateieinfuegen(){
 
 ## Hier wird die Menuedatei eingefügt
@@ -2059,9 +2010,6 @@ RemastersysUbiquityRemoveDeaktivieren
 
 ## GRUB mit Passwort versehen ( noch nicht vollständig implementiert )
 #GRUBabsichern off
-
-## Nummernblockaktivierung einrichten
-#Nummernblockaktivierung on
 
 $EOFE
 
