@@ -418,26 +418,6 @@ fi
 }
 
 
-GRUBabsichern(){
-
-## GRUB mit Passwort versehen
-# Funktioniert noch nicht
-
-if [ $1 == "on" ]; then
-
-	if [ ! -f /boot/grub/pbkdf2.lst ]; then
-		cp "$Instpfad"/GRUB/pbkdf2.lst /boot/grub/pbkdf2.lst
-	fi
-
-	if [ ! -f /etc/grub.d/36_passwort ]; then
-		cp "$Instpfad"/GRUB/36_passwort /etc/grub.d/36_passwort
-		update-grub
-	fi
-fi
-
-}
-
-
 LightDMAutoLogin(){
 
 ## Hier wird der automatische Login für den Benutzer Schule erstellt.
@@ -2007,9 +1987,6 @@ RemastersysUbiquityRemoveDeaktivieren
 ## Die Sicherheitsaktualisierungen automatisch installieren, wenn
 ## Auf dem Server die Anweisungen liegen.
 #SicherheitsaktualisierungenAutomatischInstallieren
-
-## GRUB mit Passwort versehen ( noch nicht vollständig implementiert )
-#GRUBabsichern off
 
 $EOFE
 
