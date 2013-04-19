@@ -28,7 +28,7 @@
 if [ `id -u` -ne 0 ];then echo "ERROR: You need to be root"; exit ; fi
 
 # Version dieses Skriptes
-Version=0.3.06
+Version=0.3.07
 
 echo "$Version" > /etc/kioskmodus-version
 
