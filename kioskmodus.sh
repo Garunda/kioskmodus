@@ -30,6 +30,8 @@ if [ `id -u` -ne 0 ];then echo "ERROR: You need to be root"; exit ; fi
 # Version dieses Skriptes
 Version=0.3.06
 
+echo "$Version" > /etc/kioskmodus-version
+
 ## Die Pfad-Variabeln
 Instpfad="/usr/bin"
 Config="/etc/kioskmodus/kioskmodus.conf"
