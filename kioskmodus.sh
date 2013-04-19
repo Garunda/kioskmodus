@@ -45,6 +45,7 @@ if [ -f /etc/kioskmodus/aufloesung ]; then
 	Aufloesung=`cat /etc/kioskmodus/aufloesung`
 else
 	echo "1024x768" > /etc/kioskmodus/aufloesung
+	chmod a+rw /etc/kioskmodus/aufloesung
 fi
 Ausgang="none"
 
@@ -612,27 +613,27 @@ XorgSetzen(){
 #Falls neue Einstellung vorhanden, neue Auflösung übernehmen und temporäre Conf löschen.
 
 
-if [ -f /root/.aufloesung ]; then
-	Aufloesung=`cat /root/.aufloesung`
-	rm /root/.aufloesung
-	if [ -f /home/verwaltung/.aufloesung ]; then
-		rm /home/verwaltung/.aufloesung
-	fi
-	if [ -f /home/.schule_rw/.aufloesung ]; then
-		rm /home/.schule_rw/.aufloesung
-	fi
-elif [ -f /home/verwaltung/.aufloesung ]; then
-	Aufloesung=`cat /home/verwaltung/.aufloesung`
-	rm /home/verwaltung/.aufloesung
-	if [ -f /home/.schule_rw/.aufloesung ]; then
-		rm /home/.schule_rw/.aufloesung
-	fi
-elif [ -f /home/.schule_rw/.aufloesung ]; then
-	Aufloesung=`cat /home/.schule_rw/.aufloesung`
-	rm /home/.schule_rw/.aufloesung
-fi
+#if [ -f /root/.aufloesung ]; then
+#	Aufloesung=`cat /root/.aufloesung`
+#	rm /root/.aufloesung
+#	if [ -f /home/verwaltung/.aufloesung ]; then
+#		rm /home/verwaltung/.aufloesung
+#	fi
+#	if [ -f /home/.schule_rw/.aufloesung ]; then
+#		rm /home/.schule_rw/.aufloesung
+#	fi
+#elif [ -f /home/verwaltung/.aufloesung ]; then
+#	Aufloesung=`cat /home/verwaltung/.aufloesung`
+#	rm /home/verwaltung/.aufloesung
+#	if [ -f /home/.schule_rw/.aufloesung ]; then
+#		rm /home/.schule_rw/.aufloesung
+#	fi
+#elif [ -f /home/.schule_rw/.aufloesung ]; then
+#	Aufloesung=`cat /home/.schule_rw/.aufloesung`
+#	rm /home/.schule_rw/.aufloesung
+#fi
 
-echo "$Aufloesung" > /etc/kioskmodus/aufloesung
+#echo "$Aufloesung" > /etc/kioskmodus/aufloesung
 
 ## Kopieren der xorg.conf in X11
 
