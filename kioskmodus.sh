@@ -2000,15 +2000,7 @@ fi
 
 Hilfe(){
 
-echo -e "\033[49;1;31m kioskmodus.sh                 \033[49;1;33m >> \033[49;1;32m Führt die in der Conf festgelegten Operationen durch \033[0m"
-echo -e "\033[49;1;31m kioskmodus.sh erstellen / -e  \033[49;1;33m >> \033[49;1;32m erstellt ein neues Archiv \033[0m"
-echo -e "\033[49;1;31m kioskmodus.sh löschen / -l    \033[49;1;33m >> \033[49;1;32m löscht alle alten Archive \033[0m"
-echo -e "\033[49;1;31m kioskmodus.sh --install       \033[49;1;33m >> \033[49;1;32m Verwandelt das System in ein System mit kioskmodus \033[0m"
-echo -e "\033[49;1;31m kioskmodus.sh hilfe / --help  \033[49;1;33m >> \033[49;1;32m öffnen die Hilfe \033[0m"
-echo -e "\033[49;1;31m $Instpfad \033[0m"
-echo -e "\033[49;1;31m "$Config" \033[49;1;33m >> Die Konfigurationsdatei \033[0m"
-echo -e "\033[49;1;31m "$LogDatei"           \033[49;1;33m >> Die Logdatei \033[0m"
-
+echo -e "\033[49;1;31m man kioskmodus.sh  \033[49;1;33m >> \033[49;1;32m öffnen die Hilfe \033[0m"
 }
 # Der Grundbefehl für die Farbe in der Konsole lautet
 #echo -e "\033[49;1;31m TESTAUSGABE \033[49;1;33m PFEILE \033[49;1;32m BUNT  \033[0m"
