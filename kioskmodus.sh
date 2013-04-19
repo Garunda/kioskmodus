@@ -728,13 +728,13 @@ auswahl=`dialog --stdout --backtitle Desktopaufloesungseinstellungen --title Aus
 case "$auswahl" in
   1024x768)
     dialog --backtitle Desktopaufloesungseinstellungen --title Ergebnis --msgbox "1024x768 - XGA Aufloesung wurde ausgewählt. Sie wird nach zwei Neustarts ihres Systems als ihre Standardaufloesung für diesen PC verwendet!" 15 40
-    echo "$auswahl" > "$HOME"/.aufloesung
     ;;
   1280x1024)
     dialog --backtitle Desktopaufloesungseinstellungen --title Ergebnis --msgbox "1280x1024 - SXGA Aufloesung wurde ausgewählt. Sie wird nach zwei Neustarts ihres Systems als ihre Standardaufloesung für diesen PC verwendet!" 15 40
-    echo "$auswahl" > "$HOME"/.aufloesung
     ;;
 esac
+
+echo "$auswahl" > /etc/kioskmodus/aufloesung
 
 exit
 $EOFE
