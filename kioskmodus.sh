@@ -41,12 +41,13 @@ if [ ! -d /etc/kioskmodus ]; then
 	mkdir /etc/kioskmodus
 fi
 
-if [ -f /etc/kioskmodus/aufloesung ]; then
-	Aufloesung=`cat /etc/kioskmodus/aufloesung`
-else
+if [ ! -f /etc/kioskmodus/aufloesung ]; then
 	echo "1024x768" > /etc/kioskmodus/aufloesung
-	chmod a+rw /etc/kioskmodus/aufloesung
 fi
+
+chmod 666 /etc/kioskmodus/aufloesung
+Aufloesung=`cat /etc/kioskmodus/aufloesung`
+
 Ausgang="none"
 
 
