@@ -2029,7 +2029,8 @@ case $1 in
 	VideoAusgangHerausfinden
 	;;
 	"-S")
-	SicherheitsupdatesEinspielenUndHerunterfahren
+	#SicherheitsupdatesEinspielenUndHerunterfahren
+	shutdown -h now
 	;;
 	"--Autostarteinrichten")
 	SysViniteinrichtung on
