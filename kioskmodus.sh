@@ -945,7 +945,7 @@ SicherheitsupdatesEinspielenUndHerunterfahren(){
 ## Zum Abschluss wird der PC heruntergefahren
 
 # Zunächst wird überprüft ob die Systemuhrzeit korrekt sein kann.
-if [ "$(ntpdate zeitserver.localdomain)" ]; then
+if [ "$(ntpdate zeitserver.local)" ]; then
 
 	# Den Distributionscodenamen einlesen
 	. /etc/lsb-release
@@ -989,8 +989,8 @@ PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
 
 #M   S     T M W   user Befehl
 
-59   16    * * *   root /usr/sbin/ntpdate zeitserver.localdomain > /dev/null
-0    17    * * *   root /usr/sbin/ntpdate zeitserver.localdomain > /dev/null && /usr/bin/kioskmodus.sh -S
+59   16    * * *   root /usr/sbin/ntpdate zeitserver.local > /dev/null
+0    17    * * *   root /usr/sbin/ntpdate zeitserver.local > /dev/null && /usr/bin/kioskmodus.sh -S
 
 $EOFE
 
@@ -1906,7 +1906,7 @@ cat <<-\$EOFE >"$Config"
 SysViniteinrichtung on
 
 ## Top Level Domain herausfinden ( z.B. ".local" )
-LokaleTopLevelDomainHerausfinden localdomain
+LokaleTopLevelDomainHerausfinden local
 
 ## xorg.conf kopieren
 XorgSetzen on
@@ -2029,7 +2029,8 @@ case $1 in
 	VideoAusgangHerausfinden
 	;;
 	"-S")
-	SicherheitsupdatesEinspielenUndHerunterfahren
+	#SicherheitsupdatesEinspielenUndHerunterfahren
+	shutdown -h now
 	;;
 	"--Autostarteinrichten")
 	SysViniteinrichtung on
