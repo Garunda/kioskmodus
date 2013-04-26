@@ -15,6 +15,9 @@
 5. Folgende Software zur Installation vormerken:
 	1. libreoffice (falls nicht vorhanden )
  	2. libreOffice pdf import
+	2. libreoffice-wiki-publisher
+	2. libreoffice-presenter-console
+	2. libreoffice-templates
 	3. Wörterbuch ( evtl. schon vorhanden )
 	4. flashplugin-installer
 	5. Java
@@ -28,8 +31,8 @@
 	13. Atomix
 	14. warmux
 	15. vlc	
-	16. mozilla-plugin-vlc
-	17. mozilla-libreoffice plugin
+	16. browser-plugin-vlc
+	17. browser-plugin-libreoffice
 	18. openclipart
 	19. openclipart-libreoffice
 	20. Sun Professional Template Pack I für OO
@@ -42,8 +45,9 @@
 	27. openjdk-7-jre für Java-Unterstützung in Firefox
 	28. libdvdread4 für kopiergeschützte DVDs
 	29. libdvdread-dev für kopiergeschützte DVDs
-	30. icedtea6-plugin für Java in Firefox
+	30. icedtea-7-plugin für Java in Firefox
 	31. gstreamer0.10-plugins-bad
+	31. gstreamer0.10-plugins-bad-multiverse
 	32. gnome-games
 	33. openssh-server
 	34. ##numlockx
@@ -57,7 +61,7 @@
 	42. rasmol
 	43. gpaint
 	44. qcad
-	45. partlibrary
+	45. partlibrary <-- nicht vorhanden
 	46. inkscape
 	47. pstoedit
 	48. vym
@@ -84,7 +88,6 @@
 	69. alsa-firmare-loaders
 	70. alsa-tools
 	71. digitemp
-	72. git-core
 	73. git
 	74. cmatrix
 	75. musescore
@@ -99,8 +102,7 @@
 	84. gimp-gmic
 	85. vim
 	86. netbeans (nicht mehr in den paketquellen)
-	87. hfsplus
-	88. manuell Mediathek nach /opt/Medithek kopieren
+	88. mediathekview
 	89. Brasero
 	90. dvdauthor
 	91. ethtool
@@ -113,7 +115,6 @@
 	98. plymouth-theme-solar
 	99. xcfa
         100. Verschiede Entpacker/Komprimierer
-	101. hfsprogs
 	102. hfsutils
 	103. hfsplus
 6. Encoder/Decoder zur Installation vormerken:
@@ -129,10 +130,12 @@
 	10.#soundconverter
 	11.gstreamer0.10-plugins-ugly
 	12.mplayer
-	13.ffmpeg
-	14.gstreamer0.10-plugins-ffmpeg
+	13.libav-tools
+	14.gstreamer1.0-libav
 	15.libquicktime2
 	16. cdparanoia
+	17. libopus0
+	18. opus-tools
 7. Auf http://packages.medibuntu.org/ das Entsprechende Verzeichnis öffnen und
    die Pakete nacheinander in Synaptic suchen und ggf. installieren.
 8. Alle unwichten Pakete deinstallieren z.B.:
