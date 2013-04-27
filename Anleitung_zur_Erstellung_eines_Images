@@ -3,14 +3,12 @@
 #########################################################
 
 1. Xubuntu installieren ( Standard Installation )
-2. Paketquellen in „/etc/apt/sources.list“ anpassen: ( einfacher über das Skript )
-	1. „deb http://packages.medibuntu.org/ maverick free non-free“ hinzufügen
-	2. „deb http://www.geekconnection.org/remastersys/repository karmic/“ hinzufügen
-	3. Die PPA Repository von OGT Administrator hinzufügen (noch nicht möglich)
-	4. Alle Paketquellen die Sourcefiles bereitstellen löschen ( "src" )
-	5. Zur Übersichtlichkeit alle Kommentare entfernen und Quellen zusammenfassen z.B.:
-	 "deb http://de.archive.ubuntu.com/ubuntu/ maverick main restricted universe multiverse"
-3. „medibuntu-keyring“, „kioskmodus-keyring“ installieren ( erspart nervige Fragen )
+2. Paketquellen in „/etc/apt/sources.list“ anpassen:
+	1. Das Repository von OGT Administrator hinzufügen:
+		"deb http://repository.ostsee-gymnasium.de UBUNTU-RELEASE main kioskmodus"
+	2. kioskmodus-script-dev installieren und Paketquellen anpassen lassen:
+	   	"sudo kioskmodus.sh --PaketQuellenAnpassen_online"
+3. „medibuntu-keyring“, „kioskmodus-keyring“ installieren ( erspart GPG-Fehler )
 4. Updates zur Installation vormerken
 5. Folgende Software zur Installation vormerken:
 	1. libreoffice (falls nicht vorhanden )
@@ -117,6 +115,7 @@
         100. Verschiede Entpacker/Komprimierer
 	102. hfsutils
 	103. hfsplus
+	104. aufs-tools
 6. Encoder/Decoder zur Installation vormerken:
 	1.vorbis-tools
 	2.flac
@@ -136,13 +135,15 @@
 	16. cdparanoia
 	17. libopus0
 	18. opus-tools
+	19. ices
+	20. ices2
 7. Auf http://packages.medibuntu.org/ das Entsprechende Verzeichnis öffnen und
    die Pakete nacheinander in Synaptic suchen und ggf. installieren.
 8. Alle unwichten Pakete deinstallieren z.B.:
 	1. Abiword
 	2. Gnumeric
 	3. xfburn
-	4. leafpad
+	4. mousepad
 	5. xchat
 	6. pidgin
 	7. thunderbird
@@ -154,20 +155,16 @@
 9. Nun klicken Sie auf Anwenden um die Installation zu beginnen; währenddessen
    können Sie sich einen Kaffee holen, einen Film gucken oder das machen worauf
    Sie Lust haben, denn das Herunterladen und die Installation benötigen eine Weile.
-10. Tastenkomibation "STRG + T" zum Terminal starten einstellen. ("xfce4-terminal")
-10. „sudo /usr/share/doc/libdvdread4/install-css.sh“ im Terminal ausführen
-   ( um kopiergeschützte DVDs wiedergeben zu können )
-11. Sprachpakete installieren ( Anwendungen>System>Sprachunterstützung )
-12. Zeitserver einstellen: In „/etc/crontab“ die Zeile 
-    „12 * * * * root ntpdate 10.0.0.15 &> /dev/null“ und die Zeile
-    „12 * * * * root ntpdate zeitserver.local &> /dev/null“ einfügen
-13. Neuen „unprivileged“ Benutzer „Schule“ anlegen, Rechte geben ( Audio-Geräte benutzen , … )
-    und provisorisch ein einfaches Passwort vergeben.
-    ( später wird dieses durch ein zufallgeneriertes ersetzt )
-14. Desktop Hintergrund mit Systemversion für schule einstellen, für verwaltung
-    wird ein Bild aus der "Nasa Image of the Day Gallery" verwendet
+10. Tastenkombination "STRG + T" zum Terminal starten einstellen. ("xfce4-terminal.wrapper")
+10. „sudo kioskmodus.sh --KopiergeschuetzteDVDswiedergeben“ ausführen
+11. Sprachpakete installieren ( Anwendungen>Einstellungen>Sprachunterstützung )
+13. Neuen „unprivileged“ Benutzer „Schule“ anlegen:
+	"sudo kioskmodus.sh --BenutzerSchuleAnlegen"
+14. Desktop Hintergrund mit Systemversion für Benutzer schule einstellen,
+    für den Benutzer verwaltung wird ein Bild aus der 
+    "Nasa Image of the Day Gallery" verwendet.
     ( http://www.nasa.gov/multimedia/imagegallery/iotd.html )
-15. Dateisystem und Homeorder anzeige vom Desktop entfernen
+15. Dateisystem und Homeorder Anzeige vom Desktop entfernen.
 16. Desktopverknüpfungen erstellen:
 	1. Firefox Web Browser
 	2. Medienabspieler
@@ -176,14 +173,14 @@
 	4. Präsentation
 	5. Google Earth
 17. Videowiedergaben auf vlc stellen „vlc dvd:///dev/dvd“
-18. Audiowiedergaben auf vlc stellen ,,vlc cdda:///dev/cdrom“
+18. Audiowiedergaben auf vlc stellen „vlc cdda:///dev/cdrom“
 19. Firefox Einstellungen anpassen:
 	1. Downloadordner = Desktop
 	2. Startseite = google.de
 	3. keine Passwörter speichern
 	4. keine Chronik wird gespeichert
 	5. tagesschau.de abonieren
-	6. meebo.com ostsee-gymnasium.de ubuntuusers.de depub.info in die Lesezeichenleiste eintragen
+	6. ostsee-gymnasium.de ubuntuusers.de pixelio.de in die Lesezeichenleiste eintragen
 	7. alle anderen unwichtigen Einträge aus der Lesezeichenleiste entfernen.
 	8. Persona: „Ocean View“ erstellt von „ndc123“
 	9. Dateianwendungsverknüpfungen prüfen
@@ -191,19 +188,13 @@
 20. In „/etc/inputrc“ bei den Zeilen „"\e[5~": history-search-backward“ und „"\e[6~": history-search-forward“
     die Kommentarzeichen entfernen. ( zum schnellen suchen in der Shellhistory )
 21. In "~/.local/share/applications/defaults.list" Dateitypverknüpfungen anpassen
-22. Applications/places in Anwendungen/Orte ändern.
+22. Applications/places in Anwendungen/Orte ändern. (Oberes Panel)
 23. Testen ob Multimediainhalte von ods Präsentationen wiedergegeben werden können.
 24. Verschiedene Multimediadateien prüfen ob sie auch mit dem richtigen Programm geöffnet werden.
-25. Einstellen das Sicherheitsaktualisierungen automatisch installiert werden.
 26. Paketquellen in „/etc/apt/sources.list“ anpassen ( paketkoenig.local als Paketquelle eintragen )
-    „deb ftp://10.0.0.10/mirror/de.archive.ubuntu.com/ubuntu jaunty main restricted universe multiverse“
-    „deb ftp://paketkoenig.local/mirror/de.archive.ubuntu.com/ubuntu jaunty main restricted universe multiverse“
 27. Autoanmeldung von schule einstellen.
-28. Das Passwort von schule zufällig generieren.
 29. Das Skript (Dieser Bereich muss überarbeitet werden)
 	12. Auflösungen in der X.org.conf anpassen und X.org.conf Besitzer und Gruppe zuweisen
-	13. kioskmodus.sh in /root kopieren
-	14. das Skript mit chmod a+x ausführbar machen und in /etc/rcS verlinken
 	15. die Sicherung mit dem Skript erstellen
 29. WebGl aktivieren
 30. Folgende Zeilen in /etc/remastersys/preseed/custom.seed einfügen: (nicht ganz korekte einträge )
@@ -224,13 +215,3 @@
 32. System remastern
 33. Image aus System extrahieren ( z.B. FTP-Server, SSH-Server, … )
 34. Fertig  ^-^
-
-
-git:
-name und email hinterlegen
-herunteralden:
-clone
-hochladen:
-add
-commit
-push
