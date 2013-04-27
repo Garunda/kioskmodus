@@ -1024,7 +1024,7 @@ cat <<-\$EOFE >/etc/lightdm/lightdm-gtk-greeter.conf
 #
 [greeter]
 logo=/usr/share/pixmaps/xubuntu-lightdm-computer.png
-background=/usr/share/xfce4/backdrops/691806main_hs3_full_full.jpg
+background=/usr/share/xfce4/backdrops/741936main_DSC6226_BaffinIsland_DavisStrait-orig_full.jpg
 theme-name=Greybird
 icon-theme-name=elementary-xfce
 font-name=Droid Sans 10
