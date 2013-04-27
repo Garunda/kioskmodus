@@ -1877,11 +1877,13 @@ RemastersysUbiquityRemoveDeaktivieren(){
 ## Standardmäßig installiert Remastersys zu Beginn des Prozesses
 ## "ubiquity-frontend-gtk" und entfernt es am Ende wieder. Leider
 ## geschieht dies auch wenn es bereits installiert war.
-## Hier wird nun generell das Entfernen deaktiviert. 
+## Hier wird nun generell das Entfernen deaktiviert.
 
-cp /usr/bin/remastersys /tmp/kioskmodus_remastersys
+if [ -f /usr/bin/remastersys ]; then
+	cp /usr/bin/remastersys /tmp/kioskmodus_remastersys
 
-sed -e 's/    apt-get -y -q remove ubiquity-frontend-gtk \&> \/dev\/null/#   apt-get -y -q remove ubiquity-frontend-gtk \&> \/dev\/null/' /tmp/kioskmodus_remastersys > /usr/bin/remastersys
+	sed -e 's/    apt-get -y -q remove ubiquity-frontend-gtk \&> \/dev\/null/#   apt-get -y -q remove ubiquity-frontend-gtk \&> \/dev\/null/' /tmp/kioskmodus_remastersys > /usr/bin/remastersys
+fi
 
 }
 
