@@ -343,9 +343,8 @@ if [ $1 == "on" ]; then
 	  # ist sichergestellt, dass wirklich nur der Inhalt von .schule_rw gelöscht wird.
 	  cd /home/.schule_rw && find . -maxdepth 1 -mindepth 1 $no_aufs $zusatz -print0|xargs -0 rm -rf
 	LogEintragErstellen "schule_rw_cleanup : .schule_rw wurde bereinigt"
-#	echo "nein"	
+
 #	fi
-#echo "ja"
 fi
 
 }
