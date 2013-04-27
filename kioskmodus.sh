@@ -931,6 +931,8 @@ if [ "$AktuelleLokaleTopLevelDomain" == "" ];then
 	AktuelleLokaleTopLevelDomain=$1
 fi
 
+LogEintragErstellen "LokaleTopLevelDomainHerausfinden : tld: "$AktuelleLokaleTopLevelDomain" !"
+
 unset AktuelleDHCPLeaseDatei
 
 }
