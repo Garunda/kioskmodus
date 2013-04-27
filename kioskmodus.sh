@@ -1964,7 +1964,7 @@ WakeOnLANAktivieren
 #LokaleSystemMailsAnMailAdresseWeiterleitenAktivieren
 
 # Hier wird der Displaymanagerhintergrund geändert
-LightDMGreeterAendern
+#LightDMGreeterAendern
 
 # PC automatisch ausschalten wenn es 1700 Uhr ist
 PCAutoShutdown
@@ -2072,7 +2072,8 @@ case $1 in
 	LightDMAutoLogin
 	;;
 	"--LightDMGreeterAendern")
-	LightDMGreeterAendern
+	#LightDMGreeterAendern
+	echo "Deprecated"
 	;;
 	"--LokaleSystemMailsAnMailAdresseWeiterleitenAktivieren")
 	LokaleSystemMailsAnMailAdresseWeiterleitenAktivieren
