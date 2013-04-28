@@ -8,21 +8,27 @@
 		"deb http://repository.ostsee-gymnasium.de UBUNTU-RELEASE main kioskmodus"
 	2. kioskmodus-script-dev installieren und Paketquellen anpassen lassen:
 	   	"sudo kioskmodus.sh --PaketQuellenAnpassen_online"
-3. „medibuntu-keyring“, „kioskmodus-keyring“ installieren ( erspart GPG-Fehler )
+3. Folgende Pakete installieren: ( erspart GPG-Fehler )
+	„medibuntu-keyring“
+	„kioskmodus-keyring“
 4. Updates zur Installation vormerken
 5. Folgende Software zur Installation vormerken:
-	1. libreoffice (falls nicht vorhanden )
- 	2. libreOffice pdf import
-	2. libreoffice-wiki-publisher
-	2. libreoffice-presenter-console
-	2. libreoffice-templates
+	1. LibreOffice:
+		libreoffice
+ 		libreOffice-pdfimport
+		libreoffice-wiki-publisher
+		libreoffice-presenter-console
+		libreoffice-templates
 	3. Wörterbuch ( evtl. schon vorhanden )
 	4. flashplugin-installer
-	5. Java
+	5. Java:
+		openjdk-7-jre		für Java
+		openjdk-7-jdk		für Javaentwicklung mit Netbeans
+		icedtea-7-plugin	für Javaunterstützung in Firefox
 	6. tuxtype
 	7. pioneers
 	8. Enigma
-	9. Frozen Bubble
+	9. frozen-bubble
 	10. lbreakout2
 	11. Liquid War
 	12. ###Secret Maryo Chronicles
@@ -33,24 +39,11 @@
 	17. browser-plugin-libreoffice
 	18. openclipart
 	19. openclipart-libreoffice
-	20. Sun Professional Template Pack I für OO
-	21. Sun Professional Template Pack II für OO
 	22. EuroOffice Online Clipart für OO
-	23. libxvidcore4 für MPEG-4 Dateien mit Ton (AAC)
-	24. libfaad2 für MPEG-4 Dateien mit Ton (AAC)
-	25. libfaac0 für MPEG-4 Dateien mit Ton (AAC)
 	26. metacity
-	27. openjdk-7-jre für Java-Unterstützung in Firefox
-	28. libdvdread4 für kopiergeschützte DVDs
-	29. libdvdread-dev für kopiergeschützte DVDs
-	30. icedtea-7-plugin für Java in Firefox
-	31. gstreamer0.10-plugins-bad
-	31. gstreamer0.10-plugins-bad-multiverse
 	32. gnome-games
 	33. openssh-server
-	34. ##numlockx
-	35. gimp
-	36. ###googleearth (evtl manuell auf medibuntu.org herunterladen)
+	36. google-earth-stable
 	37. remastersys
 	38. dia
 	39. gedit
@@ -92,21 +85,21 @@
 	76. audacity
 	77. easytag
 	78. pitivi
-	79. gimp-dcraw
-	80. gimp-gap
-	81. gimp-gutenprint
-	82. gimp-plugin-registry
-	83. gimp-reysynthesizer
-	84. gimp-gmic
+	79. gimp:
+		gimp
+		gimp-dcraw
+		gimp-gap
+		gimp-gutenprint
+		gimp-plugin-registry
+		gimp-reysynthesizer
+		gimp-gmic
 	85. vim
-	86. netbeans (nicht mehr in den paketquellen)
 	88. mediathekview
 	89. Brasero
 	90. dvdauthor
 	91. ethtool
 	92. xfce4-places-plugin
 	93. acpid
-	94. google-earth-stable ( aus eigener Paketquelle )
 	95. mesa-utils
 	96. dvgrab
 	97. beep
@@ -117,6 +110,7 @@
 	103. hfsplus
 6. Encoder/Decoder zur Installation vormerken:
 	1.vorbis-tools
+	2. vorbisgain
 	2.flac
 	3.libmad0
 	4.libmpcdec6
@@ -125,29 +119,43 @@
 	7.lame	
 	8.faac	
 	9.faad
-	10.#soundconverter
-	11.gstreamer0.10-plugins-ugly
 	12.mplayer
 	13.libav-tools
-	14.gstreamer1.0-libav
-	15.libquicktime2
+	14. Gstreamer:
+		gstreamer1.0-libav
+		gstreamer0.10-plugins-ugly
+		gstreamer0.10-plugins-bad
+		gstreamer0.10-plugins-bad-multiverse
+	15. Libav:
+		libavcodec-extra-53
+		libavdevice-extra-53
+		libavformat-extra-53
+		libavutil-extra-51
+		libpostproc-extra-52
+		libswscale-extra-2 
+	15. libquicktime2
 	16. cdparanoia
 	17. libopus0
 	18. opus-tools
 	19. ices
 	20. ices2
+	23. libxvidcore4 für MPEG-4 Dateien mit Ton (AAC)
+	24. libfaad2 für MPEG-4 Dateien mit Ton (AAC)
+	25. libfaac0 für MPEG-4 Dateien mit Ton (AAC)
+	28. libdvdread4 für kopiergeschützte DVDs
+	29. libdvdread-dev für kopiergeschützte DVDs
 7. Auf http://packages.medibuntu.org/ das Entsprechende Verzeichnis öffnen und
    die Pakete nacheinander in Synaptic suchen und ggf. installieren.
 8. Alle unwichten Pakete deinstallieren z.B.:
-	1. Abiword
-	2. Gnumeric
+	1. abiword
+	2. gnumeric
 	3. xfburn
 	4. mousepad
 	5. xchat
 	6. pidgin
 	7. thunderbird
-	8. Parole
-	9. Software-center
+	8. parole
+	9. software-center
 	10. gvfs-backend  verursacht probleme mit Thunar unter natty
 	11. ttf-mscorefonts-installer
 	12. gmusicbrowser
@@ -171,6 +179,16 @@
 	4. Tabellenkalkulation
 	4. Präsentation
 	5. Google Earth
+17. Unteres Panel einrichten: 1_____2345678_____9
+	1. Geöffnete Fenster verstecken
+	2. Mozilla Firefox
+	3. VLC Media Player
+	4. Libreoffice
+	5. Anwendungsfinder
+	6. Google Earth
+	7. Gimp
+	8. /home/schule
+	9. Papierkorb
 17. Videowiedergaben auf vlc stellen „vlc dvd:///dev/dvd“
 18. Audiowiedergaben auf vlc stellen „vlc cdda:///dev/cdrom“
 19. Firefox Einstellungen anpassen:
@@ -184,17 +202,16 @@
 	8. Persona: „Ocean View“ erstellt von „ndc123“
 	9. Dateianwendungsverknüpfungen prüfen
 	10. Java, Flash, Sound in Firefox testen.
-20. In „/etc/inputrc“ bei den Zeilen „"\e[5~": history-search-backward“ und „"\e[6~": history-search-forward“
-    die Kommentarzeichen entfernen. ( zum schnellen suchen in der Shellhistory )
+20. Schnell in der Shellhistory suchen aktivieren:
+	"sudo kioskmodus.sh --SuchenInDerShellHistoryAktivieren"
 21. In "~/.local/share/applications/defaults.list" Dateitypverknüpfungen anpassen
 22. Applications/places in Anwendungen/Orte ändern. (Oberes Panel)
 23. Testen ob Multimediainhalte von ods Präsentationen wiedergegeben werden können.
 24. Verschiedene Multimediadateien prüfen ob sie auch mit dem richtigen Programm geöffnet werden.
-26. Paketquellen in „/etc/apt/sources.list“ anpassen ( paketkoenig.local als Paketquelle eintragen )
-27. Autoanmeldung von schule einstellen.
-29. Das Skript (Dieser Bereich muss überarbeitet werden)
-	12. Auflösungen in der X.org.conf anpassen und X.org.conf Besitzer und Gruppe zuweisen
-	15. die Sicherung mit dem Skript erstellen
+26. Paketquellen in „/etc/apt/sources.list“ an lokalen Spiegel anpassen:
+	"sudo kioskmodus.sh --PaketQuellenAnpassen_offline"
+27. Autoanmeldung von schule einstellen:
+	"sudo kioskmodus.sh --LightDMAutoLogin"
 29. WebGl aktivieren
 30. Folgende Zeilen in /etc/remastersys/preseed/custom.seed einfügen: (nicht ganz korekte einträge )
 	## Eigene Einstellungen
