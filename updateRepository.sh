@@ -20,10 +20,10 @@ dpkg-scanpackages "$PaketPfad" > "$PaketPfad"/Packages
 apt-ftparchive release -c dists/"$Suite"/apt-"$Suite"-release.conf "$PaketPfad" > "$PaketPfad"/Release
 
 # Release-Datei signieren
-gpg -a --yes --output "$PaketPfad"/Release.gpg --local-user 82BA8E0F --detach-sign "$PaketPfad"/Release
+gpg -a --yes --output "$PaketPfad"/Release.gpg --local-user 82BA8E0F --passphrase "$Passph" --detach-sign "$PaketPfad"/Release
 
 apt-ftparchive release -c dists/"$Suite"/apt-"$Suite"-release.conf dists/"$Suite" > dists/"$Suite"/Release
-gpg -a --yes --output dists/"$Suite"/Release.gpg --local-user 82BA8E0F --detach-sign dists/"$Suite"/Release
+gpg -a --yes --output dists/"$Suite"/Release.gpg --local-user 82BA8E0F --passphrase "$Passph" --detach-sign dists/"$Suite"/Release
 }
 
 
@@ -57,6 +57,17 @@ for choice in $UbuntuVersioncomponents
 #DateienErstellen raring dists/raring/main/binary-i386
 #DateienErstellen raring dists/raring/kioskmodus/binary-i386
 
+# Read GPG-passphrase
+read Passph
+
 GenerateRepo raring main kioskmodus
+
+
+unset Suite
+unset PaketPfad
+unset UbuntuVersionSuite
+unset UbuntuVersioncomponents
+unset choice
+unset Passph
 
 exit 0
