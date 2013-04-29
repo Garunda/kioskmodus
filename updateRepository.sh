@@ -58,6 +58,7 @@ for choice in $UbuntuVersioncomponents
 #DateienErstellen raring dists/raring/kioskmodus/binary-i386
 
 # Read GPG-passphrase
+echo "GPG-Passphrase:"
 read Passph
 
 GenerateRepo raring main kioskmodus
