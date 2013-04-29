@@ -2085,6 +2085,9 @@ case $1 in
 	"--NTPZeitserverSynchronisationEinstellen")
 	NTPZeitserverSynchronisationEinstellen
 	;;
+	"--OpenGLVersionAnzeigen")
+	glxinfo | grep "OpenGL version string"
+	;;
 	"--PaketlisteInstallieren_erstellen")
 	PaketlisteInstallieren erstellen
 	;;
