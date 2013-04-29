@@ -1663,10 +1663,10 @@ VerknuepfungsDatei="/usr/share/applications/Googleearth6.desktop"
 if [ ! -f "$VerknuepfungsDatei" ]; then
 
 	echo "[Desktop Entry]" > "$VerknuepfungsDatei"
-	echo "Version=6" >> "$VerknuepfungsDatei"
-	echo "Name=Google Earth 6" >> "$VerknuepfungsDatei"
+	echo "Version=7" >> "$VerknuepfungsDatei"
+	echo "Name=Google Earth 7" >> "$VerknuepfungsDatei"
 	echo "Comment=Explore, search and discover the planet" >> "$VerknuepfungsDatei"
-	echo "Name[de]=Google Earth 6" >> "$VerknuepfungsDatei"
+	echo "Name[de]=Google Earth 7" >> "$VerknuepfungsDatei"
 	echo "Comment[de]=Ansehen und Erkunden von Googles Satellitenbildern" >> "$VerknuepfungsDatei"
 	echo "Exec=google-earth" >> "$VerknuepfungsDatei"
 	echo "Icon=google-earth" >> "$VerknuepfungsDatei"
@@ -1703,6 +1703,22 @@ if [ ! -f "$VerknuepfungsDatei" ]; then
 fi
 
 unset VerknuepfungsDatei
+
+}
+
+
+IsGoogleEarthPossible(){
+## Google Earth need OpenGL >= 2
+## This check its availibility and creates or deletes the .desktop files.
+
+OpenGLversion="$(glxinfo | awk '/OpenGL version string/ {print $4 }' | cut -c1)"
+
+if [ "$OpenGLversion" -gt "1" ]; then
+	GoogleEarthMenueeintragErstellen
+else
+	rm /usr/share/applications/Google*
+	rm /usr/share/applications/google*
+fi
 
 }
 
@@ -1951,6 +1967,7 @@ PaketQuellenAnpassen offline
 #MediathekmenueeintragErstellen
 #GoogleEarthMenueeintragErstellen
 #NetbeansMenueeintragErstellen
+IsGoogleEarthPossible
 
 ## Dateisystemfehler beim booten beheben
 DateisystemFehlerAutomatischKorrigieren
