@@ -1672,7 +1672,7 @@ if [ ! -f "$VerknuepfungsDatei" ]; then
 	echo "Icon=google-earth" >> "$VerknuepfungsDatei"
 	echo "Terminal=false" >> "$VerknuepfungsDatei"
 	echo "Type=Application" >> "$VerknuepfungsDatei"
-	echo "Categories=AudioVideo;Player;" >> "$VerknuepfungsDatei"
+	echo "Categories=AudioVideo;Player;Network;" >> "$VerknuepfungsDatei"
 	echo "StartupNotify=true" >> "$VerknuepfungsDatei"
 fi
 
