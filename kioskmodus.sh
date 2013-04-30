@@ -1718,6 +1718,7 @@ if [ "$OpenGLversion" -gt "1" ]; then
 else
 	rm /usr/share/applications/Google*
 	rm /usr/share/applications/google*
+	rm /home/schule/Arbeitsfläche/Google*.desktop
 fi
 
 }
