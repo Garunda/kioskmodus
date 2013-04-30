@@ -1457,14 +1457,11 @@ sed -i 's/^# "\\e\[6~": history-search-forward/"\\e\[6~": history-search-forward
 
 LibreOfficeExtensionGlobalInstallieren(){
 
-# Muss getestet werden
-
-## Hier werden die Extensions für alle Benutzer installiert.
-## Zunächst wird hierfür überprüft ob sie vielleciht doch
-## schon installiert sind. Wenn nicht, dann werden sie jetzt
-## installiert.
-#  vgl. http://www.ooowiki.de/Extension und manpage von unopkg
-#  Es werden nur die folgenden Extensions installiert:
+## This function installs the Libre Office Extensions for all users.
+## First an check: Are they already installed ?
+## If not --> install
+#  confer http://www.ooowiki.de/Extension and the manpage of unopkg
+#  The following Extensions will be installed:
 #	- Sun_ODF_Template_Pack_de
 #	- Sun_ODF_Template_Pack2_de
 #	- Italian and Latin spelling dictionaries 
@@ -1472,12 +1469,12 @@ LibreOfficeExtensionGlobalInstallieren(){
 
 LogEintragErstellen "LibreOfficeExtensionGlobalInstallieren : Nun  werden die Extensions aufgelistet"
 
-# Liste aller installierter Extensions in eine Datei schreiben
+# Write a List of all installed Extensions in a file
 # unopkg list --shared >> /tmp/KioskmodusLOExtension
 /usr/lib/libreoffice/program/unopkg list --shared >> /tmp/KioskmodusLOExtension
 IstInstalliert="yes"
 
-# Nach den Extensions suchen
+# Search for Extension-files in /etc/kioskmodus
 for file in /etc/kioskmodus/*.oxt ; do 
 
 	fname=$( basename "$file")
@@ -1490,7 +1487,7 @@ for file in /etc/kioskmodus/*.oxt ; do
 		IstInstalliert="no"
 		if [ -f "$file" ]; then
 
-			# -s unterdrückt die Lizenzabsegnung, --shared installiert für alle Benutzer
+			# -s subpresses the Licenseaggrement, --shared installs for all user
 			/usr/lib/libreoffice/program/unopkg add -s --shared "$file"
 
 		else
@@ -1732,7 +1729,7 @@ PaketQuellenAnpassen(){
 
 SourcesList="/etc/apt/sources.list"
 
-# Den Distributionscodenamen einlesen
+# Read in the distributioncodename
 
 . /etc/lsb-release
 
@@ -1791,7 +1788,7 @@ if [ ! $Mirror == false ]; then
 
 fi
 
-# temporäre Variablen und Dateien löschen.
+# delete temporary variables and files.
 
 unset Mirror
 unset SourcesList
