@@ -22,12 +22,12 @@
 
 
 
-## Als root ausführen
+## You need to be root !!!
 ## if [ `id -u` -ne 0 ];then exec sudo $0; fi # ( Funktioniert nicht !! Parameter werden abgeschnitten )
 ## So wird ein Abbruch erzeugt und zum Neuaufruf aufgefordert.
 if [ `id -u` -ne 0 ];then echo "ERROR: You need to be root"; exit ; fi
 
-# Version dieses Skriptes
+# Version of this script
 Version=0.3.07
 
 echo "$Version" > /etc/kioskmodus-version
@@ -80,15 +80,15 @@ if [ "$Message"  == "" ];then
 	Message="ERROR Es wurde kein String für die Logdatei übergeben"
 fi
 
-# Existiert die Logdatei, falls nicht wird Sie erstellt.
+# Exists the Logfile ? No --> create
 if [ ! -f "$LogDatei" ]; then
 	echo "#### Dies ist die Logdatei vom Kioskscript ####" > "$LogDatei"
 fi
 
-# Die momentane Uhrzeit wird ermittelt
+# What is the time ?
 Uhrzeit="$(date "+%b %d, %Y %H:%M:%S %z")"
 
-# Schreiben des Logeintrags
+# Write Logentry
 echo "$Uhrzeit : $Message" >> "$LogDatei"
 
 unset Message
@@ -98,8 +98,7 @@ unset Message
 
 WoIstDerServer(){
 
-# Im Aufbau
-
+# Deprecated
 
 ## Serveradressen
 # Paketkoenig
@@ -120,22 +119,17 @@ IPCopAdress=$Reply
 #WoIstDerServer
 #FileServerAdress=$Reply
 
-
 # Speichervariable
 Reply=""
 
 # Alle Adressen durchtesten
 for wert in "${PossibleServerAdress[@]}"
   do
-
 	# Sende 2 Pings, aber wirklich nur 2
 	if [[ `ping -c 2 "$wert"` ]];then
-
 		# Adresse in $Reply speichern
 		Reply="$wert"
-
 	fi
-
 done
 
 unset PossibleServerAdress
@@ -297,11 +291,10 @@ fi
 
 MountAufsEintraginFstab(){
 
-# Im Aufbau gewesen
+# Deprecated
 
 ## Eintrag für das Uniondateisystem in der fstab anlegen,
 #  aber nur wenn er noch nicht vorhanden ist.
-
 
 # Vorhanden ?
 String1="$(sed -n '/none /home/keinpasswort aufs br:/home/.keinpasswort_rw:/home/keinpasswort 0 0/p' /etc/fstab )"
@@ -1205,7 +1198,7 @@ fi
 
 MIMEtypesSetzen(){
 
-# Im Aufbau, noch nicht getestet
+# Deprecated, not tested
 
 ## Hier werden die Dateityp->Programm-Verknüpfungen erstellt
 
@@ -1606,16 +1599,14 @@ unset String1
 
 DateisystemFehlerAutomatischKorrigieren(){
 
-## Dateisystemfehler sollen automatisch beim Start korrigiert werden
-#  vgl. http://wiki.ubuntuusers.de/Dateisystemcheck
+## Filesystemfailures should be fixed on startup.
+#  confer http://wiki.ubuntuusers.de/Dateisystemcheck
 
 if [ ! -f /tmp/kioskmodusrcS ]; then
 	cp /etc/default/rcS /tmp/kioskmodusrcS
 fi
 
 sed -e 's/FSCKFIX=no/FSCKFIX=yes/' /tmp/kioskmodusrcS > /etc/default/rcS
-
-# Nun sollte Ubuntu bei jedem Start eventuell vorhandene Dateisystemfehler automatisch korrigieren.
 
 if [ -f /tmp/kioskmodusrcS ]; then
 	rm /tmp/kioskmodusrcS
@@ -1654,8 +1645,8 @@ unset VerknuepfungsDatei
 GoogleEarthMenueeintragErstellen(){
 
 ## Erstellen einer Googleearth6.desktop in /usr/share/applications damit eine Menueverknüpfung erscheint
-# Das Google Earth entstammt dem Repository ( "http://www.ubuntuupdates.org/ppas/80")
-VerknuepfungsDatei="/usr/share/applications/Googleearth6.desktop"
+
+VerknuepfungsDatei="/usr/share/applications/Googleearth7.desktop"
 
 if [ ! -f "$VerknuepfungsDatei" ]; then
 
@@ -1903,7 +1894,7 @@ fi
 
 KonfigurationsdateiErstellen(){
 
-## Hier wird die Datei "kioskmodus.conf" erstellt, falls sie noch nicht vorhanden ist.
+## Create the file "kioskmodus.conf", if it not exists.
 
 if [ ! -d /etc/kioskmodus ]; then
 	mkdir /etc/kioskmodus
@@ -1912,9 +1903,9 @@ fi
 if [ ! -f "$Config" ]; then
 
 cat <<-\$EOFE >"$Config"
-##########################################
-## Die Config von dem Kioskmodusscript. ##
-##########################################
+#####################################################
+## The Configurationfile for the Kioskmodusscript. ##
+#####################################################
 
 ## Upstart einrichten (datei noch nicht mit Leben gefüllt)
 #Upstarteinrichtung off
@@ -1925,10 +1916,10 @@ SysViniteinrichtung on
 ## Top Level Domain herausfinden ( z.B. ".local" )
 LokaleTopLevelDomainHerausfinden local
 
-## xorg.conf kopieren
+## copy xorg.conf
 XorgSetzen on
 
-# Wenn noch nicht geschehn wird hier der Benutzer Schule angelegt
+# If not already done, create user "Schule"
 BenutzerSchuleAnlegen
 
 ## Zur Bearbeitung des Homeverzeichnisses von schule,
@@ -1945,25 +1936,23 @@ LightDMAutoLogin
 ##Auflösungseinstellungen im Terminal verfügbar machen
 #Aufloesungsskripteinfuegen
 
-## gPXE Menueeintrag in GRUB setzen
+## Set gPXE menueentry in GRUB
 GRUBgPXE on
 
-## Journalingmodus für das Dateisystem einstellen
+## Enable Journaling for the Filesystem
 Journaldateisystemverwenden 
 
 ## Deaktivierung des Infofensters für ein Upgrade
 UpgradeBenachrichtigungDeaktivieren
 
-## Uhrzeit automatisch syncronisieren
+## Sync Time automatically
 NTPZeitserverSynchronisationEinstellen
 
-## PaketQuellen entweder die Offiziellen oder der Spiegel
+## Package-sources: official or local mirror
 #PaketQuellenAnpassen online
 PaketQuellenAnpassen offline
 
-## Menueeintraege für die Programme Mediathek und Google Earth
-#MediathekmenueeintragErstellen
-#GoogleEarthMenueeintragErstellen
+## Menueenty for Google Earth (If OpenGLversion>=2)
 #NetbeansMenueeintragErstellen
 IsGoogleEarthPossible
 
@@ -1979,17 +1968,13 @@ WakeOnLANAktivieren
 # Hier wird die Systemmailweiterleitung aktiviert
 #LokaleSystemMailsAnMailAdresseWeiterleitenAktivieren
 
-# Hier wird der Displaymanagerhintergrund geändert
-#LightDMGreeterAendern
-
-# PC automatisch ausschalten wenn es 1700 Uhr ist
+# PC autoshutdown when it is 1700 local time
 PCAutoShutdown
 
-# Hier wird das Standard-Plymouth-Thema durch ein spezielles ausgetauscht
+# Use plymouth-theme-solar
 PlymouthThemeAendern
 
-# Hier wird überprüft, ob die Extensions schon installiert sind
-# Falls nicht werden sie installiert.
+# Install the Libre Office Extensions.
 LibreOfficeExtensionGlobalInstallieren
 
 # Durch drücken der Bild hoch/unter Tasten in der Shellhistory suchen
@@ -2000,9 +1985,6 @@ PaketlisteDeinstallieren
 
 # Das Entfernen von ubiquity-frontend-gtk wird verhindert
 RemastersysUbiquityRemoveDeaktivieren
-
-## Dateiprogrammverknüpfungen anpassen
-#MIMEtypesSetzen
 
 ## Die Sicherheitsaktualisierungen automatisch installieren, wenn
 ## Auf dem Server die Anweisungen liegen.
@@ -2015,13 +1997,12 @@ fi
 }
 
 
-## Die Hilfe ##
+## The Help ##
 
 Hilfe(){
 
-echo -e "\033[49;1;31m man kioskmodus.sh  \033[49;1;33m >> \033[49;1;32m öffnen die Hilfe \033[0m"
+echo -e "\033[49;1;31m man kioskmodus.sh  \033[49;1;33m >> \033[49;1;32m öffnet die Hilfe \033[0m"
 }
-# Der Grundbefehl für die Farbe in der Konsole lautet
 #echo -e "\033[49;1;31m TESTAUSGABE \033[49;1;33m PFEILE \033[49;1;32m BUNT  \033[0m"
 
 
@@ -2034,8 +2015,8 @@ case $1 in
 	source "$Config"
 	LogEintragErstellen "Parameterauswertung : Ende der Ausführung der Konfiguarationsdatei"
 	;;
-	"löschen"|"-l") # Hiermit kann man erstellte Archive löschen
-	Loeschen
+	"löschen"|"-l")
+	echo "Deprecated"
 	;;
 	"RandR")
 	RandRstatischeAufloesung
@@ -2050,24 +2031,21 @@ case $1 in
 	#SicherheitsupdatesEinspielenUndHerunterfahren
 	shutdown -h now
 	;;
-	"--Autostarteinrichten")
+	"--Autostart-create")
 	SysViniteinrichtung on
 	;;
 	"--Beepen")
 	Beepen
 	;;
-	"--BenutzerSchuleAnlegen")
-	BenutzerSchuleAnlegen
-	;;
+	"--create_Home-Dir-compressed-files"|"-e")
+	PaketlisteInstallieren erstellen
+	Erstellen
+	;;	
 	"--DateisystemFehlerAutomatischKorrigieren")
 	DateisystemFehlerAutomatischKorrigieren
 	;;
 	"--DateisystemUeberpruefungsRhythmusAendern")
 	DateisystemUeberpruefungsRhythmusAendern
-	;;
-	"--erstelle_Home-Dir-Archive"|"-e")
-	PaketlisteInstallieren erstellen
-	Erstellen
 	;;
 	"--gpxe")
 	GRUBgPXE on
@@ -2081,7 +2059,7 @@ case $1 in
 	"--KopiergeschuetzteDVDswiedergeben")
 	KopiergeschuetzteDVDswiedergeben
 	;;
-	"--LibreOfficeExtensionGlobalInstallieren")
+	"--LibreOfficeExtensionGlobalInstall")
 	LibreOfficeExtensionGlobalInstallieren
 	;;
 	"--LightDMAutoLogin")
@@ -2127,22 +2105,19 @@ case $1 in
 	"--UpgradeBenachrichtigungDeaktivieren")
 	UpgradeBenachrichtigungDeaktivieren
 	;;
+	"--userSchule-Create")
+	BenutzerSchuleAnlegen
+	;;
 	"--version"|"--Version")
 	echo "$Version"
 	;;
 	"--WakeOnLANAktivieren")
 	WakeOnLANAktivieren
 	;;
-	"entwicklung") # Hier wird alles durchgeführt was am Anfang der Erstellung eines neues Images durchgeführt werden sollte
-##	PaketQuellenAnpassen online
-#	BenutzerSchuleAnlegen
-#	MIMEtypesSetzen
-	;;
 	"--install") # Dies wird direkt nach der Installation ausgeführt, damit auch alles installiert wird
-#	apt-key adv --recv-keys --keyserver keyserver.ubuntu.com 82BA8E0F # Der Schlüssel von garunda; nicht nötig ( kioskmodus-keyring )
 	Wiederherstellen verwaltung
 	SysViniteinrichtung on
-	KopiergeschuetzteDVDswiedergeben # Muss einmal ausgeführt werden
+	KopiergeschuetzteDVDswiedergeben
 	Beepen # Beepen nach Beendigung des Prozesses
 	;;
 	*)
