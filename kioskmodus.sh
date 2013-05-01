@@ -64,7 +64,7 @@ LogEintragErstellen(){
 ## Durch diese Funktion wird das finden eines Fehlers vereinfacht.
 ## vgl. http://wiki.ubuntuusers.de/Logdateien
 
-Message="$1"
+local Message="$1"
 
 # Falls kein Sting als Parameter übergeben wurde,
 # dann wurde vielelciht einer als Eingabe übergeben. ( Pipeoperator )
@@ -86,12 +86,10 @@ if [ ! -f "$LogDatei" ]; then
 fi
 
 # What is the time ?
-Uhrzeit="$(date "+%b %d, %Y %H:%M:%S %z")"
+local Uhrzeit="$(date "+%b %d, %Y %H:%M:%S %z")"
 
 # Write Logentry
 echo "$Uhrzeit : $Message" >> "$LogDatei"
-
-unset Message
 
 }
 
@@ -297,7 +295,7 @@ MountAufsEintraginFstab(){
 #  aber nur wenn er noch nicht vorhanden ist.
 
 # Vorhanden ?
-String1="$(sed -n '/none /home/keinpasswort aufs br:/home/.keinpasswort_rw:/home/keinpasswort 0 0/p' /etc/fstab )"
+local String1="$(sed -n '/none /home/keinpasswort aufs br:/home/.keinpasswort_rw:/home/keinpasswort 0 0/p' /etc/fstab )"
 
 # Falls nicht; hänge diese Zeile ans Dokument an.
 
@@ -307,8 +305,6 @@ if [ ! "$String1" == "none /home/keinpasswort aufs br:/home/.keinpasswort_rw:/ho
 	echo "none /home/keinpasswort aufs br:/home/.keinpasswort_rw:/home/keinpasswort 0 0" >> /etc/fstab
 
 fi
-
-unset String1
 
 }
 
@@ -321,16 +317,16 @@ if [ $1 == "on" ]; then
 
 # cleanup-script soll nur weiterlaufen, wenn
 # keinpasswort durch aufs geschützt wird.
-#immutable=`mount -l -t aufs |grep 'none on /home/schule type aufs (rw,br:/home/.schule_rw/:/home/schule/)'`
+#local immutable=`mount -l -t aufs |grep 'none on /home/schule type aufs (rw,br:/home/.schule_rw/:/home/schule/)'`
 
-#	if [ ! $immutable == "" ]; then
+#	if [ ! "$immutable" == "" ]; then
 
 	  # Lösch-Funktion, welcher zusätzliche find-Argumente übergeben werden können
 
 	  # Verwaltungs-Objekte von aufs
-	  no_aufs="! -name .wh..wh.aufs ! -name .wh..wh.orph ! -name .wh..wh.plnk"
+	  local no_aufs="! -name .wh..wh.aufs ! -name .wh..wh.orph ! -name .wh..wh.plnk"
 	  # Zusätliches find-Argument speichern
-	  zusatz=""
+	  local zusatz=""
 	  # Wird dieses Script als root ausgeführt, kann das folgende "rm -rf" sehr gefährlich werden --
 	  # insbesondere zu Testzwecken auf einem normalen Arbeitsrechner. Mit der folgenden Kombination
 	  # ist sichergestellt, dass wirklich nur der Inhalt von .schule_rw gelöscht wird.
@@ -382,14 +378,13 @@ GRUBgPXE(){
 if [ $1 == "on" ]; then
 
 	# Änderungen in /etc/default/grub, damit man das Grubmenue aufrufen kann
-	String1="$(sed -n '/GRUB_HIDDEN_TIMEOUT=/p' /etc/default/grub )"
+	local String1="$(sed -n '/GRUB_HIDDEN_TIMEOUT=/p' /etc/default/grub )"
 	if [ ! "$String1" == "GRUB_HIDDEN_TIMEOUT=5" ]; then
 
 		sed -e '/GRUB_HIDDEN_TIMEOUT=/c\GRUB_HIDDEN_TIMEOUT=5' /etc/default/grub > /tmp/kioskmodusdefaultgrub
 		sed -e '/GRUB_HIDDEN_TIMEOUT_QUIET=/c\GRUB_HIDDEN_TIMEOUT_QUIET=false' /tmp/kioskmodusdefaultgrub > /etc/default/grub
 
 	fi
-	unset String1
 
 	if [ ! -f /etc/grub.d/35_gpxe ]; then
 		# Einfügen der gPXEgrubmenuedatei in das Grubmenueerstellungsverzeichnis
@@ -457,12 +452,9 @@ $EOFE
 
 VideoAusgangHerausfinden(){
 
-Ausgang="$(xrandr | egrep "*\<connected*" | awk '{print $1}' )"
+local Ausgang="$(xrandr | egrep "*\<connected*" | awk '{print $1}' )"
 
-#echo "$Ausgang" > /root/test
 echo "$Ausgang" > /etc/kioskmodus/videoausgang
-
-unset Ausgang
 
 }
 
@@ -749,7 +741,7 @@ Journaldateisystemverwenden(){
 
 # Dateisystemeigenschaften auflisten, Zeile ausfiltern und Option abtrennen.
 
-Defaultmountoption="$(tune2fs -l /dev/sda1 | egrep "*Default mount options*" | awk '{print $4}' )"
+local Defaultmountoption="$(tune2fs -l /dev/sda1 | egrep "*Default mount options*" | awk '{print $4}' )"
 
 # Überprüfen ob als "Default mount options" "journal_data" gesetzt ist. 
 
@@ -760,8 +752,6 @@ if [ ! $Defaultmountoption == "journal_data" ]; then
 	LogEintragErstellen "Journaldateisystemverwenden : Option wird gesetzt"
 
 fi
-
-unset Defaultmountoption
 
 }
 
@@ -802,7 +792,7 @@ else
 fi
 
 ## Umbennen des bisherigen LZMA-Archives in "<Benutzername><Datum>.tar.lzma"
-Zeit="$(date "+%Y%m%d%H%M%S")"
+local Zeit="$(date "+%Y%m%d%H%M%S")"
 if [ -f /etc/kioskmodus/"$Benutzername".tar.lzma ]; then
 	mv /etc/kioskmodus/"$Benutzername".tar.lzma /etc/kioskmodus/"$Benutzername""$Zeit".tar.lzma
 	echo "Das alte Archiv wurde in "$Benutzername""$Zeit".tar.lzma umbenannt"
@@ -819,7 +809,7 @@ tar --lzma -C /home/"$Benutzername" -cf /etc/kioskmodus/"$Benutzername".tar.lzma
 
 ## Anzeigen des Ergebnisses und Verwertung der alten Datei
 
-Datei="$(du -h /etc/kioskmodus/"$Benutzername".tar.lzma)"
+local Datei="$(du -h /etc/kioskmodus/"$Benutzername".tar.lzma)"
 
 echo "Folgende Datei wurde erstellt:"
 echo "$Datei"
@@ -843,7 +833,6 @@ if [ -f /etc/kioskmodus/"$Benutzername""$Zeit".tar.lzma ]; then
 fi
 
 unset Benutzername
-unset Datei
 unset Loeschfrage
 
 }
@@ -1055,7 +1044,7 @@ PlymouthThemeAendern(){
 if [ -f /lib/plymouth/themes/solar/solar.plymouth ]; then
 
 	# readlink gibt die Datei aus auf die der symbolische Link zeigt.
-	aktLink="$(readlink /etc/alternatives/default.plymouth)"
+	local aktLink="$(readlink /etc/alternatives/default.plymouth)"
 
 	if [ ! "$aktLink" == "/lib/plymouth/themes/solar/solar.plymouth" ]; then
 
@@ -1075,8 +1064,6 @@ else
 	LogEintragErstellen "PlymouthThemeAendern : Das Thema ist noch nicht installiert"
 
 fi
-
-unset aktLink
 
 }
 
@@ -1465,12 +1452,12 @@ LogEintragErstellen "LibreOfficeExtensionGlobalInstallieren : Nun  werden die Ex
 # Write a List of all installed Extensions in a file
 # unopkg list --shared >> /tmp/KioskmodusLOExtension
 /usr/lib/libreoffice/program/unopkg list --shared >> /tmp/KioskmodusLOExtension
-IstInstalliert="yes"
+local IstInstalliert="yes"
 
 # Search for Extension-files in /etc/kioskmodus
 for file in /etc/kioskmodus/*.oxt ; do 
 
-	fname=$( basename "$file")
+	local fname=$( basename "$file")
 
 	if ! grep -q "$fname" /tmp/KioskmodusLOExtension ; then
 
@@ -1502,9 +1489,6 @@ if [ "$IstInstalliert" == "yes" ]; then
 
 fi
 
-
-unset IstInstalliert
-
 if [ -f /tmp/KioskmodusLOExtension ]; then
 	rm /tmp/KioskmodusLOExtension
 fi
@@ -1522,15 +1506,13 @@ DateisystemUeberpruefungsRhythmusAendern(){
 # 30. Systemstart auf jeden 60. Start um. Natürlich kann auch jede beliebige
 # andere Zahl verwendet werden.
 
-MaxMountCount="$(tune2fs -l /dev/sda1 | grep -i "Maximum mount count" | awk '{print $4}') "
+local MaxMountCount="$(tune2fs -l /dev/sda1 | grep -i "Maximum mount count" | awk '{print $4}') "
 
 if [ ! "10 " == "$MaxMountCount" ]; then
 
 	tune2fs -c 10 /dev/sda1
 
 fi
-
-unset MaxMountCount
 
 }
 
@@ -1619,7 +1601,7 @@ NetbeansMenueeintragErstellen(){
 
 ## Erstellen einer netbeans.desktop in /usr/share/applications damit eine Menueverknüpfung erscheint
 
-VerknuepfungsDatei="/usr/share/applications/netbeans.desktop"
+local VerknuepfungsDatei="/usr/share/applications/netbeans.desktop"
 
 if [ ! -f "$VerknuepfungsDatei" ]; then
 
@@ -1636,8 +1618,6 @@ if [ ! -f "$VerknuepfungsDatei" ]; then
 	echo "Categories=Development;IDE;Java;" >> "$VerknuepfungsDatei"
 	echo "StartupNotify=true" >> "$VerknuepfungsDatei"
 fi
-
-unset VerknuepfungsDatei
 
 }
 
@@ -1670,7 +1650,7 @@ fi
 MediathekmenueeintragErstellen(){
 
 ## Erstellen einer Mediathek.desktop in /usr/share/applications damit eine Menueverknüpfung erscheint
-VerknuepfungsDatei="/usr/share/applications/Mediathek.desktop"
+local VerknuepfungsDatei="/usr/share/applications/Mediathek.desktop"
 
 if [ ! -f "$VerknuepfungsDatei" ]; then
 
@@ -1687,8 +1667,6 @@ if [ ! -f "$VerknuepfungsDatei" ]; then
 	echo "Categories=AudioVideo;Player;" >> "$VerknuepfungsDatei"
 	echo "StartupNotify=true" >> "$VerknuepfungsDatei"
 fi
-
-unset VerknuepfungsDatei
 
 }
 
