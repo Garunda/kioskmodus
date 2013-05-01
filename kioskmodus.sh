@@ -1526,16 +1526,14 @@ WakeOnLANAktivieren(){
 
 # Verwendete Netzwerkschnittstelle herausfinden
 
-#Netzwerkschnittstelle="$(ifconfig | awk '/eth/ { print $1 }') "  # == "eth1 "
-
 # neuste Datei finden, Option "-t" sortiert nach Änderungsdatum
 # "head -1" gibt nur die oberste Zeile aus.
-AktuelleDHCPLeaseDatei="$(ls -t /var/lib/dhcp/ | head -1)"
+local AktuelleDHCPLeaseDatei="$(ls -t /var/lib/dhcp/ | head -1)"
 
 # awk: Zeile "interface" herausfiltern
 # head: Falls mehrmals vorhanden, nur erste verwenden
 # cut: erstes Zeichen abschneiden ( alles ab dem 2. ausgeben )
-Netzwerkschnittstelle="$(awk '/interface / {print $2 }' /var/lib/dhcp/$AktuelleDHCPLeaseDatei | head -1 | cut -c2- )"
+local Netzwerkschnittstelle="$(awk '/interface / {print $2 }' /var/lib/dhcp/$AktuelleDHCPLeaseDatei | head -1 | cut -c2- )"
 
 # Die letzten beiden Zeichen abschneiden ( Quote und Semikolon )
 Netzwerkschnittstelle="${Netzwerkschnittstelle%??}"
@@ -1546,18 +1544,14 @@ if [ "$Netzwerkschnittstelle" == "" ]; then
 	Netzwerkschnittstelle="eth0"
 fi
 
-# Gucken ob die Zeile schon existiert.
+# Is this row already existing ?
+local String1="$(sed -n "/ethtool -s ${Netzwerkschnittstelle} wol g/p" /etc/rc.local )"
 
-String1="$(sed -n "/ethtool -s ${Netzwerkschnittstelle} wol g/p" /etc/rc.local )"
-
-# Falls nicht; hänge diese Zeile ans Dokument an.
-
+# If not; attach this row to the file.
 if [ ! "$String1" == "ethtool -s ${Netzwerkschnittstelle} wol g"  ]; then
 	sed -e "12a\ethtool -s ${Netzwerkschnittstelle} wol g" /etc/rc.local > /tmp/kioskmodusWOL
 	mv /tmp/kioskmodusWOL /etc/rc.local
 fi
-
-unset String1
 
 # halt skript anpassen, damit die Netzwerkschnittstelle nicht abgeschaltet wird
 
@@ -1570,11 +1564,6 @@ sed -e 's/NETDOWN=yes/NETDOWN=no/' /tmp/kioskmodusWOL > /etc/init.d/halt
 if [ -f /tmp/kioskmodusWOL ]; then
 	rm /tmp/kioskmodusWOL
 fi
-
-
-unset AktuelleDHCPLeaseDatei
-unset Netzwerkschnittstelle
-unset String1
 
 }
 
