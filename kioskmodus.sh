@@ -1698,7 +1698,8 @@ PaketQuellenAnpassen(){
 ## sodass sie schnell zu überschauen sind und außerdem werden sie
 ## auf den Netzwerkspiegel umgestellt.
 
-SourcesList="/etc/apt/sources.list"
+local SourcesList="/etc/apt/sources.list"
+local Mirror=""
 
 # Read in the distributioncodename
 
@@ -1727,7 +1728,6 @@ fi
 
 if [ ! $Mirror == false ]; then
 
-	
 	echo "" >> "$SourcesList"
 	echo "## Ubuntu" >> "$SourcesList"
 	echo "" >> "$SourcesList"
@@ -1760,9 +1760,6 @@ if [ ! $Mirror == false ]; then
 fi
 
 # delete temporary variables and files.
-
-unset Mirror
-unset SourcesList
 
 if [ -f /tmp/kioskmodusPaketQuellenAnpassen ]; then
 	rm /tmp/kioskmodusPaketQuellenAnpassen
