@@ -1646,7 +1646,7 @@ GoogleEarthMenueeintragErstellen(){
 
 ## Erstellen einer Googleearth6.desktop in /usr/share/applications damit eine Menueverknüpfung erscheint
 
-VerknuepfungsDatei="/usr/share/applications/Googleearth7.desktop"
+local VerknuepfungsDatei="/usr/share/applications/Googleearth7.desktop"
 
 if [ ! -f "$VerknuepfungsDatei" ]; then
 
@@ -1663,8 +1663,6 @@ if [ ! -f "$VerknuepfungsDatei" ]; then
 	echo "Categories=AudioVideo;Player;Network;" >> "$VerknuepfungsDatei"
 	echo "StartupNotify=true" >> "$VerknuepfungsDatei"
 fi
-
-unset VerknuepfungsDatei
 
 }
 
@@ -1699,14 +1697,18 @@ IsGoogleEarthPossible(){
 ## Google Earth need OpenGL >= 2
 ## This check its availibility and creates or deletes the .desktop files.
 
-OpenGLversion="$(glxinfo | awk '/OpenGL version string/ {print $4 }' | cut -c1)"
+local OpenGLversion="$(glxinfo | awk '/OpenGL version string/ {print $4 }' | cut -c1)"
 
 if [ "$OpenGLversion" -gt "1" ]; then
 	GoogleEarthMenueeintragErstellen
 else
 	rm /usr/share/applications/Google*
 	rm /usr/share/applications/google*
-	rm /home/schule/Arbeitsfläche/Google*.desktop
+
+	local immutable=`mount -l -t aufs | grep 'none on /home/schule'`
+	if [ ! "$immutable" == "" ]; then
+		rm /home/schule/Arbeitsfläche/Google*.desktop
+	fi
 fi
 
 }
