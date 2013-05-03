@@ -1895,14 +1895,11 @@ case $1 in
 	source "$Config"
 	LogEintragErstellen "Parameterauswertung : Ende der Ausführung der Konfiguarationsdatei"
 	;;
-	"löschen"|"-l")
-	echo "Deprecated"
-	;;
 	"RandR")
 	RandRstatischeAufloesung
 	;;
 	"-t"|"test")
-	PlymouthThemeAendern
+	echo "parameter for function-tests"
 	;;
 	"-v") # wird nach dem Login ausgeführt
 	VideoAusgangHerausfinden
