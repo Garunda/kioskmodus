@@ -1895,12 +1895,6 @@ case $1 in
 	source "$Config"
 	LogEintragErstellen "Parameterauswertung : Ende der Ausführung der Konfiguarationsdatei"
 	;;
-	"RandR")
-	RandRstatischeAufloesung
-	;;
-	"-t"|"test")
-	echo "parameter for function-tests"
-	;;
 	"-v") # wird nach dem Login ausgeführt
 	VideoAusgangHerausfinden
 	;;
