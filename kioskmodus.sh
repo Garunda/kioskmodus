@@ -94,47 +94,6 @@ echo "$Uhrzeit : $Message" >> "$LogDatei"
 }
 
 
-WoIstDerServer(){
-
-# Deprecated
-
-## Serveradressen
-# Paketkoenig
-PossibleServerAdress[1]="paketkoenig.localdomain"
-PossibleServerAdress[2]="paketkoenig.local"
-WoIstDerServer
-PaketkoenigAdress=$Reply
-# IPCop
-PossibleServerAdress[1]="10.0.0.15"
-PossibleServerAdress[2]="zeitserver.local"
-PossibleServerAdress[3]="zeitserver.localdomain"
-WoIstDerServer
-IPCopAdress=$Reply
-# FileServer
-#PossibleServerAdress[1]="10.0.0.15"
-#PossibleServerAdress[2]="fileserver.local"
-#PossibleServerAdress[3]="fileserver.localdomain"
-#WoIstDerServer
-#FileServerAdress=$Reply
-
-# Speichervariable
-Reply=""
-
-# Alle Adressen durchtesten
-for wert in "${PossibleServerAdress[@]}"
-  do
-	# Sende 2 Pings, aber wirklich nur 2
-	if [[ `ping -c 2 "$wert"` ]];then
-		# Adresse in $Reply speichern
-		Reply="$wert"
-	fi
-done
-
-unset PossibleServerAdress
-
-}
-
-
 Beepen(){
 
 ## Nette Beeptöne über die internen PC-Lautsprecher ausgeben
