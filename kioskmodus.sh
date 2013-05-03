@@ -1943,10 +1943,6 @@ case $1 in
 	"--LightDMAutoLogin")
 	LightDMAutoLogin
 	;;
-	"--LightDMGreeterAendern")
-	#LightDMGreeterAendern
-	echo "Deprecated"
-	;;
 	"--LokaleSystemMailsAnMailAdresseWeiterleitenAktivieren")
 	LokaleSystemMailsAnMailAdresseWeiterleitenAktivieren
 	;;
