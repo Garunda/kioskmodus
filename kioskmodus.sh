@@ -797,42 +797,6 @@ unset Loeschfrage
 }
 
 
-Loeschen(){
-
-## Die Funktion zur Löschung aller alten Archive
-
-if [ -f /etc/kioskmodus/*.tar.lzma ]; then
-
-#Sicherheitsabfrage
-
-	echo "Möchten Sie wirklich alle gesicherten Archive löschen ?"
-	echo "(yes or no)"
-	read Loeschen
-	if [ "$Loeschen" == "yes" ]; then
-
-		rm /etc/kioskmodus/schule2*
-		rm /etc/kioskmodus/verwaltung2*
-		echo "Alle alten Archive gelöscht"
-
-	elif  [ "$Loeschen" == "no" ]; then
-
-		echo "Die gesicherten Archive wurden nicht gelöscht :)>-"
-
-	else
-
-		echo "Bitte Schreiben lernen"
-
-	fi
-
-else
-
-	echo "Keine alten Archive vorhanden"
-
-fi
-
-}
-
-
 LokaleTopLevelDomainHerausfinden(){
 
 ## Um eideutige Server-Hostnamen zu verwenden muss
