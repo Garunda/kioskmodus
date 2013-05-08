@@ -2,8 +2,10 @@
 
 ## Make Release and Package files
 cd ..
+#cd /var/www/vhosts/ostsee-gymnasium.de/subdomains/repository/httpdocs
 
 DateienErstellen(){
+#DateienErstellen raring dists/raring/main/binary-i386
 
 Suite="$1"
 PaketPfad="$2"
@@ -51,11 +53,6 @@ for choice in $UbuntuVersioncomponents
 	done
 }
 
-# Ins Verzeichnis wechseln
-#cd /var/www/vhosts/ostsee-gymnasium.de/subdomains/repository/httpdocs/dists/precise/main/binary-i386
-
-#DateienErstellen raring dists/raring/main/binary-i386
-#DateienErstellen raring dists/raring/kioskmodus/binary-i386
 
 # Read GPG-passphrase
 echo "GPG-Passphrase:"
