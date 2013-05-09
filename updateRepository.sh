@@ -1,8 +1,10 @@
 #!/bin/bash
 
+local ConfFile="/etc/updateRepository/updateRepository.conf"
+
 ## Make Release and Package files
-cd ..
-#cd /var/www/vhosts/ostsee-gymnasium.de/subdomains/repository/httpdocs
+#cd ..
+cd /var/www/vhosts/ostsee-gymnasium.de/subdomains/repository/httpdocs
 
 DateienErstellen(){
 #DateienErstellen raring dists/raring/main/binary-i386
@@ -39,7 +41,7 @@ if [ $# -lt 2 ]; then
 	return
 fi
 
-# The first paramter is the Ubuntu Suite
+# The first parameter is the Ubuntu Suite
 UbuntuVersionSuite=$1
 # shift all paramter left. (The first is shifted out)
 shift
@@ -58,6 +60,17 @@ for choice in $UbuntuVersioncomponents
 echo "GPG-Passphrase:"
 read Passph
 
+#if [ ! -d /etc/updateRepository ]; then
+#	mkdir /etc/updateRepository
+#fi
+
+#if [ ! -f "$ConfFile" ]; then
+#	echo "## updateRepository.conf" > "$ConfFile"
+#	echo "RepositoryPath=\"/var/www/vhosts/ostsee-gymnasium.de/subdomains/repository/httpdocs\"" >> "$ConfFile"
+#	echo "# GenerateRepo raring main kioskmodus" >> "$ConfFile"
+#fi
+
+# . "$ConfFile"
 GenerateRepo raring main kioskmodus
 
 
@@ -67,5 +80,6 @@ unset UbuntuVersionSuite
 unset UbuntuVersioncomponents
 unset choice
 unset Passph
+unset ConfFile
 
 exit 0
