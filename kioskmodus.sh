@@ -1921,7 +1921,7 @@ case $1 in
 	"--gpxe")
 	GRUBgPXE on
 	;;
-	"--help"|"-h"|)
+	"--help")
 	echo -e "\033[49;1;31m man kioskmodus.sh  \033[49;1;33m >> \033[49;1;32m öffnet die Hilfe \033[0m"
 	#echo -e "\033[49;1;31m TESTAUSGABE \033[49;1;33m PFEILE \033[49;1;32m BUNT  \033[0m"
 	;;
