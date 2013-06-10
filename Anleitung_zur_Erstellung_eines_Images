@@ -207,6 +207,8 @@
 22. Applications/places in Anwendungen/Orte ändern. (Oberes Panel)
 23. Testen ob Multimediainhalte von ods Präsentationen wiedergegeben werden können.
 24. Verschiedene Multimediadateien prüfen ob sie auch mit dem richtigen Programm geöffnet werden.
+25. Suche in Thunar einrichten.
+	http://wiki.ubuntuusers.de/Thunar/Benutzerdefinierte_Aktionen#Dateisuche
 26. Paketquellen in „/etc/apt/sources.list“ an lokalen Spiegel anpassen:
 	"sudo kioskmodus.sh --PaketQuellenAnpassen_offline"
 27. Autoanmeldung von schule einstellen:
