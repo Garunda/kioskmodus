@@ -1,0 +1,10 @@
+ label i386
+        kernel netboot/ubuntu-installer/i386/linux
+        append vga=normal initrd=netboot/ubuntu-installer/i386/initrd.gz netcfg/choose_interface=eth0 locale=de_DE ubuntu-installer/country=DE ubuntu-installer/language=de ubuntu-installer/keymap=de-latin1-nodeadkeys console-keymaps-at/keymap=de-latin1-nodeadkeys auto-install/enable=false preseed/url=http://10.0.0.20/preseed.cfg DEBCONF_DEBUG=5 -- quiet 
+
+ label hd
+	LOCALBOOT 0
+
+label option
+	kernel netboot/ubuntu-installer/i386/linux
+        append vga=normal initrd=netboot/ubuntu-installer/i386/initrd.gz netcfg/choose_interface=eth0 locale=de_DE.UTF-8 ubuntu-installer/country=DE ubuntu-installer/language=de ubuntu-installer/keymap=de-latin1-nodeadkeys console-keymaps-at/keymap=de-latin1-nodeadkeys ubuntu-installer/console-setup/ask_detect=false ubuntu-installer/console-setup/layoutcode=de_DE auto-install/enable=false preseed/url=http://10.0.0.20/preseed.cfg DEBCONF_DEBUG=5 -- quiet 
