@@ -1,0 +1,55 @@
+#######################################################
+#
+# promises.cf
+#
+#######################################################
+
+body common control
+{
+	bundlesequence  => { 
+		"g",
+		"garbage_collection",
+		"packages_pre",
+		"packages",
+		"packages_upgrade",
+		"config_pre",
+		"config",
+        };
+
+	inputs => {
+		"cfengine_stdlib.cf",
+		"common.cf",
+		"site.cf",
+		"packages.cf",
+		"config.cf",
+        };
+}
+
+#######################################################
+
+body agent control
+{
+ifelapsed => "15";
+}
+
+#######################################################
+
+body monitor control
+{
+forgetrate => "0.7";
+histograms => "true";
+}
+
+#######################################################
+
+body executor control
+
+{
+splaytime => "20";
+mailto => "admin@asta.uni-luebeck.de";
+smtpserver => "mail.uni-luebeck.de";
+mailmaxlines => "100";
+schedule => { "Min00" };
+
+exec_command => "$(sys.workdir)/bin/cf-agent -f failsafe.cf && $(sys.workdir)/bin/cf-agent";
+}

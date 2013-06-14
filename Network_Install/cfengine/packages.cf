@@ -1,0 +1,154 @@
+bundle agent packages_pre
+{
+vars:
+  "config_files" slist => {
+	"/etc/apt/apt.conf.d/30no-sources-list-d",
+	"/etc/apt/sources.list",
+  };
+
+  "aptkey" slist => { 
+	"06C4AE2A", # Iceweasel
+	"0FF405B2", # Cinnamon
+  };
+
+files:
+  "$(config_files)"
+    copy_from => remote_cp("$(g.copy_path)$(config_files)","$(g.copy_server)"),
+    action => immediate;
+
+commands:
+  "/usr/bin/wget -q -O- http://sjaelland.asta.uni-luebeck.de/fai/apt-keys/$(aptkey).pub | /usr/bin/apt-key add - >/dev/null"
+    contain => in_shell;
+
+  "/bin/echo ttf-mscorefonts-installer msttcorefonts/accepted-mscorefonts-eula boolean true | /usr/bin/debconf-set-selections"
+    contain => in_shell;
+}
+
+bundle agent packages
+{
+vars:
+  "packages_install" slist => {
+	"acpi-support",
+	"alsa-base",
+	"alsa-utils",
+	"anacron",
+	"bc",
+	"bluez",
+	"bluez-alsa",
+	"bluez-gstreamer",
+	"brasero",
+	"ca-certificates",
+	"chromium-browser",
+	"cinnamon",
+	"dconf-tools",
+	"dmz-cursor-theme",
+	"doc-base",
+	"eog",
+	"evince",
+	"file-roller",
+	"firmware-realtek",
+	"iceweasel",
+	"iceweasel-l10n-de",
+	"flashplugin-nonfree",
+	"fonts-freefont-ttf",
+	"fonts-kacst-one",
+	"fonts-lao",
+	"fonts-liberation",
+	"fonts-lklug-sinhala",
+	"fonts-nanum",
+	"fonts-sil-abyssinica",
+	"fonts-sil-padauk",
+	"fonts-thai-tlwg",
+	"fonts-tibetan-machine",
+	"gcc",
+	"gedit",
+	"genisoimage",
+	"ghostscript-x",
+	"gimp",
+	"gnome-applets",
+	"gnome-control-center",
+	"gnome-icon-theme-extras",
+	"gnome-media",
+	"gnome-session",
+	"gnome-terminal",
+	"gnome-themes-standard",
+	"gstreamer0.10-ffmpeg",
+	"gstreamer0.10-plugins-bad",
+	"gstreamer0.10-plugins-base-apps",
+	"gstreamer0.10-plugins-ugly",
+	"gstreamer0.10-pulseaudio",
+	"gtk2-engines",
+	"gtk2-engines-pixbuf",
+	"gvfs-bin",
+	"gvfs-fuse",
+	"htop",
+	"inkscape",
+	"libgail-common",
+	"libgd2-xpm",
+	"libnotify-bin",
+	"libnss-ldapd",
+	"libnss-mdns",
+	"libpam-ck-connector",
+	"libpam-gnome-keyring",
+	"libpam-ldapd",
+	"libreoffice",
+	"libreoffice-filter-binfilter",
+	"libreoffice-gtk",
+	"libreoffice-l10n-de",
+	"libsasl2-modules",
+	"libxp6",
+	"lightdm",
+	"lightdm-gtk-greeter",
+	"make",
+	"mesa-utils",
+	"nemo",
+	"nfs-common",
+	"nvidia-glx",
+	"openssh-server",
+	"pidgin",
+	"pulseaudio",
+	"pulseaudio-module-gconf",
+	"pulseaudio-module-x11",
+	"rdesktop",
+	"remmina",
+	"screen",
+	"sudo",
+	"telepathy-idle",
+	"texlive-full",
+	"texmaker",
+	"texmaker-data",
+	"icedove",
+	"icedove-l10n-de",
+	"totem",
+	"totem-mozilla",
+	"ttf-dejavu-core",
+	"ttf-punjabi-fonts",
+	"ttf-wqy-microhei",
+	"unzip",
+	"vim",
+	"vinagre",
+	"xcursor-themes",
+	"xdg-user-dirs",
+	"xdg-user-dirs-gtk",
+	"xdg-utils",
+	"xkb-data",
+	"xorg",
+	"xterm",
+	"zip",
+	"zsh",
+  };
+
+packages:
+ update_packages::
+  "$(packages_install)"
+	package_policy => "add",
+	package_method => apt;
+}
+
+bundle agent packages_upgrade
+{
+commands:
+ update_packages::
+  "/usr/bin/env DEBIAN_FRONTEND=noninteractive /usr/bin/apt-get -qq -f -o Dpkg::Options::=--force-confdef -o Dpkg::Options::=--force-confold dist-upgrade"
+	contain => silent;
+}

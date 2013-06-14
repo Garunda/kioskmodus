@@ -1,0 +1,48 @@
+#
+# Failsafe file
+#
+
+body common control
+{
+  bundlesequence => { "update" };
+}
+
+bundle agent update
+{
+files:
+ "/etc/cfengine3"
+  perms => m("600"),
+  copy_from => masterfiles,
+  depth_search => norecurse,
+  action => immediate,
+  file_select => cf3_files;
+}
+
+body copy_from masterfiles
+{
+  servers     => { "sjaelland.asta.uni-luebeck.de" };
+  source      => "/var/lib/cfengine3/masterfiles";
+  compare     => "digest";
+}
+
+body perms m(mode)
+{
+  mode   => "$(mode)";
+}
+
+body depth_search norecurse
+{
+  depth => "1";
+  exclude_dirs => { "\..*" };
+}
+
+body action immediate
+{
+  ifelapsed => "0";
+}
+
+body file_select cf3_files
+{
+  leaf_name => { ".*\.cf" };
+  file_result => "leaf_name";
+}

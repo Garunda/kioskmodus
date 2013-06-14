@@ -1,0 +1,13 @@
+bundle common g
+{
+classes:
+  "Resolution1280x1024" or => { "wolin" };
+  "Resolution1920x1200" expression => "!Resolution1280x1024";
+
+
+  "update_packages" or => { "install", "force", "force_packages" };
+
+vars:
+ "copy_server" string => "sjaelland.asta.uni-luebeck.de";
+ "copy_path"   string => "/etc/cfengine3/config";
+}

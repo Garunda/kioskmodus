@@ -1,0 +1,97 @@
+bundle agent config_pre
+{
+vars:
+  "divert_files" slist => {
+	"/usr/share/cinnamon/applets/menu@cinnamon.org/applet.js",
+	"/usr/share/xsessions/cinnamon2d.desktop",
+	"/usr/share/xsessions/gnome.desktop",
+	"/usr/share/xsessions/gnome-fallback.desktop",
+	"/usr/share/xsessions/lightdm-xsession.desktop",
+  };
+
+commands:
+  "/usr/sbin/dpkg-divert --quiet --local --rename $(divert_files)";
+}
+
+bundle agent config
+{
+vars:
+  "config_files" slist => {
+        "/etc/cups/client.conf",
+        "/etc/dconf/db/site",
+        "/etc/dconf/db/site.d/00_config",
+        "/etc/dconf/profile/user",
+        "/etc/default/grub",
+        "/etc/default/nfs-common",
+        "/etc/hosts",
+        "/etc/ldap/ldap.conf",
+        "/etc/lightdm/lightdm.conf",
+        "/etc/lightdm/lightdm-gtk-greeter.conf",
+        "/etc/lightdm/wallpaper_asta_1280x1024.jpg",
+        "/etc/lightdm/wallpaper_asta_1600x1200.jpg",
+        "/etc/lightdm/wallpaper_asta_1920x1080.jpg",
+        "/etc/lightdm/wallpaper_asta_1920x1200.jpg",
+        "/etc/nslcd.conf",
+        "/etc/nsswitch.conf",
+        "/etc/polkit-1/localauthority/30-site.d/10-disable-shutdown.pkla",
+        "/etc/sudoers",
+	"/etc/X11/xorg.conf.d/20-nvidia.conf",
+        "/etc/zsh/zshrc",
+        "/root/.ssh/authorized_keys",
+        "/usr/share/applications/FSMEDPasswd.desktop",
+        "/usr/share/applications/FSMINTPasswd.desktop",
+        "/usr/share/cinnamon/applets/menu@cinnamon.org/applet.js",
+  };
+
+  Resolution1280x1024::
+	"resolution" string => "1280x1024";
+  Resolution1600x1200::
+	"resolution" string => "1600x1200";
+  Resolution1920x1080::
+	"resolution" string => "1920x1080";
+  Resolution1920x1200::
+	"resolution" string => "1920x1200";
+
+files:
+  "$(config_files)"
+	copy_from => remote_cp("$(g.copy_path)$(config_files)","$(g.copy_server)"),
+	classes => if_repaired("file:$(config_files)");
+
+ "/etc/fstab"
+	edit_line => fstab;
+
+ "/var/dokumente/."
+	perms => mog("0755", "root", "root"),
+	create => "true";
+
+ "/var/prg/."
+	perms => mog("0755", "root", "root"),
+	create => "true";
+
+ "/etc/lightdm/wallpaper.jpg"
+	link_from => ln_s("/etc/lightdm/wallpaper_asta_$(resolution).jpg"),
+	move_obstructions => "true";
+
+
+commands:
+ "/usr/bin/chsh -s /bin/zsh root";
+
+ "/usr/sbin/update-alternatives --set x-www-browser /usr/bin/iceweasel";
+ "/usr/sbin/update-alternatives --set gnome-www-browser /usr/bin/iceweasel";
+
+ "/usr/sbin/update-grub"
+    ifvarclass => canonify("file:/etc/default/grub"),
+    contain => silent;
+}
+
+bundle edit_line fstab
+{
+delete_lines:
+	"\s*(?:\S+\s+){2}nfs4?\s.*";
+
+insert_lines:
+	"nfs.asta.uni-luebeck.de:/home           /home                   nfs    nfsvers=3,_netdev 0 0";
+	"nfs.asta.uni-luebeck.de:/var/dokumente  /var/dokumente          nfs    nfsvers=3,_netdev 0 0";
+	"nfs.asta.uni-luebeck.de:/var/prg        /var/prg                nfs    nfsvers=3,_netdev 0 0";
+}
+

@@ -1,0 +1,11 @@
+bundle agent garbage_collection
+{
+files:
+
+  "$(sys.workdir)/outputs" 
+
+    delete => tidy,
+    file_select => days_old("3"),
+    depth_search => recurse("inf");
+
+}
