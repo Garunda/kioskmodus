@@ -143,6 +143,10 @@
 	25. libfaac0 für MPEG-4 Dateien mit Ton (AAC)
 	28. libdvdread4 für kopiergeschützte DVDs
 	29. libdvdread-dev für kopiergeschützte DVDs
+	30. BluRay:
+		libaacs0
+		libbluray-bdj
+		libbluray1
 7. Auf http://packages.medibuntu.org/ das Entsprechende Verzeichnis öffnen und
    die Pakete nacheinander in Synaptic suchen und ggf. installieren.
 8. Alle unwichten Pakete deinstallieren z.B.:
